@@ -1,7 +1,7 @@
 class WiiStringTableBuilder(object):
     def __init__(self):
         self.nextOffset = 0
-        self.data = ''
+        self.data = b''
         self.lookup = {}
 
     def add(self, string):
@@ -11,7 +11,7 @@ class WiiStringTableBuilder(object):
         offset = self.nextOffset
         self.lookup[string] = offset
 
-        self.data = "%s%s\0" % (self.data, string.encode('Shift-JIS'))
+        self.data += string.encode('Shift-JIS') + b'\0'
         self.nextOffset = len(self.data)
 
         return offset

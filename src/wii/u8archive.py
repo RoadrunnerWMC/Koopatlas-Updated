@@ -4,9 +4,9 @@ import struct
 import os
 import sys
 if sys.version_info[0] >= 3:
-    import io
+    from io import BytesIO
 else:
-    import cStringIO as io
+    from cStringIO import StringIO as BytesIO
 
 class WiiArchiveU8:
     class ReadInfo:
@@ -23,8 +23,8 @@ class WiiArchiveU8:
 
         if handle:
             if not hasattr(handle, 'read'):
-                if handle[0:4] == "U\xAA8\x2D":
-                    handle = io.StringIO(handle)
+                if handle[0:4] == b"U\xAA8\x2D":
+                    handle = BytesIO(handle)
                 else:
                     handle = open(handle, 'rb')
 
@@ -32,7 +32,7 @@ class WiiArchiveU8:
             info.startPos = handle.tell()
 
             magic = handle.read(4)
-            if magic != "U\xAA8\x2D":
+            if magic != b"U\xAA8\x2D":
                 print("WiiArchiveU8: tried to load an archive without the U8 magic")
 
             fstStart, fstSize, dataOffset = struct.unpack('>III', handle.read(12))
@@ -74,8 +74,8 @@ class WiiArchiveU8:
             else:
                 raise "oh crap! unknown FS obj type %d" % objType
 
-            nameEnd = info.stringTable.find("\0", nameOffset)
-            newObj.name = info.stringTable[nameOffset:nameEnd]
+            nameEnd = info.stringTable.find(b"\0", nameOffset)
+            newObj.name = info.stringTable[nameOffset:nameEnd].decode('ascii')
 
             if newObj.isFile():
                 savePos = handle.tell()
@@ -91,7 +91,7 @@ class WiiArchiveU8:
     def pack(self, handle=None):
         returnData = False
         if handle is None:
-            handle = io.StringIO()
+            handle = BytesIO()
             returnData = True
 
         info = WiiArchiveU8.WriteInfo()
@@ -113,9 +113,9 @@ class WiiArchiveU8:
         dataOffset = alignUp(fstStart + fstSize, 0x20)
 
         # now write the header
-        handle.write("U\xAA8\x2D")
+        handle.write(b"U\xAA8\x2D")
         handle.write(struct.pack('>III', fstStart, fstSize, dataOffset))
-        handle.write("\0"*16)
+        handle.write(b"\0"*16)
 
         # write root node
         info.currentNode = 1
@@ -132,7 +132,7 @@ class WiiArchiveU8:
         handle.write(stringTable)
 
         # write data (after padding)
-        handle.write("\0" * (dataOffset - fstSize - fstStart))
+        handle.write(b"\0" * (dataOffset - fstSize - fstStart))
         self._writeNodeData(handle, self.root)
 
         # looks like we are finally done
@@ -192,7 +192,7 @@ class WiiArchiveU8:
         elif node.isFile():
             size = len(node.data)
             handle.write(node.data)
-            handle.write("\0" * (alignUp(size, 0x20) - size))
+            handle.write(b"\0" * (alignUp(size, 0x20) - size))
 
 
     def resolvePath(self, *args):
