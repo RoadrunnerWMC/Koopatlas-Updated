@@ -9,6 +9,7 @@ except ImportError:
     from PyQt4 import QtCore, QtGui
     QtWidgets = QtGui
 Qt = QtCore.Qt
+QtCompatVersion = QtCore.QT_VERSION
 
 from main import KP
 

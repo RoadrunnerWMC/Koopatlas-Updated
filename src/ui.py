@@ -10,6 +10,24 @@ import sys
 if sys.version_info[0] >= 3:
     unicode = str
 
+def QFileDialog_getOpenFileName(*args, **kwargs):
+    retVal = QtWidgets.QFileDialog.getOpenFileName(*args, **kwargs)
+    if QtCompatVersion < 0x50000:
+        return retVal
+    return retVal[0]
+
+def QFileDialog_getOpenFileNames(*args, **kwargs):
+    retVal = QtWidgets.QFileDialog.getOpenFileNames(*args, **kwargs)
+    if QtCompatVersion < 0x50000:
+        return retVal
+    return retVal[0]
+
+def QFileDialog_getSaveFileName(*args, **kwargs):
+    retVal = QtWidgets.QFileDialog.getSaveFileName(*args, **kwargs)
+    if QtCompatVersion < 0x50000:
+        return retVal
+    return retVal[0]
+
 
 class KPPathNodeList(QtWidgets.QWidget):
 
@@ -535,7 +553,7 @@ class KPDoodadSelector(QtWidgets.QWidget):
     def addDoodadFromFile(self):
         """Asks the user for files to load in as doodads."""
 
-        files = QtWidgets.QFileDialog.getOpenFileNames(self,
+        files = QFileDialog_getOpenFileNames(self,
                 "Choose an image or several image files.", "",
                 "Images (*.png *.jpeg *.jpg *.bmp)")
 
@@ -1343,7 +1361,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
     def openMap(self):
         if self.checkDirty(): return
 
-        target = unicode(QtWidgets.QFileDialog.getOpenFileName(
+        target = unicode(QFileDialog_getOpenFileName(
             self, 'Open Map', '', 'Koopatlas map (*.kpmap)'))
 
         if len(target) == 0:
@@ -1361,7 +1379,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
         if target is None or forceNewName:
             dialogDir = '' if target is None else os.path.dirname(target)
-            target = unicode(QtWidgets.QFileDialog.getSaveFileName(
+            target = unicode(QFileDialog_getSaveFileName(
                     self, 'Save Map', dialogDir, 'Koopatlas map (*.kpmap)'))
 
             if len(target) == 0:
@@ -1379,7 +1397,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
         target = KP.map.filePath
 
         dialogDir = '' if target is None else os.path.dirname(target)
-        target = unicode(QtWidgets.QFileDialog.getSaveFileName(
+        target = unicode(QFileDialog_getSaveFileName(
                 self, 'Export Map', dialogDir, 'Koopatlas binary map (*.kpbin)'))
 
         if len(target) == 0:
@@ -1394,7 +1412,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
         item, ok = QtWidgets.QInputDialog.getItem(self, "QInputDialog.getItem()",
                 "Choose a Screenshot Source:", items, 0, False)
         if ok and item:
-            fn = QtWidgets.QFileDialog.getSaveFileName(self, 'Choose a new filename', 'untitled.png', 'Portable Network Graphics (*.png)')
+            fn = QFileDialog_getSaveFileName(self, 'Choose a new filename', 'untitled.png', 'Portable Network Graphics (*.png)')
             if fn == '': return
             fn = unicode(fn)
 
@@ -1497,7 +1515,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot()
     def moveTilesetToFolder(self):
 
-        path = QtWidgets.QFileDialog.getOpenFileName(self,
+        path = QFileDialog_getOpenFileName(self,
                 "Choose a tileset. Tileset will be copied to the Koopatlas Tilesets Folder.", "",
                 "Koopuzzle Tilesets (*.arc)")
         if path:
@@ -1560,7 +1578,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot()
     def loadAnimPresets(self):
-        path = QtWidgets.QFileDialog.getOpenFileName(self,
+        path = QFileDialog_getOpenFileName(self,
                 "Choose a Koopatlas Animation Preset File.", "",
                 "Koopatlas Animation Preset (*.kpa)")
         if path:
@@ -1610,7 +1628,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
             msg._exec()
             return
 
-        path = QtWidgets.QFileDialog.getSaveFileName(self,
+        path = QFileDialog_getSaveFileName(self,
                 "Choose a tileset. Tileset will be copied to the Koopatlas Tilesets Folder.", "KP Preset.kpa",
                 "Koopatlas Animation Preset (*.kpa)")
 
