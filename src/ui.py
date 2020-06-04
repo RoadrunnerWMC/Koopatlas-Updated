@@ -1024,8 +1024,8 @@ class KPAnmOptions(QtWidgets.QWidget):
 
         if settings.contains('AnimationPresets'):
 
-            presetList = mapfile.load(str(settings.value('AnimationPresets')))
-            presets = mapfile.load(str(settings.value('AnimationPresetData')))
+            presetList = mapfile.load(settings.value('AnimationPresets'))
+            presets = mapfile.load(settings.value('AnimationPresetData'))
 
         else:
 
@@ -1582,8 +1582,8 @@ class KPMainWindow(QtWidgets.QMainWindow):
             presets = []
 
             if settings.contains('AnimationPresets'):
-                presetList = mapfile.load(str(settings.value('AnimationPresets')))
-                presets = mapfile.load(str(settings.value('AnimationPresetData')))
+                presetList = mapfile.load(settings.value('AnimationPresets'))
+                presets = mapfile.load(settings.value('AnimationPresetData'))
 
             if presetList == None:
                 presetList = []
@@ -1604,8 +1604,8 @@ class KPMainWindow(QtWidgets.QMainWindow):
         msg.setText("No Animation Presets Found.")
 
         if settings.contains('AnimationPresets'):
-            presetList = mapfile.load(str(settings.value('AnimationPresets')))
-            presets = mapfile.load(str(settings.value('AnimationPresetData')))
+            presetList = mapfile.load(settings.value('AnimationPresets'))
+            presets = mapfile.load(settings.value('AnimationPresetData'))
         else:
             msg._exec()
             return

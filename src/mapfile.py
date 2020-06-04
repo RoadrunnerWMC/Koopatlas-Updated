@@ -55,7 +55,7 @@ def dump(rootObj):
 
         return dest
 
-    return json.dumps(rootObj, default=_dumpPiece)
+    return json.dumps(rootObj, default=_dumpPiece).encode('utf-8')
 
 
 
@@ -91,7 +91,7 @@ def load(string):
 
         return obj
 
-    root = json.loads(string, object_hook=_loadObject)
+    root = json.loads(string.decode('utf-8'), object_hook=_loadObject)
 
     for obj, source in needsSpecialCare:
         obj._load(root, source)
