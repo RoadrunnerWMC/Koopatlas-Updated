@@ -455,10 +455,10 @@ class KPTileset(object):
                         bit2 = tex[i+1]
 
                         dest_setPixel(xpixel, ypixel,
-                                ((((bit1 & 0x70) >> 4) * 255 / 7) << 24) |
-                                (((bit1 & 0xF) * 255 / 15) << 16) |
-                                ((((bit2 & 0xF0) >> 4) * 255 / 15) << 8) |
-                                ((bit2 & 0xF) * 255 / 15)
+                                ((((bit1 & 0x70) >> 4) * 255 // 7) << 24) |
+                                (((bit1 & 0xF) * 255 // 15) << 16) |
+                                ((((bit2 & 0xF0) >> 4) * 255 // 15) << 8) |
+                                ((bit2 & 0xF) * 255 // 15)
                                 )
                         i += 2
 
@@ -472,7 +472,7 @@ class KPTileset(object):
         # Load Objects
 
         meta = []
-        for i in range(len(metadata)/5):
+        for i in range(len(metadata)//5):
             meta.append(struct.unpack_from('>H3B', metadata, i * 5))
 
         tilelist = []
