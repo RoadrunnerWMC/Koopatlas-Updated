@@ -7,14 +7,14 @@
 import os.path, sys
 
 if hasattr(sys, 'frozen'):
-	sys.path.append(os.path.join(os.path.dirname(sys.executable), 'src'))
+    sys.path.append(os.path.join(os.path.dirname(sys.executable), 'src'))
 else:
-	sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
+    sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
 
 
 from common import *
 
 if __name__ == '__main__':
-	KP.run()
+    KP.run()
 
