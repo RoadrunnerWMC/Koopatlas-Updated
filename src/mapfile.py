@@ -108,12 +108,12 @@ def dumpPixmap(pm):
     pm.save(buf, 'PNG')
     data = bytes(buf.data())
     buf.close()
-    return {'png': base64.b64encode(data)}
+    return {'png': base64.b64encode(data).decode('ascii')}
 
 @loadClassFrom('pixmap')
 def loadPixmap(source):
     pm = QtGui.QPixmap()
-    pm.loadFromData(base64.b64decode(source['png']), 'PNG')
+    pm.loadFromData(base64.b64decode(source['png'].encode('ascii')), 'PNG')
     return pm
 
 @dumpClassAs(QtCore.QString)
