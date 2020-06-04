@@ -350,7 +350,7 @@ class KPTileset(object):
         obj = arc.resolvePath('/objects.bin').data
         meta = arc.resolvePath('/objectsMeta.bin').data
 
-        tmaps = arc.resolvePath('/optimisedTileMappings.txt').data
+        tmaps = arc.resolvePath('/optimisedTileMappings.txt').data.decode('ascii')
 
         return cls(img, obj, meta, grp, tmaps)
 
