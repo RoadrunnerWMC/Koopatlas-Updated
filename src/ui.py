@@ -1442,7 +1442,9 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
 
     def batchSave(self):
-        target = unicode(QtWidgets.QFileDialog.getExistingDirectory(self, 'Choose a folder'))
+        target = QtWidgets.QFileDialog.getExistingDirectory(self, 'Choose a folder')
+        if target == '': return
+        target = unicode(target)
 
         for fileName in os.listdir(target):
             print(fileName)
