@@ -5,6 +5,10 @@ from editorui.editorcommon import *
 from editorui.editormain import *
 import os, copy
 import os.path
+import sys
+
+if sys.version_info[0] >= 3:
+    unicode = str
 
 
 class KPPathNodeList(QtWidgets.QWidget):
