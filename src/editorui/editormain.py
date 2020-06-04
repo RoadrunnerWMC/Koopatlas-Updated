@@ -239,12 +239,12 @@ class KPMapScene(QtWidgets.QGraphicsScene):
                 tileset = KP.tileset(layer.tileset)
                 tileList = tileset.tiles
 
-                for y in xrange(drawTop, drawBottom):
+                for y in range(drawTop, drawBottom):
                     srcX = baseSrcX
                     destX = baseDestX
                     row = rows[srcY]
 
-                    for x in xrange(drawLeft, drawRight):
+                    for x in range(drawLeft, drawRight):
                         tile = row[srcX]
                         if tile != -1:
                             painter.drawPixmap(destX, destY, tileList[tile])
@@ -283,12 +283,12 @@ class KPMapScene(QtWidgets.QGraphicsScene):
                         tileset = KP.tileset(pnLayer.tileset)
                         tileList = tileset.tiles
 
-                        for y in xrange(drawTop, drawBottom):
+                        for y in range(drawTop, drawBottom):
                             srcX = baseSrcX
                             destX = baseDestX
                             row = rows[srcY]
 
-                            for x in xrange(drawLeft, drawRight):
+                            for x in range(drawLeft, drawRight):
                                 tile = row[srcX]
                                 if tile != -1:
                                     painter.drawPixmap(destX, destY, tileList[tile])

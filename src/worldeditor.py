@@ -147,7 +147,7 @@ class KPWorldTableModel(QtCore.QAbstractTableModel):
         if not parent.isValid():
             if row >= 0 and (row + count) <= len(self.worlds):
                 self.beginRemoveRows(parent, row, row+count-1)
-                for i in xrange(count):
+                for i in range(count):
                     del self.worlds[row]
                 self.endRemoveRows()
 

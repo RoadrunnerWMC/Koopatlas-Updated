@@ -126,7 +126,7 @@ class KPTileLayer(KPLayer):
         size = (x2 - x1 + 1, y2 - y1 + 1)
         width, height = size
 
-        cache = [[-1 for i in xrange(width)] for j in xrange(height)]
+        cache = [[-1 for i in range(width)] for j in range(height)]
         self.cache = cache
 
         self.cacheBasePos = (x1, y1)
@@ -244,7 +244,7 @@ class KPPathTileLayer(KPLayer):
         size = (x2 - x1 + 1, y2 - y1 + 1)
         width, height = size
 
-        cache = [[-1 for i in xrange(width)] for j in xrange(height)]
+        cache = [[-1 for i in range(width)] for j in range(height)]
         self.cache = cache
 
         self.cacheBasePos = (x1, y1)

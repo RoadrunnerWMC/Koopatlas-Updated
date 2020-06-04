@@ -246,9 +246,9 @@ class KPEditorDoodad(KPEditorItem):
 
                 print('Adding.')
                 preset = []
-                for row in xrange(self.model.rowCount()):
+                for row in range(self.model.rowCount()):
                     listrow = []
-                    for column in xrange(6):
+                    for column in range(6):
                         item = self.model.item(row, column)
                         if (column == 0) or (column == 1) or (column == 2):
                             data = str(item.data(Qt.EditRole).toString())
@@ -314,10 +314,10 @@ class KPEditorDoodad(KPEditorItem):
             model = self.menuWidget.model
             rows = model.rowCount()
 
-            for x in xrange(rows):
+            for x in range(rows):
                 rowList = []
 
-                for item in xrange(6):
+                for item in range(6):
                     index = model.index(x, item)
                     data = model.data(index, Qt.EditRole).toString()
                     if data.toFloat()[1]:

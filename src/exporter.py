@@ -21,10 +21,10 @@ def RGBA8Encode(tex):
     sspack = shortstruct.pack_into
     offset = 0
 
-    for ytile in xrange(0, padH, 4):
-        for xtile in xrange(0, padW, 4):
-            for ypixel in xrange(ytile, ytile + 4):
-                for xpixel in xrange(xtile, xtile + 4):
+    for ytile in range(0, padH, 4):
+        for xtile in range(0, padW, 4):
+            for ypixel in range(ytile, ytile + 4):
+                for xpixel in range(xtile, xtile + 4):
 
                     if xpixel >= w or ypixel >= h:
                         sspack(destBuffer, offset, 0)
@@ -51,10 +51,10 @@ def RGB5A3Encode(tex):
     sspack = shortstruct.pack_into
     offset = 0
 
-    for ytile in xrange(0, padH, 4):
-        for xtile in xrange(0, padW, 4):
-            for ypixel in xrange(ytile, ytile + 4):
-                for xpixel in xrange(xtile, xtile + 4):
+    for ytile in range(0, padH, 4):
+        for xtile in range(0, padW, 4):
+            for ypixel in range(ytile, ytile + 4):
+                for xpixel in range(xtile, xtile + 4):
 
                     if xpixel >= w or ypixel >= h:
                         rgbDAT = 0x7FFF
@@ -108,14 +108,14 @@ class KPMapExporter:
             sectorBottom = (layerY + layerHeight - 1) / 16
 
             rawSectors = []
-            for i in xrange(sectorBottom - sectorTop + 1):
-                rawSectors.append([None for j in xrange(sectorRight - sectorLeft + 1)])
+            for i in range(sectorBottom - sectorTop + 1):
+                rawSectors.append([None for j in range(sectorRight - sectorLeft + 1)])
 
             tileset = KP.tileset(layer.tileset)
             optMappings = tileset.optMappings
 
             # copy every tile index over
-            for srcY in xrange(layerHeight):
+            for srcY in range(layerHeight):
                 srcRow = cache[srcY]
                 worldY = srcY + layerY
                 sectorY = worldY / 16
@@ -123,7 +123,7 @@ class KPMapExporter:
 
                 destRow = rawSectors[sectorY - sectorTop]
 
-                for srcX in xrange(layerWidth):
+                for srcX in range(layerWidth):
                     worldX = srcX + layerX
                     sectorX = worldX / 16
                     destX = worldX % 16
@@ -135,14 +135,14 @@ class KPMapExporter:
 
                     destSector = destRow[sectorX - sectorLeft]
                     if destSector is None:
-                        destSector = [[-1 for j in xrange(16)] for i in xrange(16)]
+                        destSector = [[-1 for j in range(16)] for i in range(16)]
                         destRow[sectorX - sectorLeft] = destSector
 
                     destSector[destY][destX] = tile
 
             # now add the created sectors to the data
             count = reduce(lambda x,y: x+len(y), rawSectors, 0)
-            sectorMap = [0xFFFF for i in xrange(count)]
+            sectorMap = [0xFFFF for i in range(count)]
             destIdx = 0
 
             for srcRow in rawSectors:

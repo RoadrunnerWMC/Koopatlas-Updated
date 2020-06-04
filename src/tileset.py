@@ -64,12 +64,12 @@ class KPTileObject(object):
         bC, iC, aC = len(beforeRepeat), len(inRepeat), len(afterRepeat)
 
         if iC == 0:
-            for y in xrange(size[1]):
+            for y in range(size[1]):
                 buf.append(self._renderRow(beforeRepeat[y % bC], size[0]))
         else:
             middleUntil = size[1] - aC
 
-            for y in xrange(size[1]):
+            for y in range(size[1]):
                 if y < bC:
                     buf.append(self._renderRow(beforeRepeat[y], size[0]))
                 elif y < middleUntil:
@@ -80,7 +80,7 @@ class KPTileObject(object):
         return buf
 
     def _renderRow(self, row, width):
-        buf = [-1 for i in xrange(width)]
+        buf = [-1 for i in range(width)]
 
         beforeRepeat = []
         inRepeat = row
@@ -95,12 +95,12 @@ class KPTileObject(object):
         bC, iC, aC = len(beforeRepeat), len(inRepeat), len(afterRepeat)
 
         if iC == 0:
-            for x in xrange(width):
+            for x in range(width):
                 buf[x] = beforeRepeat[x % bC]
         else:
             middleUntil = width - aC
 
-            for x in xrange(width):
+            for x in range(width):
                 if x < bC:
                     buf[x] = beforeRepeat[x]
                 elif x < middleUntil:
@@ -115,8 +115,8 @@ class KPTileObject(object):
         # Slopes are annoying
 
         buf = []
-        w = xrange(size[0])
-        h = xrange(size[1])
+        w = range(size[0])
+        h = range(size[1])
 
         # Koopuzzle really only does slopes that are two blocks tall.
         # Suck it, multi height slopes.
@@ -433,20 +433,20 @@ class KPTileset(object):
 
         # Some fairly ugly code, in an attempt to make it run faster
         dest_setPixel = dest.setPixel
-        _xrange = xrange
+        _range = range
 
         tex = bytearray(tex)
 
         i = 0
 
-        xtile_range = _xrange(0, 896, 4)
-        ytile_range = _xrange(0, 448, 4)
+        xtile_range = _range(0, 896, 4)
+        ytile_range = _range(0, 448, 4)
 
         for ytile in ytile_range:
-            ypixel_range = _xrange(ytile, ytile + 4)
+            ypixel_range = _range(ytile, ytile + 4)
 
             for xtile in xtile_range:
-                xpixel_range = _xrange(xtile, xtile + 4)
+                xpixel_range = _range(xtile, xtile + 4)
 
                 for ypixel in ypixel_range:
                     for xpixel in xpixel_range:
@@ -472,7 +472,7 @@ class KPTileset(object):
         # Load Objects
 
         meta = []
-        for i in xrange(len(metadata)/5):
+        for i in range(len(metadata)/5):
             meta.append(struct.unpack_from('>H3B', metadata, i * 5))
 
         tilelist = []
@@ -487,8 +487,8 @@ class KPTileset(object):
             painter = QtGui.QPainter(tex)
 
 
-            for tilesA in xrange(entry[2]):
-                for tilesB in xrange(entry[1]):
+            for tilesA in range(entry[2]):
+                for tilesB in range(entry[1]):
                     untile = struct.unpack_from('>h', objstrings, offset)[0]
 
                     if untile != -1:

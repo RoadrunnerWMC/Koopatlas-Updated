@@ -274,7 +274,7 @@ class KPPathNodeList(QtWidgets.QWidget):
 
     def getLayers(self):
         layerList = []
-        for itemI in xrange(self.tree.topLevelItemCount()):
+        for itemI in range(self.tree.topLevelItemCount()):
             item = self.tree.topLevelItem(itemI)
 
             if not isinstance(item, self.KPPathNodeItem):
@@ -286,7 +286,7 @@ class KPPathNodeList(QtWidgets.QWidget):
 
     def recursiveLayerRetriever(self, parent, layerList):
 
-        for itemI in xrange(parent.childCount()):
+        for itemI in range(parent.childCount()):
             item = parent.child(itemI)
 
             if not isinstance(item, self.KPPathNodeItem):
@@ -682,7 +682,7 @@ class KPObjectSelector(QtWidgets.QWidget):
         startRow = action.data().toPyObject()[0] + 1
         endRow = action.data().toPyObject()[1]
 
-        for row in xrange(self.model.rowCount()):
+        for row in range(self.model.rowCount()):
             if (row < startRow) or (row > endRow):
                 self.listView.setRowHidden(row, True)
             else:
@@ -983,9 +983,9 @@ class KPAnmOptions(QtWidgets.QWidget):
 
         print('Adding.')
         preset = []
-        for row in xrange(self.model.rowCount()):
+        for row in range(self.model.rowCount()):
             listrow = []
-            for column in xrange(8):
+            for column in range(8):
                 item = self.model.item(row, column)
                 if (column == 0) or (column == 1) or (column == 2):
                     data = str(item.data(Qt.EditRole).toString())
@@ -1023,10 +1023,10 @@ class KPAnmOptions(QtWidgets.QWidget):
         model = self.model
         rows = model.rowCount()
 
-        for x in xrange(rows):
+        for x in range(rows):
             rowList = []
 
-            for item in xrange(8):
+            for item in range(8):
                 index = model.index(x, item)
                 data = model.data(index, Qt.EditRole).toString()
                 if data.toFloat()[1]:
