@@ -106,7 +106,7 @@ def _parseUnlockBit(text):
 
         return _parseUnlockBit(subTerms[0][2])
     else:
-        return (whatCombiner, map(lambda x: _parseUnlockBit(x[2]), subTerms))
+        return (whatCombiner, list(map(lambda x: _parseUnlockBit(x[2]), subTerms)))
 
 
 def stringifyUnlockData(data):

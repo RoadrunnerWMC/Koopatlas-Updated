@@ -430,7 +430,7 @@ class KPNode(object):
             'transition', 'mapID', 'foreignID', 'worldDefID')
 
     def _dump(self, mapObj, dest):
-        dest['exitIDs'] = map(mapObj.refPath, self.exits)
+        dest['exitIDs'] = list(map(mapObj.refPath, self.exits))
 
     def _load(self, mapObj, src):
         self.exitIDs = src['exitIDs']
@@ -516,7 +516,7 @@ class KPPathLayer(KPLayer):
 
     def _load(self, mapObj, src):
         for node in self.nodes:
-            node.exits = map(mapObj.derefPath, node.exitIDs)
+            node.exits = list(map(mapObj.derefPath, node.exitIDs))
             del node.exitIDs
 
     def __repr__(self):

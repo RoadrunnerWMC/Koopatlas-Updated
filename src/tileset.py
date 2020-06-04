@@ -401,7 +401,7 @@ class KPTileset(object):
         self.groupItem.calculateIndices(0)
         self.groupModel = KPGroupModel(self.groupItem)
 
-        self.optMappings = map(int, optMapBuffer.split(','))
+        self.optMappings = list(map(int, optMapBuffer.split(',')))
 
 
     def processImage(self, imageBuffer):
