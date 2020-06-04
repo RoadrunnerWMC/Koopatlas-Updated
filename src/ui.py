@@ -94,7 +94,7 @@ class KPPathNodeList(QtWidgets.QWidget):
 
         def setData(self, column, role = Qt.EditRole, value = None):
             if role == Qt.CheckStateRole:
-                self.layer.visible = value.toBool()
+                self.layer.visible = value
 
         def layer(self):
             return self.layer
@@ -697,8 +697,8 @@ class KPObjectSelector(QtWidgets.QWidget):
         """Changes the top level group in the list view."""
 
         name = str(action.text()).strip()
-        startRow = action.data().toPyObject()[0] + 1
-        endRow = action.data().toPyObject()[1]
+        startRow = action.data()[0] + 1
+        endRow = action.data()[1]
 
         for row in range(self.model.rowCount()):
             if (row < startRow) or (row > endRow):
@@ -1018,8 +1018,8 @@ class KPAnmOptions(QtWidgets.QWidget):
 
         if settings.contains('AnimationPresets'):
 
-            presetList = mapfile.load(str(settings.value('AnimationPresets').toPyObject()))
-            presets = mapfile.load(str(settings.value('AnimationPresetData').toPyObject()))
+            presetList = mapfile.load(str(settings.value('AnimationPresets')))
+            presets = mapfile.load(str(settings.value('AnimationPresetData')))
 
         else:
 
@@ -1574,8 +1574,8 @@ class KPMainWindow(QtWidgets.QMainWindow):
             presets = []
 
             if settings.contains('AnimationPresets'):
-                presetList = mapfile.load(str(settings.value('AnimationPresets').toPyObject()))
-                presets = mapfile.load(str(settings.value('AnimationPresetData').toPyObject()))
+                presetList = mapfile.load(str(settings.value('AnimationPresets')))
+                presets = mapfile.load(str(settings.value('AnimationPresetData')))
 
             if presetList == None:
                 presetList = []
@@ -1596,8 +1596,8 @@ class KPMainWindow(QtWidgets.QMainWindow):
         msg.setText("No Animation Presets Found.")
 
         if settings.contains('AnimationPresets'):
-            presetList = mapfile.load(str(settings.value('AnimationPresets').toPyObject()))
-            presets = mapfile.load(str(settings.value('AnimationPresetData').toPyObject()))
+            presetList = mapfile.load(str(settings.value('AnimationPresets')))
+            presets = mapfile.load(str(settings.value('AnimationPresetData')))
         else:
             msg._exec()
             return

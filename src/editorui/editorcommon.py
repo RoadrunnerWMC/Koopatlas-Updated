@@ -16,7 +16,7 @@ class KPEditorItem(QtWidgets.QGraphicsItem):
         if change == self.ItemPositionChange and not self.ignoreMovement:
             currentX, currentY = self.x(), self.y()
 
-            newpos = value.toPyObject()
+            newpos = value
 
             x, y = newpos.x(), newpos.y()
 

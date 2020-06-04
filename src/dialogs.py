@@ -85,8 +85,8 @@ class KPAnimationPresetChooser(QtWidgets.QDialog):
         import mapfile
 
         if settings.contains('AnimationPresets'):
-            self.presetList = mapfile.load(str(settings.value('AnimationPresets').toPyObject()))
-            self.presets = mapfile.load(str(settings.value('AnimationPresetData').toPyObject()))
+            self.presetList = mapfile.load(str(settings.value('AnimationPresets')))
+            self.presets = mapfile.load(str(settings.value('AnimationPresetData')))
 
         else:
             self.presetList =  ["Circle", "Wiggle", "Drifting Cloud"]

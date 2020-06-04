@@ -39,7 +39,7 @@ class KPWorldTableModel(QtCore.QAbstractTableModel):
             if role == Qt.DisplayRole:
                 return str(self.worlds[section].uniqueKey)
 
-        return QtCore.QVariant()
+        return None
 
     def rowCount(self, parent):
         if parent.isValid():
@@ -78,7 +78,7 @@ class KPWorldTableModel(QtCore.QAbstractTableModel):
                 elif col == 7 or col == 8:
                     return QtGui.QColor(*entry.hudTextColours[col - 7])
 
-        return QtCore.QVariant()
+        return None
 
     def flags(self, index):
         return Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
@@ -92,18 +92,22 @@ class KPWorldTableModel(QtCore.QAbstractTableModel):
                 col = index.column()
 
                 if col == 0:
-                    entry.name = str(value.toString())
+                    entry.name = str(value)
                     success = True
                 elif col == 1:
-                    entry.worldID = str(value.toString())
+                    entry.worldID = str(value)
                     success = True
                 elif col == 2:
-                    v,ok = value.toInt()
+                    try:
+                        v = int(value)
+                        ok = True
+                    except ValueError:
+                        ok = False
                     if ok:
                         entry.musicTrackID = v
                         success = True
                 elif col >= 3 and col <= 8:
-                    newCol = colourFromNiceStr(str(value.toString()))
+                    newCol = colourFromNiceStr(str(value))
                     if newCol:
                         success = True
                         if col == 3:
@@ -119,14 +123,18 @@ class KPWorldTableModel(QtCore.QAbstractTableModel):
                         elif col == 8:
                             entry.hudTextColours = (entry.hudTextColours[0], newCol)
                 elif col >= 9 and col <= 11:
-                    v,ok = value.toInt()
+                    try:
+                        v = int(value)
+                        ok = True
+                    except ValueError:
+                        ok = False
                     if ok:
                         new = list(entry.hudHintTransform)
                         new[col - 9] = v
                         entry.hudHintTransform = new
                         success = True
                 elif col == 12:
-                    entry.titleScreenID = str(value.toString())
+                    entry.titleScreenID = str(value)
                     success = True
 
                 if success:

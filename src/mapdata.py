@@ -659,7 +659,7 @@ class KPMap(object):
             except IndexError:
                 pass
 
-            return QtCore.QVariant()
+            return None
 
         def flags(self, index):
             if not index.isValid():
@@ -673,14 +673,14 @@ class KPMap(object):
                 layer = self.list[index.row()]
 
                 if role == Qt.EditRole:
-                    value = str(value.toString())
+                    value = str(value)
                     if len(value) > 0:
                         layer.name = value
                         self.dataChanged.emit(index, index)
                         return True
 
                 elif role == Qt.CheckStateRole:
-                    layer.visible = value.toBool()
+                    layer.visible = value
                     self.dataChanged.emit(index, index)
                     return True
 
@@ -775,7 +775,7 @@ class KPMap(object):
             except IndexError:
                 pass
 
-            return QtCore.QVariant()
+            return None
 
         def flags(self, index):
             if not index.isValid():

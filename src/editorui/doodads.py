@@ -264,8 +264,8 @@ class KPEditorDoodad(KPEditorItem):
 
                 if settings.contains('AnimationPresets'):
 
-                    presetList = mapfile.load(str(settings.value('AnimationPresets').toPyObject()))
-                    presets = mapfile.load(str(settings.value('AnimationPresetData').toPyObject()))
+                    presetList = mapfile.load(str(settings.value('AnimationPresets')))
+                    presets = mapfile.load(str(settings.value('AnimationPresetData')))
 
                 else:
 
