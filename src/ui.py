@@ -676,8 +676,11 @@ class KPObjectSelector(QtWidgets.QWidget):
         menuList = model.groupItem().getGroupList()
 
         self.beginUsingMenu()
-        string = QtCore.QString(QtCore.QChar(0x25BE))
-        string.append(' All Groups')
+        if QtCompatVersion < 0x50000:
+            string = QtCore.QString(QtCore.QChar(0x25BE))
+            string.append(' All Groups')
+        else:
+            string = '\u25BE All Groups'
 
         self.sorterButton.setText(string)
         self.sorterMenu.clear()
@@ -706,8 +709,11 @@ class KPObjectSelector(QtWidgets.QWidget):
             else:
                 self.listView.setRowHidden(row, False)
 
-        string = QtCore.QString(QtCore.QChar(0x25BE))
-        string.append(' ' + name)
+        if QtCompatVersion < 0x50000:
+            string = QtCore.QString(QtCore.QChar(0x25BE))
+            string.append(' ' + name)
+        else:
+            string = '\u25BE ' + name
 
         self.sorterButton.setText(string)
 
