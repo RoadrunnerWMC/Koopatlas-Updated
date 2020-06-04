@@ -1,7 +1,10 @@
 from common import *
 from wii.u8archive import WiiArchiveU8
 import struct
-import cPickle
+if sys.version_info[0] >= 3:
+    import pickle
+else:
+    import pickle as pickle
 
 
 
@@ -509,7 +512,7 @@ class KPTileset(object):
 
     def processGroup(self, groupBuffer):
 
-        grovyle = cPickle.loads(groupBuffer)
+        grovyle = pickle.loads(groupBuffer)
         self.makeTree(grovyle, self.groupItem)
 
 

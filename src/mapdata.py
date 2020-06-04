@@ -35,8 +35,8 @@ class KPLayer(object):
     def setActivated(self, value, listToUse=None):
         # return
 
-        flag1 = QtGui.QGraphicsItem.ItemIsSelectable
-        flag2 = QtGui.QGraphicsItem.ItemIsMovable
+        flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
 
         if listToUse is None:
             listToUse = self.objects
@@ -200,8 +200,8 @@ class KPPathTileLayer(KPLayer):
     def setActivated(self, value, listToUse=None):
         # return
 
-        flag1 = QtGui.QGraphicsItem.ItemIsSelectable
-        flag2 = QtGui.QGraphicsItem.ItemIsMovable
+        flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
 
         if listToUse is None:
             listToUse = self.objects + self.doodads
@@ -540,7 +540,7 @@ class KPPathLayer(KPLayer):
         # return
         KPLayer.setActivated(self, value, self.nodes)
 
-        flag = QtGui.QGraphicsItem.ItemIsSelectable
+        flag = QtWidgets.QGraphicsItem.ItemIsSelectable
         for path in self.paths:
             item = path.qtItem
             if item:

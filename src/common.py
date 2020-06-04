@@ -2,8 +2,13 @@ import sys
 import os
 import os.path
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import Qt
+try:
+    from PyQt5 import QtCore, QtGui, QtWidgets
+    QtCore.QString = str
+except ImportError:
+    from PyQt4 import QtCore, QtGui
+    QtWidgets = QtGui
+Qt = QtCore.Qt
 
 from main import KP
 

@@ -1,15 +1,15 @@
 from common import *
 
 
-class KPTilesetChooserDialog(QtGui.QDialog):
+class KPTilesetChooserDialog(QtWidgets.QDialog):
     def __init__(self, label='Choose a tileset', specials=None):
-        QtGui.QDialog.__init__(self)
+        QtWidgets.QDialog.__init__(self)
 
-        self.label = QtGui.QLabel(label)
+        self.label = QtWidgets.QLabel(label)
         self.label.setWordWrap(True)
 
         # can't be assed to create a model
-        self.chooser = QtGui.QListWidget()
+        self.chooser = QtWidgets.QListWidget()
 
         self.nameList = KP.knownTilesets.keys()
         self.nameList.sort()
@@ -23,17 +23,17 @@ class KPTilesetChooserDialog(QtGui.QDialog):
         self.chooser.currentRowChanged.connect(self.handleCurrentRowChanged)
         self.chooser.itemActivated.connect(self.handleItemActivated)
 
-        self.buttons = QtGui.QDialogButtonBox(
-                QtGui.QDialogButtonBox.Ok |
-                QtGui.QDialogButtonBox.Cancel)
+        self.buttons = QtWidgets.QDialogButtonBox(
+                QtWidgets.QDialogButtonBox.Ok |
+                QtWidgets.QDialogButtonBox.Cancel)
 
-        self.okButton = self.buttons.button(QtGui.QDialogButtonBox.Ok)
+        self.okButton = self.buttons.button(QtWidgets.QDialogButtonBox.Ok)
         self.okButton.setEnabled(False)
 
         self.buttons.accepted.connect(self.accept)
         self.buttons.rejected.connect(self.reject)
 
-        self.layout = QtGui.QVBoxLayout()
+        self.layout = QtWidgets.QVBoxLayout()
         self.layout.addWidget(self.label)
         self.layout.addWidget(self.chooser)
         self.layout.addWidget(self.buttons)
@@ -63,7 +63,7 @@ class KPTilesetChooserDialog(QtGui.QDialog):
         dialog = cls(*args)
         result = dialog.exec_()
 
-        if result == QtGui.QDialog.Accepted:
+        if result == QtWidgets.QDialog.Accepted:
             return dialog.getChoice()
         else:
             return None
@@ -71,15 +71,15 @@ class KPTilesetChooserDialog(QtGui.QDialog):
 
 
 
-class KPAnimationPresetChooser(QtGui.QDialog):
+class KPAnimationPresetChooser(QtWidgets.QDialog):
     def __init__(self, label='Choose a preset to add:', specials=None):
-        QtGui.QDialog.__init__(self)
+        QtWidgets.QDialog.__init__(self)
 
-        self.label = QtGui.QLabel(label)
+        self.label = QtWidgets.QLabel(label)
         self.label.setWordWrap(True)
 
         # can't be assed to create a model
-        self.chooser = QtGui.QListWidget()
+        self.chooser = QtWidgets.QListWidget()
 
         settings = KP.app.settings
         import mapfile
@@ -110,17 +110,17 @@ class KPAnimationPresetChooser(QtGui.QDialog):
         self.chooser.currentRowChanged.connect(self.handleCurrentRowChanged)
         self.chooser.itemActivated.connect(self.handleItemActivated)
 
-        self.buttons = QtGui.QDialogButtonBox(
-                QtGui.QDialogButtonBox.Ok |
-                QtGui.QDialogButtonBox.Cancel)
+        self.buttons = QtWidgets.QDialogButtonBox(
+                QtWidgets.QDialogButtonBox.Ok |
+                QtWidgets.QDialogButtonBox.Cancel)
 
-        self.okButton = self.buttons.button(QtGui.QDialogButtonBox.Ok)
+        self.okButton = self.buttons.button(QtWidgets.QDialogButtonBox.Ok)
         self.okButton.setEnabled(False)
 
         self.buttons.accepted.connect(self.accept)
         self.buttons.rejected.connect(self.reject)
 
-        self.layout = QtGui.QVBoxLayout()
+        self.layout = QtWidgets.QVBoxLayout()
         self.layout.addWidget(self.label)
         self.layout.addWidget(self.chooser)
         self.layout.addWidget(self.buttons)
@@ -147,7 +147,7 @@ class KPAnimationPresetChooser(QtGui.QDialog):
         dialog = cls(*args)
         result = dialog.exec_()
 
-        if result == QtGui.QDialog.Accepted:
+        if result == QtWidgets.QDialog.Accepted:
             return dialog.getChoice()
         else:
             return None
@@ -158,7 +158,7 @@ class KPAnimationPresetChooser(QtGui.QDialog):
 
 def getTextDialog(title, label, existingText=''):
 
-    text, ok = QtGui.QInputDialog.getText(KP.mainWindow, title, label, QtGui.QLineEdit.Normal, existingText)
+    text, ok = QtWidgets.QInputDialog.getText(KP.mainWindow, title, label, QtWidgets.QLineEdit.Normal, existingText)
 
     print text
     if ok and text != '':

@@ -1,5 +1,5 @@
 from common import *
-from editorcommon import *
+from .editorcommon import *
 import weakref
 from math import floor, ceil
 import math
@@ -9,13 +9,13 @@ class KPEditorDoodad(KPEditorItem):
     SNAP_TO = (12,12)
 
 
-    class DoodadAnmButton(QtGui.QPushButton):
+    class DoodadAnmButton(QtWidgets.QPushButton):
 
 
-        class AnmOptionsWidget(QtGui.QWidget):
+        class AnmOptionsWidget(QtWidgets.QWidget):
 
 
-            class AnmDelegate(QtGui.QStyledItemDelegate):
+            class AnmDelegate(QtWidgets.QStyledItemDelegate):
 
                 def createEditor(self, parent, option, index):
 
@@ -27,70 +27,70 @@ class KPEditorDoodad(KPEditorItem):
                     thong = index.data(Qt.EditRole).toFloat()[0]
 
                     if thing in loop:
-                        editWidget = QtGui.QComboBox(parent)
+                        editWidget = QtWidgets.QComboBox(parent)
                         editWidget.addItems(loop)
 
                         return editWidget
 
                     elif thing in interp:
-                        editWidget = QtGui.QComboBox(parent)
+                        editWidget = QtWidgets.QComboBox(parent)
                         editWidget.addItems(interp)
 
                         return editWidget
 
                     elif thing in anmType:
-                        editWidget = QtGui.QComboBox(parent)
+                        editWidget = QtWidgets.QComboBox(parent)
                         editWidget.addItems(anmType)
 
                         return editWidget
 
                     elif isinstance(thong, float):
-                        editWidget = QtGui.QDoubleSpinBox(parent)
+                        editWidget = QtWidgets.QDoubleSpinBox(parent)
                         editWidget.setSingleStep(0.05)
                         editWidget.setDecimals(2)
                         editWidget.setRange(-99999.0, 99999.0)
                         return editWidget
 
                     else:
-                        print "Thing was something else!"
-                        print thong
-                        print type(thong)
+                        print("Thing was something else!")
+                        print(thong)
+                        print(type(thong))
 
 
                 def setEditorData(self, editor, index):
 
 
-                    if isinstance(editor, QtGui.QDoubleSpinBox):
+                    if isinstance(editor, QtWidgets.QDoubleSpinBox):
                         thing = index.data(Qt.EditRole).toFloat()[0]
 
                         editor.setValue(thing)
 
-                    elif isinstance(editor, QtGui.QComboBox):
+                    elif isinstance(editor, QtWidgets.QComboBox):
                         thing = index.data(Qt.DisplayRole).toString()
 
                         editor.setCurrentIndex(editor.findText(thing))
 
                     else:
-                        print "editor is something else!"
-                        print editor
+                        print("editor is something else!")
+                        print(editor)
 
 
                 def setModelData(self, editor, model, index):
 
-                    if isinstance(editor, QtGui.QDoubleSpinBox):
+                    if isinstance(editor, QtWidgets.QDoubleSpinBox):
                         editor.interpretText()
                         value = editor.value()
 
                         model.setData(index, value, QtCore.Qt.EditRole)
 
-                    elif isinstance(editor, QtGui.QComboBox):
+                    elif isinstance(editor, QtWidgets.QComboBox):
                         value = editor.currentText()
 
                         model.setData(index, value, QtCore.Qt.EditRole)
 
                     else:
-                        print "editor is something else!"
-                        print editor
+                        print("editor is something else!")
+                        print(editor)
 
 
                 def updateEditorGeometry(self, editor, option, index):
@@ -98,18 +98,18 @@ class KPEditorDoodad(KPEditorItem):
 
 
             def __init__(self, doodadRef, parent):
-                QtGui.QWidget.__init__(self)
+                QtWidgets.QWidget.__init__(self)
 
                 self._doodadRef = doodadRef
                 self.parent = parent
 
                 # Setup Layout
-                BottomLayout = QtGui.QGridLayout()
+                BottomLayout = QtWidgets.QGridLayout()
 
 
                 # Time for the Table View, model and Delegate
                 self.model = QtGui.QStandardItemModel(0, 6)
-                self.anmTable = QtGui.QTableView()
+                self.anmTable = QtWidgets.QTableView()
                 self.anmTable.setModel(self.model)
 
                 delegate = self.AnmDelegate()
@@ -130,16 +130,16 @@ class KPEditorDoodad(KPEditorItem):
 
 
                 # Add/Remove Animation Buttons
-                addbutton = QtGui.QPushButton(QtGui.QIcon("Resources/Plus.png"), "")
-                rembutton = QtGui.QPushButton(QtGui.QIcon("Resources/Minus.png"), "")
-                presetbutton = QtGui.QPushButton(QtGui.QIcon("Resources/AddPreset.png"), "Add Preset")
-                newpbutton = QtGui.QPushButton(QtGui.QIcon("Resources/NewPreset.png"), "New Preset")
-                # savebutton = QtGui.QPushButton(QtGui.QIcon("Resources/SavePreset.png"), "Save")
-                # loadbutton = QtGui.QPushButton(QtGui.QIcon("Resources/LoadPreset.png"), "Load")
-                # clearbutton = QtGui.QPushButton(QtGui.QIcon("Resources/ClearPreset.png"), "Clear")
+                addbutton = QtWidgets.QPushButton(QtGui.QIcon("Resources/Plus.png"), "")
+                rembutton = QtWidgets.QPushButton(QtGui.QIcon("Resources/Minus.png"), "")
+                presetbutton = QtWidgets.QPushButton(QtGui.QIcon("Resources/AddPreset.png"), "Add Preset")
+                newpbutton = QtWidgets.QPushButton(QtGui.QIcon("Resources/NewPreset.png"), "New Preset")
+                # savebutton = QtWidgets.QPushButton(QtGui.QIcon("Resources/SavePreset.png"), "Save")
+                # loadbutton = QtWidgets.QPushButton(QtGui.QIcon("Resources/LoadPreset.png"), "Load")
+                # clearbutton = QtWidgets.QPushButton(QtGui.QIcon("Resources/ClearPreset.png"), "Clear")
                 BottomLayout.addWidget(addbutton, 1, 0, 1, 1)
                 BottomLayout.addWidget(rembutton, 1, 1, 1, 1)
-                BottomLayout.addWidget(QtGui.QLabel(""), 1, 2, 1, 2)
+                BottomLayout.addWidget(QtWidgets.QLabel(""), 1, 2, 1, 2)
                 BottomLayout.addWidget(presetbutton, 1, 4, 1, 1)
                 BottomLayout.addWidget(newpbutton, 1, 5, 1, 1)
                 # BottomLayout.addWidget(savebutton, 1, 6, 1, 1)
@@ -205,7 +205,7 @@ class KPEditorDoodad(KPEditorItem):
                 if self.model.rowCount() == 0:
                     return
 
-                rowNum, ok = QtGui.QInputDialog.getInteger(self,
+                rowNum, ok = QtWidgets.QInputDialog.getInteger(self,
                         "Select A Row", "Delete This Row:", 0, 0, self.model.rowCount(), 1)
                 if ok:
                     self.model.removeRows(rowNum, 1)
@@ -241,10 +241,10 @@ class KPEditorDoodad(KPEditorItem):
 
                 name = getTextDialog('Choose Preset Name', 'Preset name:')
                 if name == None:
-                    print 'Returning'
+                    print('Returning')
                     return
 
-                print 'Adding.'
+                print('Adding.')
                 preset = []
                 for row in xrange(self.model.rowCount()):
                     listrow = []
@@ -280,14 +280,14 @@ class KPEditorDoodad(KPEditorItem):
 
 
         def __init__(self, doodadRef):
-            QtGui.QPushButton.__init__(self)
+            QtWidgets.QPushButton.__init__(self)
 
             self._doodadRef = doodadRef
             self.setText("Animate")
 
-            self.menu = QtGui.QMenu(self)
+            self.menu = QtWidgets.QMenu(self)
             self.menuWidget = self.AnmOptionsWidget(doodadRef, self)
-            self.menuWidgetAction = QtGui.QWidgetAction(self)
+            self.menuWidgetAction = QtWidgets.QWidgetAction(self)
             self.menuWidgetAction.setDefaultWidget(self.menuWidget)
             self.menu.addAction(self.menuWidgetAction)
 
@@ -335,9 +335,9 @@ class KPEditorDoodad(KPEditorItem):
             self.update()
 
 
-    class HiddenProxy(QtGui.QGraphicsProxyWidget):
+    class HiddenProxy(QtWidgets.QGraphicsProxyWidget):
         def __init__(self, button, parent, x, y):
-            QtGui.QGraphicsProxyWidget.__init__(self, parent)
+            QtWidgets.QGraphicsProxyWidget.__init__(self, parent)
 
             self.setWidget(button)
             self.setPos(x, y)

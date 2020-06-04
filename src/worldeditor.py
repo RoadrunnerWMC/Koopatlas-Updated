@@ -153,17 +153,17 @@ class KPWorldTableModel(QtCore.QAbstractTableModel):
 
 
 
-class KPWorldEditor(QtGui.QWidget):
+class KPWorldEditor(QtWidgets.QWidget):
     def __init__(self, kpmap, parent=None):
-        QtGui.QWidget.__init__(self, parent, Qt.Window)
+        QtWidgets.QWidget.__init__(self, parent, Qt.Window)
         self.setWindowTitle('World Editor')
 
-        self.dataView = QtGui.QTableView(self)
+        self.dataView = QtWidgets.QTableView(self)
 
-        self.addButton = QtGui.QPushButton('Add', self)
-        self.removeButton = QtGui.QPushButton('Remove', self)
+        self.addButton = QtWidgets.QPushButton('Add', self)
+        self.removeButton = QtWidgets.QPushButton('Remove', self)
 
-        layout = QtGui.QGridLayout(self)
+        layout = QtWidgets.QGridLayout(self)
         layout.addWidget(self.dataView, 0, 0, 1, 2)
         layout.addWidget(self.addButton, 1, 0, 1, 1)
         layout.addWidget(self.removeButton, 1, 1, 1, 1)

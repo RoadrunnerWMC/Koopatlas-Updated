@@ -1,17 +1,17 @@
 from common import *
-from editorcommon import *
+from .editorcommon import *
 import weakref
 
 class KPEditorNode(KPEditorItem):
     SNAP_TO = (12,12)
 
 
-    class ToggleButton(QtGui.QPushButton):
+    class ToggleButton(QtWidgets.QPushButton):
         stateToggled = QtCore.pyqtSignal(int)
 
 
         def __init__(self):
-            QtGui.QPushButton.__init__(self)
+            QtWidgets.QPushButton.__init__(self)
 
             self.setIconSize(QtCore.QSize(24, 24))
             self.setFixedSize(24, 24)
@@ -47,9 +47,9 @@ class KPEditorNode(KPEditorItem):
             painter.end()
 
 
-    class HiddenProxy(QtGui.QGraphicsProxyWidget):
+    class HiddenProxy(QtWidgets.QGraphicsProxyWidget):
         def __init__(self, button, parent, x, y):
-            QtGui.QGraphicsProxyWidget.__init__(self, parent)
+            QtWidgets.QGraphicsProxyWidget.__init__(self, parent)
 
             self.setWidget(button)
             self.setPos(x, y)
@@ -57,9 +57,9 @@ class KPEditorNode(KPEditorItem):
             self.hide()
 
 
-    class LevelSlotSpinner(QtGui.QSpinBox):
+    class LevelSlotSpinner(QtWidgets.QSpinBox):
         def __init__(self):
-            QtGui.QSpinBox.__init__(self)
+            QtWidgets.QSpinBox.__init__(self)
 
             self.setRange(1, 99)
 
@@ -70,9 +70,9 @@ class KPEditorNode(KPEditorItem):
             self.setPalette(palette)
 
 
-    class TransitionBox(QtGui.QComboBox):
+    class TransitionBox(QtWidgets.QComboBox):
         def __init__(self):
-            QtGui.QComboBox.__init__(self)
+            QtWidgets.QComboBox.__init__(self)
 
             self.addItems(['Fade Out', 'Circle Wipe', 'Bowser Wipe', 'Goo Wipe Down',
                            'Mario Wipe', 'Circle Wipe Slow', 'Glitchgasm'])
@@ -84,9 +84,9 @@ class KPEditorNode(KPEditorItem):
             self.setPalette(palette)
 
 
-    class SecretBox(QtGui.QCheckBox):
+    class SecretBox(QtWidgets.QCheckBox):
         def __init__(self):
-            QtGui.QCheckBox.__init__(self)
+            QtWidgets.QCheckBox.__init__(self)
 
             palette = self.palette()
             palette.setColor(QtGui.QPalette.ButtonText, Qt.black)
@@ -95,9 +95,9 @@ class KPEditorNode(KPEditorItem):
             self.setPalette(palette)
 
 
-    class mapArcEdit(QtGui.QLineEdit):
+    class mapArcEdit(QtWidgets.QLineEdit):
         def __init__(self):
-            QtGui.QLineEdit.__init__(self)
+            QtWidgets.QLineEdit.__init__(self)
 
             self.setText('None.arc')
 
@@ -470,20 +470,20 @@ class KPEditorNode(KPEditorItem):
             self.scene().removeItem(self)
 
 
-class KPEditorPath(QtGui.QGraphicsLineItem):
+class KPEditorPath(QtWidgets.QGraphicsLineItem):
 
 
-    class PathOptionsMenuButton(QtGui.QPushButton):
+    class PathOptionsMenuButton(QtWidgets.QPushButton):
 
 
-        class PathOptionsWidget(QtGui.QWidget):
+        class PathOptionsWidget(QtWidgets.QWidget):
             def __init__(self, pathRef):
-                QtGui.QWidget.__init__(self)
+                QtWidgets.QWidget.__init__(self)
 
                 self._pathRef = pathRef
 
-                TopLayout = QtGui.QGridLayout()
-                Layout = QtGui.QGridLayout()
+                TopLayout = QtWidgets.QGridLayout()
+                Layout = QtWidgets.QGridLayout()
 
                 # Make an exclusive button group for our animations.
                 AnimationList = ["Walk", "WalkSand", "WalkSnow", "WalkWater",
@@ -492,16 +492,16 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
                                  "Swim", "Run", "Pipe", "Door",
                                  'TJumped', 'Enter Cave Up', 'Reserved 18', 'Invisible']
 
-                self.ExclusiveButtons = QtGui.QButtonGroup()
+                self.ExclusiveButtons = QtWidgets.QButtonGroup()
 
                 i = 0
                 j = 1
                 id = 0
                 for anim in AnimationList:
                     if id < 16:
-                        newButton = QtGui.QPushButton(QtGui.QIcon("Resources/Anm/" + anim), "")
+                        newButton = QtWidgets.QPushButton(QtGui.QIcon("Resources/Anm/" + anim), "")
                     else:
-                        newButton = QtGui.QPushButton(anim)
+                        newButton = QtWidgets.QPushButton(anim)
                     newButton.setCheckable(True)
                     newButton.setIconSize(QtCore.QSize(38, 38))
                     newButton.setToolTip(anim)
@@ -521,7 +521,7 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
 
 
                 # Movement Speed Spin Box
-                self.moveSpeedSpinner = QtGui.QDoubleSpinBox()
+                self.moveSpeedSpinner = QtWidgets.QDoubleSpinBox()
                 self.moveSpeedSpinner.setMinimum(0.0)
                 self.moveSpeedSpinner.setMaximum(256.0)
                 self.moveSpeedSpinner.setDecimals(2)
@@ -532,7 +532,7 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
 
 
                 # Layer Combo Box
-                # self.linkedLayer = QtGui.QComboBox(self)
+                # self.linkedLayer = QtWidgets.QComboBox(self)
                 # self.linkedLayer.setModel(KP.map.layerModel)
 
                 # TopLayout.addWidget(self.linkedLayer, 1, 1, 1, 3)
@@ -551,8 +551,8 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
                 # self.linkedLayer.currentIndexChanged.connect(self.updateLinkLayer)
 
                 # Layout
-                TopLayout.addWidget(QtGui.QLabel("Speed:"), 0, 0)
-                TopLayout.addWidget(QtGui.QLabel("Layer Shown on Unlock:"), 0, 1, 1, 3)
+                TopLayout.addWidget(QtWidgets.QLabel("Speed:"), 0, 0)
+                TopLayout.addWidget(QtWidgets.QLabel("Layer Shown on Unlock:"), 0, 1, 1, 3)
                 Layout.addLayout(TopLayout, 0, 0, 1, 4)
                 self.setLayout(Layout)
 
@@ -581,12 +581,12 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
 
 
         def __init__(self, pathRef):
-            QtGui.QPushButton.__init__(self)
+            QtWidgets.QPushButton.__init__(self)
 
             self.setText("Options")
 
-            self.menu = QtGui.QMenu(self)
-            layout = QtGui.QVBoxLayout()
+            self.menu = QtWidgets.QMenu(self)
+            layout = QtWidgets.QVBoxLayout()
             self.bgroupWidget = self.PathOptionsWidget(pathRef)
             layout.addWidget(self.bgroupWidget)
 
@@ -596,7 +596,7 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
             menuPalette.setColor(QtGui.QPalette.Window, Qt.black)
             self.menu.setPalette(menuPalette)
 
-            # dropShadow = QtGui.QGraphicsDropShadowEffect()
+            # dropShadow = QtWidgets.QGraphicsDropShadowEffect()
             # self.menu.setGraphicsEffect(dropShadow)
             self.setMenu(self.menu)
 
@@ -607,9 +607,9 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
             self.setPalette(palette)
 
 
-    class HiddenProxy(QtGui.QGraphicsProxyWidget):
+    class HiddenProxy(QtWidgets.QGraphicsProxyWidget):
         def __init__(self, button, parent, x, y):
-            QtGui.QGraphicsProxyWidget.__init__(self, parent)
+            QtWidgets.QGraphicsProxyWidget.__init__(self, parent)
 
             self.setWidget(button)
             self.setPos(x, y)
@@ -618,7 +618,7 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
 
 
     def __init__(self, path):
-        QtGui.QGraphicsLineItem.__init__(self)
+        QtWidgets.QGraphicsLineItem.__init__(self)
 
         self.setFlag(self.ItemIsSelectable, True)
 
@@ -656,7 +656,7 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
     def mousePressEvent(self, event):
         if event.button() != Qt.LeftButton:
             return
-        if QtGui.QApplication.keyboardModifiers() != QtCore.Qt.ControlModifier:
+        if QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.ControlModifier:
             return
 
         # modify the unlock settings
@@ -668,8 +668,8 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
             dlg.setSpec(self._pathRef().unlockSpec)
 
         result = dlg.exec_()
-        if result == QtGui.QDialog.Accepted:
-            print "New spec:", dlg.spec
+        if result == QtWidgets.QDialog.Accepted:
+            print("New spec:", dlg.spec)
             self._pathRef().unlockSpec = dlg.spec
 
 

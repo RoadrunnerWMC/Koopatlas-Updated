@@ -1,8 +1,8 @@
 from common import *
 
-class KPEditorItem(QtGui.QGraphicsItem):
+class KPEditorItem(QtWidgets.QGraphicsItem):
     def __init__(self):
-        QtGui.QGraphicsItem.__init__(self)
+        QtWidgets.QGraphicsItem.__init__(self)
         self.setFlags(
                 self.ItemSendsGeometryChanges |
                 self.ItemIsSelectable |
@@ -40,7 +40,7 @@ class KPEditorItem(QtGui.QGraphicsItem):
             newpos.setY(y)
             return newpos
 
-        return QtGui.QGraphicsItem.itemChange(self, change, value)
+        return QtWidgets.QGraphicsItem.itemChange(self, change, value)
 
     def boundingRect(self):
         return self._boundingRect

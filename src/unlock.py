@@ -186,9 +186,9 @@ from common import *
 
 
 
-class KPUnlockSpecDialog(QtGui.QDialog):
+class KPUnlockSpecDialog(QtWidgets.QDialog):
     def __init__(self, forWhat, unlockAdjective):
-        QtGui.QDialog.__init__(self)
+        QtWidgets.QDialog.__init__(self)
 
         self.setWindowTitle('Set Unlock Criteria')
 
@@ -207,22 +207,22 @@ class KPUnlockSpecDialog(QtGui.QDialog):
             To leave this {0} permanently unlocked, leave the box blank.
             """.format(forWhat, unlockAdjective)
 
-        self.label = QtGui.QLabel(text)
+        self.label = QtWidgets.QLabel(text)
         self.label.setWordWrap(True)
 
-        self.textBox = QtGui.QLineEdit()
+        self.textBox = QtWidgets.QLineEdit()
         self.textBox.textChanged.connect(self.checkInputValidity)
 
-        self.statusLabel = QtGui.QLabel()
+        self.statusLabel = QtWidgets.QLabel()
         self.statusLabel.setWordWrap(True)
 
-        self.buttons = QtGui.QDialogButtonBox(
-                QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel)
+        self.buttons = QtWidgets.QDialogButtonBox(
+                QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
 
         self.buttons.accepted.connect(self.accept)
         self.buttons.rejected.connect(self.reject)
 
-        self.layout = QtGui.QVBoxLayout()
+        self.layout = QtWidgets.QVBoxLayout()
         self.layout.addWidget(self.label)
         self.layout.addWidget(self.textBox)
         self.layout.addWidget(self.statusLabel)
@@ -243,7 +243,7 @@ class KPUnlockSpecDialog(QtGui.QDialog):
             error = str(e)
             self.spec = None
 
-        self.buttons.button(QtGui.QDialogButtonBox.Ok).setEnabled(valid)
+        self.buttons.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(valid)
 
         if valid:
             self.statusLabel.setText('Your input is valid.')

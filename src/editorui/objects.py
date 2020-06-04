@@ -1,5 +1,5 @@
 from common import *
-from editorcommon import *
+from .editorcommon import *
 import weakref
 
 class KPEditorObject(KPEditorItem):

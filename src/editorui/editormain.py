@@ -1,13 +1,13 @@
 from common import *
 from math import floor, ceil
 
-from objects import *
-from doodads import *
-from paths import *
+from .objects import *
+from .doodads import *
+from .paths import *
 
-class KPMapScene(QtGui.QGraphicsScene):
+class KPMapScene(QtWidgets.QGraphicsScene):
     def __init__(self):
-        QtGui.QGraphicsScene.__init__(self, 0, 0, 512*24, 512*24)
+        QtWidgets.QGraphicsScene.__init__(self, 0, 0, 512*24, 512*24)
 
         # todo: handle selectionChanged
         # todo: look up why I used setItemIndexMethod(self.NoIndex) in Reggie
@@ -374,9 +374,9 @@ class KPMapScene(QtGui.QGraphicsScene):
         self.currentLayer.setActivated(True)
 
 
-class KPEditorWidget(QtGui.QGraphicsView):
+class KPEditorWidget(QtWidgets.QGraphicsView):
     def __init__(self, scene, parent=None):
-        QtGui.QGraphicsView.__init__(self, scene, parent)
+        QtWidgets.QGraphicsView.__init__(self, scene, parent)
 
         self.setRenderHints(QtGui.QPainter.Antialiasing)
         self.setViewportUpdateMode(self.FullViewportUpdate)
@@ -385,17 +385,17 @@ class KPEditorWidget(QtGui.QGraphicsView):
         self.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         self.setDragMode(self.RubberBandDrag)
 
-        self.xScrollBar = QtGui.QScrollBar(Qt.Horizontal, parent)
+        self.xScrollBar = QtWidgets.QScrollBar(Qt.Horizontal, parent)
         self.setHorizontalScrollBar(self.xScrollBar)
 
-        self.yScrollBar = QtGui.QScrollBar(Qt.Vertical, parent)
+        self.yScrollBar = QtWidgets.QScrollBar(Qt.Vertical, parent)
         self.setVerticalScrollBar(self.yScrollBar)
 
         self.assignNewScene(scene)
 
     def drawForeground(self, painter, rect):
 
-        QtGui.QGraphicsView.drawForeground(self, painter, rect)
+        QtWidgets.QGraphicsView.drawForeground(self, painter, rect)
 
         if self.grid:
             painter.setPen(Qt.red)
@@ -748,7 +748,7 @@ class KPEditorWidget(QtGui.QGraphicsView):
 
         elif event.modifiers() & Qt.ControlModifier:
             if isinstance(self.scene().currentLayer, KPPathLayer):
-                QtGui.QGraphicsView.mousePressEvent(self, event)
+                QtWidgets.QGraphicsView.mousePressEvent(self, event)
                 return
 
             itemsUnder = self.scene().items(self.mapToScene(event.pos()), Qt.IntersectsItemShape, Qt.AscendingOrder)
@@ -759,7 +759,7 @@ class KPEditorWidget(QtGui.QGraphicsView):
 
                 kLayer = itemsUnder[0]._layerRef()
                 if isinstance(kLayer, (KPPathTileLayer, KPPathLayer)):
-                    QtGui.QGraphicsView.mousePressEvent(self, event)
+                    QtWidgets.QGraphicsView.mousePressEvent(self, event)
                     return
 
                 KP.mainWindow.handleSelectedLayerChanged(kLayer)
@@ -769,7 +769,7 @@ class KPEditorWidget(QtGui.QGraphicsView):
                 itemsUnder[0].setSelected(True)
 
         else:
-            QtGui.QGraphicsView.mousePressEvent(self, event)
+            QtWidgets.QGraphicsView.mousePressEvent(self, event)
 
 
     def mouseMoveEvent(self, event):
@@ -778,11 +778,11 @@ class KPEditorWidget(QtGui.QGraphicsView):
             event.accept()
 
         else:
-            QtGui.QGraphicsView.mouseMoveEvent(self, event)
+            QtWidgets.QGraphicsView.mouseMoveEvent(self, event)
 
 
     def mouseReleaseEvent(self, event):
-        QtGui.QGraphicsView.mouseReleaseEvent(self, event)
+        QtWidgets.QGraphicsView.mouseReleaseEvent(self, event)
     #   try:
     #       self.scene().mouseGrabberItem().ungrabMouse()
     #   except:
@@ -805,7 +805,7 @@ class KPEditorWidget(QtGui.QGraphicsView):
                 return
 
         else:
-            QtGui.QGraphicsView.keyPressEvent(self, event)
+            QtWidgets.QGraphicsView.keyPressEvent(self, event)
 
     userClick = QtCore.pyqtSignal()
 

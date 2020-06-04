@@ -81,7 +81,7 @@ def load(string):
             try:
                 setattr(obj, attrName, source[attrName])
             except:
-                print "{0} was missing the attribute {1}".format(obj, attrName)
+                print("{0} was missing the attribute {1}".format(obj, attrName))
 
         if hasattr(obj, '_preload'):
             obj._preload(source)

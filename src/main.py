@@ -3,7 +3,7 @@ from common import *
 class KP:
     @staticmethod
     def run():
-        KP.app = QtGui.QApplication(sys.argv)
+        KP.app = QtWidgets.QApplication(sys.argv)
 
         KP.app.settings = QtCore.QSettings('Koopatlas', 'Newer Team')
 
@@ -83,7 +83,7 @@ class KP:
         cls.loadedTilesets[name] = KPTileset.loadFromArc(data)
 
         e = time.clock()
-        print "Loading set: {0} in {1}".format(name, e-b)
+        print("Loading set: {0} in {1}".format(name, e-b))
 
 
     @classmethod

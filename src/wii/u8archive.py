@@ -1,8 +1,12 @@
-from common import WiiStringTableBuilder, alignUp, alignDown
-from filesystem import *
+from .common import WiiStringTableBuilder, alignUp, alignDown
+from .filesystem import *
 import struct
 import os
-import cStringIO
+import sys
+if sys.version_info[0] >= 3:
+    import io
+else:
+    import cStringIO as io
 
 class WiiArchiveU8:
     class ReadInfo:
@@ -20,7 +24,7 @@ class WiiArchiveU8:
         if handle:
             if not hasattr(handle, 'read'):
                 if handle[0:4] == "U\xAA8\x2D":
-                    handle = cStringIO.StringIO(handle)
+                    handle = io.StringIO(handle)
                 else:
                     handle = open(handle, 'rb')
 
@@ -87,7 +91,7 @@ class WiiArchiveU8:
     def pack(self, handle=None):
         returnData = False
         if handle is None:
-            handle = cStringIO.StringIO()
+            handle = io.StringIO()
             returnData = True
 
         info = WiiArchiveU8.WriteInfo()
