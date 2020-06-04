@@ -106,7 +106,7 @@ def dumpPixmap(pm):
     buf = QtCore.QBuffer()
     buf.open(buf.WriteOnly)
     pm.save(buf, 'PNG')
-    data = str(buf.data())
+    data = bytes(buf.data())
     buf.close()
     return {'png': base64.b64encode(data)}
 
