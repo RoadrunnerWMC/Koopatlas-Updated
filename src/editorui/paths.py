@@ -532,12 +532,7 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
 
                 # Connections
 
-                # regular connect doesn't work for some reason...
-                #self.ExclusiveButtons.buttonReleased.connect(self.updatePathAnim)
-                QtCore.QObject.connect(
-                        self.ExclusiveButtons,
-                        QtCore.SIGNAL('buttonReleased(int)'),
-                        self.updatePathAnim)
+                self.ExclusiveButtons.buttonReleased.connect(self.updatePathAnim)
 
                 self.moveSpeedSpinner.valueChanged.connect(self.updateMoveSpeed)
                 # self.linkedLayer.currentIndexChanged.connect(self.updateLinkLayer)
