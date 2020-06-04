@@ -347,7 +347,7 @@ class KPMapExporter:
                         oX, oY = opposite.position
                         deltaX, deltaY = oX-x, oY-y
                         angle = math.degrees(math.atan2(deltaX, deltaY)) % 360
-                        print "Here: %d,%d Opposite %d,%d Delta: %d,%d Angle: %d" % (x,y,oX,oY,deltaX,deltaY,angle)
+                        print("Here: %d,%d Opposite %d,%d Delta: %d,%d Angle: %d" % (x,y,oX,oY,deltaX,deltaY,angle))
 
                         # Left = 270, Right = 90, Up = 180, Down = 0
                         if angle >= 225 and angle <= 315:
@@ -360,7 +360,7 @@ class KPMapExporter:
                             direction = down
 
                         if exits[direction]:
-                            print "Conflicting directions!"
+                            print("Conflicting directions!")
                             while exits[direction]:
                                 direction = (direction + 1) % 4
 
@@ -482,14 +482,14 @@ class KPMapExporter:
         s = 0
         d = 0
         for texItem in texA:
-            print texItem[1]/1000, "kb:", texItem[0]
+            print(texItem[1]/1000, "kb:", texItem[0])
             s += texItem[1]
             d += 1
             if d == 10:
                 d = 0
-                print "So far:", s/1000, "kb"
+                print("So far:", s/1000, "kb")
 
-        print "Total:", s/1000, "kb"
+        print("Total:", s/1000, "kb")
 
         texPadding = ((len(data) + 0x1F) & ~0x1F) - len(data)
         data += ('\0' * texPadding)

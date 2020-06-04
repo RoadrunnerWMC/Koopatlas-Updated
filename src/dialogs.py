@@ -160,7 +160,7 @@ def getTextDialog(title, label, existingText=''):
 
     text, ok = QtWidgets.QInputDialog.getText(KP.mainWindow, title, label, QtWidgets.QLineEdit.Normal, existingText)
 
-    print text
+    print(text)
     if ok and text != '':
         return text
     else:

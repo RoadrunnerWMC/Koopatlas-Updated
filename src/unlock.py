@@ -161,18 +161,18 @@ if __name__ == '__main__':
     p2 = parseUnlockText('(1-1 secret) or ((1-2) and (1-3 secret)) or (2-1)')
     p3 = parseUnlockText('(star coins > 200) or ((unspent star coins == 300) and (total star coins != 400))')
 
-    print
-    print repr(p1)
-    print
-    print stringifyUnlockData(p1)
-    print
-    print repr(p2)
-    print
-    print stringifyUnlockData(p2)
-    print
-    print repr(p3)
-    print
-    print stringifyUnlockData(p3)
+    print('')
+    print(repr(p1))
+    print('')
+    print(stringifyUnlockData(p1))
+    print('')
+    print(repr(p2))
+    print('')
+    print(stringifyUnlockData(p2))
+    print('')
+    print(repr(p3))
+    print('')
+    print(stringifyUnlockData(p3))
 
     from sys import exit
     exit()
