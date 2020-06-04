@@ -8,7 +8,7 @@ MAP_SIZE = (MAP_SIZE_IN_TILES[0] * TILE_SIZE[0], MAP_SIZE_IN_TILES[1] * TILE_SIZ
 
 @mapfile.dumpable('layer')
 class KPLayer(object):
-    __dump_attribs__ = ('name', '_visible')
+    dump_attribs = ('name', '_visible')
 
     def __repr__(self):
         return "<KPLayer %r>" % self.name
@@ -50,7 +50,7 @@ class KPLayer(object):
 
 @mapfile.dumpable('object')
 class KPObject(object):
-    __dump_attribs__ = ('position', 'size', 'tileset', 'kind')
+    dump_attribs = ('position', 'size', 'tileset', 'kind')
 
     def _load(self, mapObj, src):
         self.kindObj = KP.tileset(self.tileset).objects[self.kind]
@@ -71,7 +71,7 @@ class KPObject(object):
 
 @mapfile.dumpable('tile_layer')
 class KPTileLayer(KPLayer):
-    __dump_attribs__ = KPLayer.__dump_attribs__ + ('tileset', 'objects')
+    dump_attribs = KPLayer.dump_attribs + ('tileset', 'objects')
 
     def _load(self, mapObj, src):
         self.updateCache()
@@ -149,7 +149,7 @@ class KPTileLayer(KPLayer):
 
 @mapfile.dumpable('associate_layer')
 class KPPathTileLayer(KPLayer):
-    __dump_attribs__ = KPLayer.__dump_attribs__ + ('tileset', 'objects', 'doodads', 'folder')
+    dump_attribs = KPLayer.dump_attribs + ('tileset', 'objects', 'doodads', 'folder')
 
     def _dump(self, mapObj, dest):
         if isinstance(self.associate, KPNode):
@@ -279,7 +279,7 @@ class KPPathTileLayer(KPLayer):
 
 @mapfile.dumpable('doodad')
 class KPDoodad(object):
-    __dump_attribs__ = ('position', 'size', 'angle', 'animations')
+    dump_attribs = ('position', 'size', 'angle', 'animations')
 
     def _dump(self, mapObj, dest):
         dest['sourceRef'] = mapObj.refDoodad(self.source)
@@ -405,7 +405,7 @@ class KPDoodad(object):
 
 @mapfile.dumpable('doodad_layer')
 class KPDoodadLayer(KPLayer):
-    __dump_attribs__ = KPLayer.__dump_attribs__ + ('objects',)
+    dump_attribs = KPLayer.dump_attribs + ('objects',)
 
     def __repr__(self):
         return "<KPDoodadLayer %r>" % self.name
@@ -425,7 +425,7 @@ class KPDoodadLayer(KPLayer):
 
 @mapfile.dumpable('node')
 class KPNode(object):
-    __dump_attribs__ = (
+    dump_attribs = (
             'position', 'actions', 'level', 'hasSecret', 'mapChange',
             'transition', 'mapID', 'foreignID', 'worldDefID')
 
@@ -455,7 +455,7 @@ class KPNode(object):
 
 @mapfile.dumpable('path')
 class KPPath(object):
-    __dump_attribs__ = ('unlockSpec', 'animation', 'movementSpeed')
+    dump_attribs = ('unlockSpec', 'animation', 'movementSpeed')
 
     def _dump(self, mapObj, dest):
         dest['startNodeLink'] = mapObj.refNode(self._startNodeRef())
@@ -512,7 +512,7 @@ class KPPath(object):
 
 @mapfile.dumpable('path_layer')
 class KPPathLayer(KPLayer):
-    __dump_attribs__ = KPLayer.__dump_attribs__ + ('nodes', 'paths')
+    dump_attribs = KPLayer.dump_attribs + ('nodes', 'paths')
 
     def _load(self, mapObj, src):
         for node in self.nodes:
@@ -549,7 +549,7 @@ class KPPathLayer(KPLayer):
 
 @mapfile.dumpable('world_definition')
 class KPWorldDef(object):
-    __dump_attribs__ = ('uniqueKey', 'name', 'worldID', 'fsHintColours', 'fsTextColours', 'hudHintTransform', 'hudTextColours', 'musicTrackID', 'titleScreenID')
+    dump_attribs = ('uniqueKey', 'name', 'worldID', 'fsHintColours', 'fsTextColours', 'hudHintTransform', 'hudTextColours', 'musicTrackID', 'titleScreenID')
 
     def __init__(self):
         self.uniqueKey = -1
@@ -568,7 +568,7 @@ class KPWorldDef(object):
 
 @mapfile.dumpable('map_root')
 class KPMap(object):
-    __dump_attribs__ = ('layers', 'associateLayers', 'nextLayerNumber', 'doodadDefinitions', 'worlds', 'bgName')
+    dump_attribs = ('layers', 'associateLayers', 'nextLayerNumber', 'doodadDefinitions', 'worlds', 'bgName')
 
     def _preload(self, src):
         # we need this early so we can use the deref methods!

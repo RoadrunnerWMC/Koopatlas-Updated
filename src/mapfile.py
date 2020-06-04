@@ -47,7 +47,7 @@ def dump(rootObj):
 
         dest = {'_t': clsName}
 
-        for attrName in clsObj.__dump_attribs__:
+        for attrName in clsObj.dump_attribs:
             dest[attrName] = getattr(piece, attrName)
 
         if hasattr(piece, '_dump'):
@@ -77,7 +77,7 @@ def load(string):
 
         obj = clsObj()
 
-        for attrName in clsObj.__dump_attribs__:
+        for attrName in clsObj.dump_attribs:
             try:
                 setattr(obj, attrName, source[attrName])
             except:
