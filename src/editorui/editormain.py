@@ -69,7 +69,6 @@ class KPMapScene(QtWidgets.QGraphicsScene):
             self.views()[0].viewport().update()
 
 
-    @QtCore.pyqtSlot()
     def viewportUpdateProxy(self):
         self.views()[0].viewport().update()
 

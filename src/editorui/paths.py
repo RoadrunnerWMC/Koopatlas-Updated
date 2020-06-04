@@ -184,7 +184,6 @@ class KPEditorNode(KPEditorItem):
         self._updatePosition()
 
 
-    @QtCore.pyqtSlot(int)
     def stateChange(self, state):
 
         node = self._nodeRef()
@@ -228,7 +227,6 @@ class KPEditorNode(KPEditorItem):
         KP.mainWindow.pathNodeList.update()
 
 
-    @QtCore.pyqtSlot(int)
     def worldChange(self, world):
 
         node = self._nodeRef()
@@ -237,7 +235,6 @@ class KPEditorNode(KPEditorItem):
         KP.mainWindow.pathNodeList.update()
 
 
-    @QtCore.pyqtSlot(int)
     def stageChange(self, stage):
 
         node = self._nodeRef()
@@ -246,7 +243,6 @@ class KPEditorNode(KPEditorItem):
         KP.mainWindow.pathNodeList.update()
 
 
-    @QtCore.pyqtSlot(int)
     def secretChange(self, secret):
 
         node = self._nodeRef()
@@ -255,7 +251,6 @@ class KPEditorNode(KPEditorItem):
         KP.mainWindow.pathNodeList.update()
 
 
-    @QtCore.pyqtSlot(int)
     def foreignIDChange(self, ID):
 
         node = self._nodeRef()
@@ -264,13 +259,11 @@ class KPEditorNode(KPEditorItem):
         KP.mainWindow.pathNodeList.update()
 
 
-    @QtCore.pyqtSlot(int)
     def worldDefIDChange(self, ID):
         node = self._nodeRef()
         node.worldDefID = ID
 
 
-    @QtCore.pyqtSlot(int)
     def transitionChange(self, index):
 
         node = self._nodeRef()
@@ -279,7 +272,6 @@ class KPEditorNode(KPEditorItem):
         KP.mainWindow.pathNodeList.update()
 
 
-    @QtCore.pyqtSlot(str)
     def mapChangeChange(self, mapname):
 
         node = self._nodeRef()
@@ -557,7 +549,6 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
                 self.setLayout(Layout)
 
 
-            @QtCore.pyqtSlot(float)
             def updateMoveSpeed(self, speed):
                 path = self._pathRef()
 
@@ -565,7 +556,6 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
                 path.qtItem.update()
 
 
-            @QtCore.pyqtSlot(int)
             def updatePathAnim(self, buttonID):
                 path = self._pathRef()
 
@@ -573,7 +563,6 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
                 path.qtItem.update()
 
 
-            @QtCore.pyqtSlot(int)
             def updateLinkLayer(self, layerIndex):
                 path = self._pathRef()
 

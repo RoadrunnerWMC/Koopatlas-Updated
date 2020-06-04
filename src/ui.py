@@ -136,7 +136,6 @@ class KPPathNodeList(QtWidgets.QWidget):
         self.actRemoveFolder = tb.addAction(KP.icon('DelFolder'), 'Remove Folder', self.removeFolder)
         self.selectTileset = tb.addAction(KP.icon('LayerNewTile'), 'Select Tileset', self.setTileset)
 
-    @QtCore.pyqtSlot(QtWidgets.QTreeWidgetItem, QtWidgets.QTreeWidgetItem)
     def handleRowChanged(self, currentItem, previousItem):
         try:
             self.selectedLayerChanged.emit(currentItem.layer)
@@ -157,7 +156,6 @@ class KPPathNodeList(QtWidgets.QWidget):
                     item.setSelected(True)
 
 
-    @QtCore.pyqtSlot(QtWidgets.QTreeWidgetItem, int)
     def jumpToPathNode(self, item):
         try:
             pos = item.associate.qtItem.pos()
@@ -398,7 +396,6 @@ class KPLayerList(QtWidgets.QWidget):
         newIndex = index.sibling(row, 0)
         self.listView.setCurrentIndex(newIndex)
 
-    @QtCore.pyqtSlot(QtCore.QModelIndex)
     def handleRowChanged(self, current):
         self.selectedLayerChanged.emit(KP.map.layers[current.row()])
         self.setButtonStates()
@@ -584,7 +581,6 @@ class KPDoodadSelector(QtWidgets.QWidget):
     def selectedDoodad(self):
         return KP.map.doodadDefinitions[self.listView.selectionModel().currentIndex().row()]
 
-    @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
     def handleRowChanged(self, current, previous):
         self.selectedDoodadChanged.emit(KP.map.doodadDefinitions[current.row()])
         self.setButtonStates()
@@ -715,7 +711,6 @@ class KPObjectSelector(QtWidgets.QWidget):
 
         self.sorterButton.setText(string)
 
-    @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
     def handleRowChanged(self, current, previous):
         """Throws a signal emitting the current object when changed"""
         i = current.row()
@@ -1261,7 +1256,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
 # Slots for Widgets #
 #####################
 
-    @QtCore.pyqtSlot(KPLayer)
     def handleSelectedLayerChanged(self, layer):
         sel = self.pathNodeList.tree.selectionModel()
         if sel:
@@ -1284,7 +1278,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
         self.doodadSelectorDock.setVisible(showDoodads)
         self.anmOptsDock.setVisible(showDoodads)
 
-    @QtCore.pyqtSlot(KPLayer)
     def handleSelectedPathNodeLayerChanged(self, layer):
 
         sel = self.layerList.listView.selectionModel()
@@ -1300,7 +1293,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
         self.objectSelectorDock.setVisible(True)
         self.doodadSelectorDock.setVisible(True)
 
-    @QtCore.pyqtSlot(int, KPTileObject)
     def handleSelectedObjectChanged(self, index, obj):
         sel = self.doodadSelector.listView.selectionModel()
         if sel:
@@ -1310,7 +1302,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
         self.editor.objectIDToPaint = index
         self.editor.typeToPaint = 'object'
 
-    @QtCore.pyqtSlot(object)
     def handleSelectedDoodadChanged(self, doodad):
         sel = self.objectSelector.listView.selectionModel()
         if sel:
@@ -1405,7 +1396,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
         KP.map.export(target)
 
-    @QtCore.pyqtSlot()
     def screenshot(self):
         items = ("Current Window", "Entire Map")
 
@@ -1436,7 +1426,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
             ScreenshotImage.save(fn, 'PNG', 50)
 
 
-    @QtCore.pyqtSlot()
     def exportDoodads(self):
         fn = QtWidgets.QFileDialog.getExistingDirectory(self, 'Choose a folder')
         if fn == '': return
@@ -1465,24 +1454,20 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
 # Edit
 ########################
-    @QtCore.pyqtSlot()
     def selectAll(self):
 
         path = QtGui.QPainterPath()
         path.addRect(self.scene.sceneRect())
         self.scene.setSelectionArea(path)
 
-    @QtCore.pyqtSlot()
     def deSelect(self):
         self.scene.clearSelection()
 
 
-    @QtCore.pyqtSlot()
     def copy(self):
         self.clipboard = self.scene.selectedItems()
 
 
-    @QtCore.pyqtSlot()
     def paste(self):
         self.scene.clearSelection()
         for paper in self.clipboard:
@@ -1512,7 +1497,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
 # Layers
 ########################
-    @QtCore.pyqtSlot()
     def moveTilesetToFolder(self):
 
         path = QFileDialog_getOpenFileName(self,
@@ -1532,7 +1516,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
             KP.knownTilesets[name] = {'path': path}
 
-    @QtCore.pyqtSlot()
     def changeTileset(self):
 
         layer = self.layerList.selectedLayer()
@@ -1554,12 +1537,10 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
 # Animate
 ########################
-    @QtCore.pyqtSlot()
     def playAnim(self):
         self.scene.playPause()
         self.playButtonChanged()
 
-    @QtCore.pyqtSlot()
     def playButtonChanged(self):
         if self.scene.playing:
             self.aa.setText('Stop Animations')
@@ -1570,13 +1551,11 @@ class KPMainWindow(QtWidgets.QMainWindow):
             self.layerList.actPlayPause.setIcon(KP.icon('APlay'))
             self.layerList.actPlayPause.setText('Play')
 
-    @QtCore.pyqtSlot()
     def resetAnim(self):
         if self.scene.playing == True:
             self.scene.playPause()
         self.scene.playPause()
 
-    @QtCore.pyqtSlot()
     def loadAnimPresets(self):
         path = QFileDialog_getOpenFileName(self,
                 "Choose a Koopatlas Animation Preset File.", "",
@@ -1608,7 +1587,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
             settings.setValue('AnimationPresets', mapfile.dump(presetList))
             settings.setValue('AnimationPresetData', mapfile.dump(presets))
 
-    @QtCore.pyqtSlot()
     def saveAnimPresets(self):
 
         settings = KP.app.settings
@@ -1640,7 +1618,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
             file.write(mapfile.dump(output))
             file.close()
 
-    @QtCore.pyqtSlot()
     def clearAnimPresets(self):
         settings = KP.app.settings
         import mapfile
@@ -1651,14 +1628,12 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
 # Map
 ########################
-    @QtCore.pyqtSlot()
     def setMapBackground(self):
         from dialogs import getTextDialog
         newBG = getTextDialog('Map Background', 'Enter a path (ex. /Maps/Water.brres):', KP.map.bgName)
         if newBG is not None:
             KP.map.bgName = newBG
 
-    @QtCore.pyqtSlot()
     def showWorldEditor(self):
         from worldeditor import KPWorldEditor
         dlg = KPWorldEditor(KP.map, self)
@@ -1666,19 +1641,16 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
 # Window
 ########################
-    @QtCore.pyqtSlot()
     def ZoomActual(self):
         """Handle zooming to the editor size"""
         self.ZoomLevel = 5
         self.ZoomTo()
 
-    @QtCore.pyqtSlot()
     def ZoomIn(self):
         """Handle zooming in"""
         self.ZoomLevel += 1
         self.ZoomTo()
 
-    @QtCore.pyqtSlot()
     def ZoomOut(self):
         """Handle zooming out"""
         self.ZoomLevel -= 1
@@ -1702,7 +1674,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-    @QtCore.pyqtSlot()
     def showGrid(self):
         """Handle toggling of the grid being showed"""
         # settings.setValue('GridEnabled', checked)
@@ -1716,7 +1687,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-    @QtCore.pyqtSlot()
     def showWiiZoom(self):
         if self.editor.grid == True:
             self.editor.grid = False
@@ -1729,7 +1699,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
 # Help
 ########################
-    @QtCore.pyqtSlot()
     def aboutDialog(self):
         caption = "About Koopatlas"
 
@@ -1738,7 +1707,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
         msg = QtWidgets.QMessageBox.about(KP.mainWindow, caption, text)
 
-    @QtCore.pyqtSlot()
     def goToHelp(self):
         QtGui.QDesktopServices().openUrl(QtCore.QUrl('http://www.newerteam.com/koopatlas-help'))
 
