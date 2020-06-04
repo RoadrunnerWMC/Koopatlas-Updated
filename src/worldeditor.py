@@ -28,7 +28,7 @@ class KPWorldTableModel(QtCore.QAbstractTableModel):
 
         self.currentMap = kpmap
         self.worlds = kpmap.worlds
-    
+
     def columnCount(self, parent):
         return len(self.FIELDS)
     def headerData(self, section, orientation, role):
@@ -46,7 +46,7 @@ class KPWorldTableModel(QtCore.QAbstractTableModel):
             return 0
         else:
             return len(self.worlds)
-    
+
     def data(self, index, role):
         if index.isValid():
             entry = self.worlds[index.row()]
@@ -173,7 +173,7 @@ class KPWorldEditor(QtGui.QWidget):
 
         self.addButton.clicked.connect(self.model.addEntryToEnd)
         self.removeButton.clicked.connect(self.removeCurrentEntry)
-    
+
     def removeCurrentEntry(self):
         what = self.dataView.selectionModel().currentIndex()
         if what.isValid():

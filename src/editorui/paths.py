@@ -24,7 +24,7 @@ class KPEditorNode(KPEditorItem):
                 KPEditorNode.ToggleButton.PALETTE = QtGui.QPalette(Qt.transparent)
 
             self.setPalette(self.PALETTE)
- 
+
             self.released.connect(self.toggle)
 
 
@@ -374,7 +374,7 @@ class KPEditorNode(KPEditorItem):
             painter.setPen(self.SELECTION_PEN)
             painter.setBrush(QtGui.QColor(0,0,0,0))
             painter.drawEllipse(selectionRect)
-    
+
             # WHAT THE FUCK SINCE WHEN DO YOU SHOW/HIDE WIDGETS IN A PAINT EVENT
             # oh well, I don't feel like refactoring this
             self.buttonProxy.show()
@@ -413,7 +413,7 @@ class KPEditorNode(KPEditorItem):
             self.transition.hide()
             self.mapChange.hide()
             self.worldDefID.hide()
-        
+
 
     def remove(self, withItem=False):
         node = self._nodeRef()
@@ -517,9 +517,9 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
                     if i == 4:
                         i = 0
                         j += 1
-                
 
-                
+
+
                 # Movement Speed Spin Box
                 self.moveSpeedSpinner = QtGui.QDoubleSpinBox()
                 self.moveSpeedSpinner.setMinimum(0.0)
@@ -556,7 +556,7 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
                 Layout.addLayout(TopLayout, 0, 0, 1, 4)
                 self.setLayout(Layout)
 
-                
+
             @QtCore.pyqtSlot(float)
             def updateMoveSpeed(self, speed):
                 path = self._pathRef()
@@ -641,7 +641,7 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
             KPEditorPath.BRUSH = QtGui.QBrush(QtGui.QColor(255, 255, 255, 140))
             KPEditorPath.PEN = QtGui.QPen(KPEditorPath.BRUSH, 8, Qt.SolidLine, Qt.RoundCap)
         self.setPen(KPEditorPath.PEN)
-    
+
         if not hasattr(KPEditorPath, 'SELECTION_PEN'):
             KPEditorPath.SELECTION_PEN = QtGui.QPen(Qt.blue, 1, Qt.DotLine)
 
@@ -661,7 +661,7 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
 
         # modify the unlock settings
         from unlock import KPUnlockSpecDialog
-        
+
         dlg = KPUnlockSpecDialog('path', 'unlocked')
 
         if hasattr(self._pathRef(), 'unlockSpec'):
@@ -690,7 +690,7 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
         dx = originLine.dx()/2
 
         self.setLine(QtCore.QLineF(-dx, -dy, dx, dy))
-    
+
 
     def setLayerSelected(self, selected):
         self.isLayerSelected = selected
@@ -745,4 +745,4 @@ class KPEditorPath(QtGui.QGraphicsLineItem):
             self.scene().removeItem(self)
 
 
- 
+

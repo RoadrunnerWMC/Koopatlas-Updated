@@ -11,7 +11,7 @@ class KPEditorItem(QtGui.QGraphicsItem):
 
         self.ignoreMovement = False
         self.overrideSnap = False
-    
+
     def itemChange(self, change, value):
         if change == self.ItemPositionChange and not self.ignoreMovement:
             currentX, currentY = self.x(), self.y()

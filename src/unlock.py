@@ -94,10 +94,10 @@ def _parseUnlockBit(text):
                     raise UnlockParseError('that\'s not right')
                 else:
                     raise UnlockParseError('something unexpected at position %d' % index)
-    
+
     if pLevel > 0:
         raise UnlockParseError('unclosed parenthesis')
-    
+
     # now that we're here, we must have parsed these subterms
     # do we have a combiner?
     if whatCombiner is None:
@@ -160,7 +160,7 @@ if __name__ == '__main__':
     p1 = parseUnlockText('((01-01 secret) and (01-02)) or (02-99 secret) or (01-01)')
     p2 = parseUnlockText('(1-1 secret) or ((1-2) and (1-3 secret)) or (2-1)')
     p3 = parseUnlockText('(star coins > 200) or ((unspent star coins == 300) and (total star coins != 400))')
-    
+
     print
     print repr(p1)
     print
@@ -230,10 +230,10 @@ class KPUnlockSpecDialog(QtGui.QDialog):
         self.setLayout(self.layout)
 
         self.spec = None
-    
+
     def setSpec(self, spec):
         self.textBox.setText(stringifyUnlockData(spec))
-    
+
     def checkInputValidity(self, text):
         valid = True
         try:

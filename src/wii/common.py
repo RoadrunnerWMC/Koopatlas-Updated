@@ -3,14 +3,14 @@ class WiiStringTableBuilder(object):
         self.nextOffset = 0
         self.data = ''
         self.lookup = {}
-    
+
     def add(self, string):
         if string in self.lookup:
             return self.lookup[string]
 
         offset = self.nextOffset
         self.lookup[string] = offset
-        
+
         self.data = "%s%s\0" % (self.data, string.encode('Shift-JIS'))
         self.nextOffset = len(self.data)
 

@@ -8,7 +8,7 @@ from paths import *
 class KPMapScene(QtGui.QGraphicsScene):
     def __init__(self):
         QtGui.QGraphicsScene.__init__(self, 0, 0, 512*24, 512*24)
-        
+
         # todo: handle selectionChanged
         # todo: look up why I used setItemIndexMethod(self.NoIndex) in Reggie
 
@@ -58,7 +58,7 @@ class KPMapScene(QtGui.QGraphicsScene):
             for timeline in self.timeLines:
                 timeline.start()
             self.views()[0].viewport().update()
-        
+
         else:
             self.playing = False
             self.views()[0].setViewportUpdateMode(1)
@@ -76,79 +76,79 @@ class KPMapScene(QtGui.QGraphicsScene):
 
     def drawForeground(self, painter, rect):
         if not self.grid: return
-        
+
         Zoom = KP.mainWindow.ZoomLevel
         drawLine = painter.drawLine
-        
+
         if Zoom >= 4:
             startx = rect.x()
             startx -= (startx % 24)
             endx = startx + rect.width() + 24
-            
+
             starty = rect.y()
             starty -= (starty % 24)
             endy = starty + rect.height() + 24
-            
+
             painter.setPen(QtGui.QPen(QtGui.QColor.fromRgb(255,255,255,100), 1, QtCore.Qt.DotLine))
-            
+
             x = startx
             y1 = rect.top()
             y2 = rect.bottom()
             while x <= endx:
                 drawLine(x, starty, x, endy)
                 x += 24
-            
+
             y = starty
             x1 = rect.left()
             x2 = rect.right()
             while y <= endy:
                 drawLine(startx, y, endx, y)
                 y += 24
-        
-        
+
+
         if Zoom >= 2:
             startx = rect.x()
             startx -= (startx % 96)
             endx = startx + rect.width() + 96
-            
+
             starty = rect.y()
             starty -= (starty % 96)
             endy = starty + rect.height() + 96
-            
+
             painter.setPen(QtGui.QPen(QtGui.QColor.fromRgb(255,255,255,100), 1, QtCore.Qt.DashLine))
-            
+
             x = startx
             y1 = rect.top()
             y2 = rect.bottom()
             while x <= endx:
                 drawLine(x, starty, x, endy)
                 x += 96
-            
+
             y = starty
             x1 = rect.left()
             x2 = rect.right()
             while y <= endy:
                 drawLine(startx, y, endx, y)
                 y += 96
-        
-        
+
+
         startx = rect.x()
         startx -= (startx % 192)
         endx = startx + rect.width() + 192
-        
+
         starty = rect.y()
         starty -= (starty % 192)
         endy = starty + rect.height() + 192
-        
+
         painter.setPen(QtGui.QPen(QtGui.QColor.fromRgb(255,255,255,100), 2, QtCore.Qt.DashLine))
-        
+
         x = startx
         y1 = rect.top()
         y2 = rect.bottom()
         while x <= endx:
             drawLine(x, starty, x, endy)
             x += 192
-        
+
         y = starty
         x1 = rect.left()
         x2 = rect.right()
@@ -196,7 +196,7 @@ class KPMapScene(QtGui.QGraphicsScene):
                     continue
 
                 for item in reversed(toDraw):
-                    
+
                     painter.save()
 
                     if self.playing == False:
@@ -248,14 +248,14 @@ class KPMapScene(QtGui.QGraphicsScene):
                         tile = row[srcX]
                         if tile != -1:
                             painter.drawPixmap(destX, destY, tileList[tile])
-                        
+
                         srcX += 1
                         destX += 24
 
                     srcY += 1
                     destY += 24
-    
-            
+
+
             elif isinstance(layer, KPPathLayer):
                 for pnLayer in reversed(KP.mainWindow.pathNodeList.getLayers()):
                     if not pnLayer.visible: continue
@@ -292,7 +292,7 @@ class KPMapScene(QtGui.QGraphicsScene):
                                 tile = row[srcX]
                                 if tile != -1:
                                     painter.drawPixmap(destX, destY, tileList[tile])
-                                
+
                                 srcX += 1
                                 destX += 24
 
@@ -337,7 +337,7 @@ class KPMapScene(QtGui.QGraphicsScene):
             for anm, Timeline in zip(animations, doodad.timelines):
 
                 Type = anm[3]
-            
+
                 modifier = Timeline.currentFrame()
 
                 if Type == "X Position":
@@ -351,7 +351,7 @@ class KPMapScene(QtGui.QGraphicsScene):
 
                 elif Type == "X Scale":
                     posRect.setWidth(posRect.width()*modifier/100.0)
-            
+
                 elif Type == "Y Scale":
                     h = posRect.height()
                     posRect.setHeight(h*modifier/100.0)
@@ -384,10 +384,10 @@ class KPEditorWidget(QtGui.QGraphicsView):
 
         self.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         self.setDragMode(self.RubberBandDrag)
-        
+
         self.xScrollBar = QtGui.QScrollBar(Qt.Horizontal, parent)
         self.setHorizontalScrollBar(self.xScrollBar)
-        
+
         self.yScrollBar = QtGui.QScrollBar(Qt.Vertical, parent)
         self.setVerticalScrollBar(self.yScrollBar)
 
@@ -437,12 +437,12 @@ class KPEditorWidget(QtGui.QGraphicsView):
         self.typeToPaint = None
 
         self._resetPaintVars()
-    
+
     def _resetPaintVars(self):
         self.painting = None
         self.paintingItem = None
         self.paintBeginPosition = None
-    
+
     def _tryToPaint(self, event):
         '''Called when a paint attempt is initiated'''
 
@@ -568,7 +568,7 @@ class KPEditorWidget(QtGui.QGraphicsView):
                     endNode = origPath._endNodeRef()
 
                     origPath.setEnd(node)
-                    
+
                     nodeItem = KPEditorNode(node)
                     self.scene().addItem(nodeItem)
 
@@ -686,7 +686,7 @@ class KPEditorWidget(QtGui.QGraphicsView):
                 self.paintingItem = item
                 self.paintBeginPosition = (x, y)
 
-    
+
     def _movedWhilePainting(self, event):
         '''Called when the mouse is moved while painting something'''
 
@@ -728,7 +728,7 @@ class KPEditorWidget(QtGui.QGraphicsView):
                 obj.position = (objX, objY)
                 item._updatePosition()
                 changed = True
-            
+
             if currentWidth != width or currentHeight != height:
                 obj.size = (width, height)
                 obj.updateCache()
@@ -738,7 +738,7 @@ class KPEditorWidget(QtGui.QGraphicsView):
             if not changed: return
 
             item._layerRef().updateCache()
-    
+
 
     def mousePressEvent(self, event):
 
@@ -770,7 +770,7 @@ class KPEditorWidget(QtGui.QGraphicsView):
 
         else:
             QtGui.QGraphicsView.mousePressEvent(self, event)
-    
+
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.RightButton and self.painting:

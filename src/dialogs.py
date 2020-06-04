@@ -38,10 +38,10 @@ class KPTilesetChooserDialog(QtGui.QDialog):
         self.layout.addWidget(self.chooser)
         self.layout.addWidget(self.buttons)
         self.setLayout(self.layout)
-    
+
     def handleCurrentRowChanged(self, row):
         self.okButton.setEnabled(row != -1)
-    
+
     def handleItemActivated(self, item):
         self.accept()
 
@@ -125,10 +125,10 @@ class KPAnimationPresetChooser(QtGui.QDialog):
         self.layout.addWidget(self.chooser)
         self.layout.addWidget(self.buttons)
         self.setLayout(self.layout)
-    
+
     def handleCurrentRowChanged(self, row):
         self.okButton.setEnabled(row != -1)
-    
+
     def handleItemActivated(self, item):
         self.accept()
 

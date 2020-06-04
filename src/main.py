@@ -11,7 +11,7 @@ class KP:
         KP.map = KPMap()
 
         from ui import KPMainWindow
-        
+
         KP.mainWindow = KPMainWindow()
         KP.mainWindow.show()
 

@@ -5,7 +5,7 @@ class WiiFSObject(object):
         self._parent_ref = None
         self._name = ''
         self._low_name = ''
-    
+
     @property
     def parent(self):
         ref = self._parent_ref
@@ -14,11 +14,11 @@ class WiiFSObject(object):
     @parent.setter
     def parent(self, value):
         self._parent_ref = weakref.ref(value)
-    
+
     @parent.deleter
     def parent(self):
         self._parent_ref = None
-    
+
 
     @property
     def name(self):
@@ -29,7 +29,7 @@ class WiiFSObject(object):
         self._name = value
         self._low_name = value.lower()
 
-    
+
     def unlinkFromParent(self):
         if self.parent == None:
             return
@@ -47,7 +47,7 @@ class WiiFile(WiiFSObject):
     def __init__(self):
         WiiFSObject.__init__(self)
         self.data = None
-    
+
     def isFile(self): return True
 
 
@@ -55,7 +55,7 @@ class WiiDirectory(WiiFSObject):
     def __init__(self):
         WiiFSObject.__init__(self)
         self.children = []
-    
+
     def isDirectory(self): return True
 
     def findByName(self, name, recursive):

@@ -23,7 +23,7 @@ class KPEditorObject(KPEditorItem):
         # I don't bother setting the ZValue because it doesn't quite matter:
         # only one layer's objects are ever clickable, and drawBackground takes
         # care of the layered drawing
-    
+
     def _updatePosition(self):
         self.ignoreMovement = True
 
@@ -31,7 +31,7 @@ class KPEditorObject(KPEditorItem):
         self.setPos(x*24, y*24)
 
         self.ignoreMovement = False
-    
+
     def _updateSize(self):
         self.prepareGeometryChange()
 
@@ -42,13 +42,13 @@ class KPEditorObject(KPEditorItem):
         self._selectionRect = QtCore.QRectF(0, 0, w*24-1, h*24-1)
 
         self._resizerEndXY = (w*24-5, h*24-5)
-    
+
 
     def paint(self, painter, option, widget):
         if self.isSelected():
             painter.setPen(self.SELECTION_PEN)
             painter.drawRect(self._selectionRect)
-    
+
 
     def hoverMoveEvent(self, event):
         if self._layerRef() != KP.mapScene.currentLayer:
@@ -68,7 +68,7 @@ class KPEditorObject(KPEditorItem):
             self.setCursor(Qt.SizeVerCursor)
         else:
             self.setCursor(Qt.ArrowCursor)
-    
+
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -80,7 +80,7 @@ class KPEditorObject(KPEditorItem):
                 event.accept()
 
                 x, xSide, y, ySide = False, None, False, None
-                
+
                 if bit == 1 or bit == 7 or bit == 3:
                     x, xSide = True, 1
                 elif bit == 2 or bit == 4 or bit == 8:
@@ -95,7 +95,7 @@ class KPEditorObject(KPEditorItem):
                 return
 
         KPEditorItem.mousePressEvent(self, event)
-    
+
 
     def _tryAndResize(self, obj, axisIndex, mousePosition, stationarySide):
         objPosition = obj.position[axisIndex]
@@ -157,14 +157,14 @@ class KPEditorObject(KPEditorItem):
 
         else:
             KPEditorItem.mouseMoveEvent(self, event)
-    
+
 
     def mouseReleaseEvent(self, event):
         if self.resizing and event.button() == Qt.LeftButton:
             self.resizing = None
         else:
             KPEditorItem.mouseReleaseEvent(self, event)
-    
+
 
     def _itemMoved(self, oldX, oldY, newX, newY):
         obj = self._objRef()

@@ -56,9 +56,9 @@ class KPEditorDoodad(KPEditorItem):
                         print thong
                         print type(thong)
 
-                
+
                 def setEditorData(self, editor, index):
-                    
+
 
                     if isinstance(editor, QtGui.QDoubleSpinBox):
                         thing = index.data(Qt.EditRole).toFloat()[0]
@@ -73,10 +73,10 @@ class KPEditorDoodad(KPEditorItem):
                     else:
                         print "editor is something else!"
                         print editor
-                    
+
 
                 def setModelData(self, editor, model, index):
-                    
+
                     if isinstance(editor, QtGui.QDoubleSpinBox):
                         editor.interpretText()
                         value = editor.value()
@@ -164,7 +164,7 @@ class KPEditorDoodad(KPEditorItem):
 
             def setupAnms(self):
                 doodad = self._doodadRef()
-                
+
                 for row in doodad.animations:
 
                     itemA = QtGui.QStandardItem()
@@ -175,7 +175,7 @@ class KPEditorDoodad(KPEditorItem):
                     itemB.setData(row[4], QtCore.Qt.EditRole)
                     itemC.setData(row[5], QtCore.Qt.EditRole)
 
-                    self.model.appendRow([QtGui.QStandardItem(row[0]), QtGui.QStandardItem(row[1]), 
+                    self.model.appendRow([QtGui.QStandardItem(row[0]), QtGui.QStandardItem(row[1]),
                                           itemA, QtGui.QStandardItem(row[3]), itemB, itemC])
 
                 self.update()
@@ -195,8 +195,8 @@ class KPEditorDoodad(KPEditorItem):
                 itemB.setData(0.0, QtCore.Qt.EditRole)
                 itemC.setData(0.0, QtCore.Qt.EditRole)
 
-                self.model.appendRow([QtGui.QStandardItem("Contiguous"), QtGui.QStandardItem("Linear"), 
-                                      itemA, QtGui.QStandardItem("X Position"), 
+                self.model.appendRow([QtGui.QStandardItem("Contiguous"), QtGui.QStandardItem("Linear"),
+                                      itemA, QtGui.QStandardItem("X Position"),
                                       itemB, itemC])
 
 
@@ -214,7 +214,7 @@ class KPEditorDoodad(KPEditorItem):
             def selectPreset(self):
                 from dialogs import KPAnimationPresetChooser
                 presetList = KPAnimationPresetChooser.run()
-                
+
                 if presetList is None: return
                 if presetList is []: return
                 if presetList is [[]]: return
@@ -240,7 +240,7 @@ class KPEditorDoodad(KPEditorItem):
                 from dialogs import getTextDialog
 
                 name = getTextDialog('Choose Preset Name', 'Preset name:')
-                if name == None: 
+                if name == None:
                     print 'Returning'
                     return
 
@@ -254,7 +254,7 @@ class KPEditorDoodad(KPEditorItem):
                             data = str(item.data(Qt.EditRole).toString())
                         else:
                             data = item.data(Qt.EditRole).toFloat()[0]
-                            
+
                         listrow.append(data)
 
                     preset.append(listrow)
@@ -309,7 +309,7 @@ class KPEditorDoodad(KPEditorItem):
 
         def resolveAnmList(self):
             doodad = self._doodadRef()
-            
+
             anmList = []
             model = self.menuWidget.model
             rows = model.rowCount()
@@ -414,7 +414,7 @@ class KPEditorDoodad(KPEditorItem):
         if self.isSelected():
             painter.setPen(self.SELECTION_PEN)
             painter.drawRect(self._selectionRect)
-    
+
 
     def _itemMoved(self, oldX, oldY, newX, newY):
         doodad = self._doodadRef()
@@ -450,7 +450,7 @@ class KPEditorDoodad(KPEditorItem):
                 self.setCursor(Qt.SizeVerCursor)
             else:
                 self.setCursor(Qt.ArrowCursor)
-    
+
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -465,10 +465,10 @@ class KPEditorDoodad(KPEditorItem):
                     self.rotating = self.mapToScene(pos), self._doodadRef().angle
                     self.setCursor(Qt.ClosedHandCursor)
                     return
-                
+
                 else:
                     x, xSide, y, ySide = False, None, False, None
-            
+
                     if bit == 1 or bit == 7 or bit == 3: # left
                         x, xSide = True, 1
 
@@ -487,7 +487,7 @@ class KPEditorDoodad(KPEditorItem):
 
 
         KPEditorItem.mousePressEvent(self, event)
-    
+
 
     def _tryAndResize(self, obj, axisIndex, mousePosition, stationarySide):
 
@@ -495,9 +495,9 @@ class KPEditorDoodad(KPEditorItem):
 
         if newSize < 10:
             return False
-    
+
         obj.size[axisIndex] = newSize
-        
+
         return True
 
 
@@ -523,7 +523,7 @@ class KPEditorDoodad(KPEditorItem):
 
         angle = math.degrees(rads)
 
-        
+
         # Move this to ItemChange() or something at some point.
         finalAngle = angle - origAngle + oldAngle
 
@@ -566,7 +566,7 @@ class KPEditorDoodad(KPEditorItem):
 
         else:
             KPEditorItem.mouseMoveEvent(self, event)
-    
+
 
     def mouseReleaseEvent(self, event):
         if self.resizing and event.button() == Qt.LeftButton:

@@ -23,7 +23,7 @@ class KPPathNodeList(QtGui.QWidget):
             if role == Qt.DecorationRole:
                 if isinstance(self.associate, KPNode):
                     node = self.associate
-        
+
                     if node.level:
                         return KP.icon('BlackLevel')
                     elif node.mapChange != None:
@@ -102,7 +102,7 @@ class KPPathNodeList(QtGui.QWidget):
         self.setLayout(self.layout)
 
         self.lastTileset = ''
-    
+
     def reset(self):
         self.tree.clear()
 
@@ -125,7 +125,7 @@ class KPPathNodeList(QtGui.QWidget):
 
         if KP.app.keyboardModifiers() & Qt.ControlModifier:
             layer = currentItem.layer
-            
+
             KP.mainWindow.scene.clearSelection()
             listToUse = layer.objects + layer.doodads
 
@@ -209,7 +209,7 @@ class KPPathNodeList(QtGui.QWidget):
         if layer.folder != '':
             folder = layer.folder.split('/')
 
-            # Remove the last empty 
+            # Remove the last empty
             folder.pop()
 
             myFolder = None
@@ -341,7 +341,7 @@ class KPLayerList(QtGui.QWidget):
         self.listView.setModel(self.model)
         self.listView.clicked.connect(self.handleRowChanged)
         self.setButtonStates()
-    
+
     def setupToolbar(self, tb):
         self.actAddTile = tb.addAction(KP.icon('LayerNewTile'), 'Add Tile Layer', self.addTileLayer)
         self.actAddDoodad = tb.addAction(KP.icon('LayerNewObjects'), 'Add Doodad Layer', self.addDoodadLayer)
@@ -349,7 +349,7 @@ class KPLayerList(QtGui.QWidget):
         self.actMoveUp = tb.addAction(QtGui.QIcon(), 'Move Up', self.moveUp)
         self.actMoveDown = tb.addAction(QtGui.QIcon(), 'Move Down', self.moveDown)
         self.actPlayPause = tb.addAction(KP.icon('APlay'), 'Play', self.toggleAnimatingScene)
-    
+
     def toggleAnimatingScene(self):
         self.playPaused.emit()
 
@@ -386,7 +386,7 @@ class KPLayerList(QtGui.QWidget):
             layer = KP.map.layers[index]
 
             if (index != -1) and (len(KP.map.layers) > 1) and (not isinstance(layer, KPPathLayer)):
-                
+
                 KP.mainWindow.scene.clearSelection()
                 listToUse = layer.objects
 
@@ -435,7 +435,7 @@ class KPLayerList(QtGui.QWidget):
         KP.mainWindow.editor.viewport().update()
 
     def moveDown(self):
-        index = self.selectedLayerIndex()       
+        index = self.selectedLayerIndex()
         KP.map.moveLayer(index, index + 2)
         self.setButtonStates()
         KP.mainWindow.editor.viewport().update()
@@ -476,7 +476,7 @@ class KPDoodadSelector(QtGui.QWidget):
         self.listView.setIconSize(QtCore.QSize(100, 100))
         self.listView.setSpacing(4)
 
-    
+
         self.toolbar = QtGui.QToolBar()
 
         self.addDoodadButton = self.toolbar.addAction(QtGui.QIcon(), 'Add', self.addDoodadFromFile)
@@ -488,7 +488,7 @@ class KPDoodadSelector(QtGui.QWidget):
         self.layout.addWidget(self.listView)
 
         self.setLayout(self.layout)
-    
+
     def updateModel(self):
         self.model = KP.map.doodadModel
         self.listView.setModel(self.model)
@@ -530,7 +530,7 @@ class KPDoodadSelector(QtGui.QWidget):
 
     def addDoodadFromFile(self):
         """Asks the user for files to load in as doodads."""
-        
+
         files = QtGui.QFileDialog.getOpenFileNames(self,
                 "Choose an image or several image files.", "",
                 "Images (*.png *.jpeg *.jpg *.bmp)")
@@ -550,7 +550,7 @@ class KPDoodadSelector(QtGui.QWidget):
         item = self.selectedDoodad()
         if item:
             KP.map.removeDoodad(item)
-    
+
     def setButtonStates(self):
         index = self.selectedDoodadIndex()
 
@@ -618,7 +618,7 @@ class KPObjectSelector(QtGui.QWidget):
         self.listView.clicked.connect(self.handleObjReplace)
         self.sorterMenu.aboutToShow.connect(self.fixUpMenuSize)
         self.sorterMenu.triggered.connect(self.toggleTopLevel)
-    
+
     def beginUsingMenu(self):
         if self.menuSetup: return
 
@@ -631,7 +631,7 @@ class KPObjectSelector(QtGui.QWidget):
 
     def fixUpMenuSize(self):
         self.sorterMenu.setFixedWidth(self.sorterButton.width())
-    
+
     def currentSelectedObject(self):
         """Returns the currently selected object reference, for painting purposes."""
 
@@ -756,7 +756,7 @@ class KPAnmOptions(QtGui.QWidget):
                 print type(thong)
 
         def setEditorData(self, editor, index):
-            
+
             if isinstance(editor, QtGui.QDoubleSpinBox):
                 thing = index.data(Qt.EditRole).toFloat()[0]
 
@@ -770,9 +770,9 @@ class KPAnmOptions(QtGui.QWidget):
             else:
                 print "editor is something else!"
                 print editor
-            
+
         def setModelData(self, editor, model, index):
-            
+
             if isinstance(editor, QtGui.QDoubleSpinBox):
                 editor.interpretText()
                 value = editor.value()
@@ -886,7 +886,7 @@ class KPAnmOptions(QtGui.QWidget):
         self.doodadList = doodadList
         self._doodadRef = doodadList[0]
         doodad = self._doodadRef()
-        
+
         for row in doodad.animations:
 
             # Fix for backwards compatibility
@@ -908,7 +908,7 @@ class KPAnmOptions(QtGui.QWidget):
             itemD.setData(row[6], QtCore.Qt.EditRole)
             itemE.setData(row[7], QtCore.Qt.EditRole)
 
-            self.model.appendRow([QtGui.QStandardItem(row[0]), QtGui.QStandardItem(row[1]), 
+            self.model.appendRow([QtGui.QStandardItem(row[0]), QtGui.QStandardItem(row[1]),
                                   itemA, QtGui.QStandardItem(row[3]), itemB, itemC, itemD, itemE])
 
         self.update()
@@ -930,8 +930,8 @@ class KPAnmOptions(QtGui.QWidget):
         itemD.setData(0, QtCore.Qt.EditRole)
         itemE.setData(0, QtCore.Qt.EditRole)
 
-        self.model.appendRow([QtGui.QStandardItem("Contiguous"), QtGui.QStandardItem("Linear"), 
-                              itemA, QtGui.QStandardItem("X Position"), 
+        self.model.appendRow([QtGui.QStandardItem("Contiguous"), QtGui.QStandardItem("Linear"),
+                              itemA, QtGui.QStandardItem("X Position"),
                               itemB, itemC, itemD, itemE])
 
     def remAnmItem(self):
@@ -947,7 +947,7 @@ class KPAnmOptions(QtGui.QWidget):
     def selectPreset(self):
         from dialogs import KPAnimationPresetChooser
         presetList = KPAnimationPresetChooser.run()
-        
+
         if presetList is None: return
         if presetList is []: return
         if presetList is [[]]: return
@@ -977,7 +977,7 @@ class KPAnmOptions(QtGui.QWidget):
         from dialogs import getTextDialog
 
         name = getTextDialog()
-        if name == None: 
+        if name == None:
             print 'Returning'
             return
 
@@ -991,7 +991,7 @@ class KPAnmOptions(QtGui.QWidget):
                     data = str(item.data(Qt.EditRole).toString())
                 else:
                     data = item.data(Qt.EditRole).toFloat()[0]
-                    
+
                 listrow.append(data)
 
             preset.append(listrow)
@@ -1018,7 +1018,7 @@ class KPAnmOptions(QtGui.QWidget):
     def resolveAnmList(self):
         if self.doodadList == None:
             return
-        
+
         anmList = []
         model = self.model
         rows = model.rowCount()
@@ -1181,7 +1181,7 @@ class KPMainWindow(QtGui.QMainWindow):
         self.pathNodeList = KPPathNodeList()
         self.pathNodeDock = QtGui.QDockWidget('Path/Node Layers')
         self.pathNodeDock.setWidget(self.pathNodeList)
-        self.pathNodeList.selectedLayerChanged.connect(self.handleSelectedPathNodeLayerChanged)     
+        self.pathNodeList.selectedLayerChanged.connect(self.handleSelectedPathNodeLayerChanged)
 
         self.objectSelector = KPObjectSelector()
         self.objectSelector.objChanged.connect(self.handleSelectedObjectChanged)
@@ -1211,7 +1211,7 @@ class KPMainWindow(QtGui.QMainWindow):
         self.addDockWidget(Qt.LeftDockWidgetArea, self.objectSelectorDock)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.doodadSelectorDock)
         self.addDockWidget(Qt.BottomDockWidgetArea, self.anmOptsDock)
-    
+
     def refreshMapState(self):
         self.layerList.updateModel()
         self.doodadSelector.updateModel()
@@ -1221,7 +1221,7 @@ class KPMainWindow(QtGui.QMainWindow):
         self.editor.assignNewScene(self.scene)
         self.anmPopulate()
         self.updateTitlebar()
-    
+
     def updateTitlebar(self):
         path = KP.map.filePath
         if path is None:
@@ -1246,7 +1246,7 @@ class KPMainWindow(QtGui.QMainWindow):
             sel.clearSelection()
 
         self.scene.setCurrentLayer(layer)
-        
+
         showObjects, showDoodads = False, False
 
         if isinstance(layer, KPDoodadLayer):
@@ -1270,7 +1270,7 @@ class KPMainWindow(QtGui.QMainWindow):
             sel.clearSelection()
 
         self.scene.setCurrentLayer(layer)
-        
+
         KP.loadTileset(layer.tileset)
 
         self.objectSelector.setTileset(KP.tileset(layer.tileset))
@@ -1397,7 +1397,7 @@ class KPMainWindow(QtGui.QMainWindow):
             if item == "Current Window":
                 ScreenshotImage = QtGui.QImage(self.editor.width(), self.editor.height(), QtGui.QImage.Format_ARGB32)
                 ScreenshotImage.fill(QtCore.Qt.transparent)
-                
+
                 RenderPainter = QtGui.QPainter(ScreenshotImage)
                 self.editor.render(RenderPainter, QtCore.QRectF(0,0,self.editor.width(),  self.editor.height()), QtCore.QRect(QtCore.QPoint(0,0), QtCore.QSize(self.editor.width(),  self.editor.height())))
                 RenderPainter.end()
@@ -1406,11 +1406,11 @@ class KPMainWindow(QtGui.QMainWindow):
 
                 ScreenshotImage = QtGui.QImage(self.scene.itemsBoundingRect().width()+100, self.scene.itemsBoundingRect().height()+100, QtGui.QImage.Format_ARGB32)
                 ScreenshotImage.fill(QtCore.Qt.transparent)
-                
+
                 RenderPainter = QtGui.QPainter(ScreenshotImage)
                 self.scene.render(RenderPainter, QtCore.QRectF(ScreenshotImage.rect()), self.scene.itemsBoundingRect().adjusted(-50.0, -50.0, 50.0, 50.0))
                 RenderPainter.end()
-               
+
             ScreenshotImage.save(fn, 'PNG', 50)
 
 
@@ -1465,7 +1465,7 @@ class KPMainWindow(QtGui.QMainWindow):
         self.scene.clearSelection()
         for paper in self.clipboard:
             layer = paper._layerRef()
-            
+
             if isinstance(paper, KPEditorObject):
                 co = copy.deepcopy(paper._objRef())
 
@@ -1507,7 +1507,7 @@ class KPMainWindow(QtGui.QMainWindow):
             filehandler = open(path)
             data = filehandler.read()
             filehandler.close()
-            
+
             KP.knownTilesets[name] = {'path': path}
 
     @QtCore.pyqtSlot()
@@ -1579,7 +1579,7 @@ class KPMainWindow(QtGui.QMainWindow):
             if presetList == None:
                 presetList = []
                 presets = []
-            
+
             presetList.extend(loaded[0])
             presets.extend(loaded[1])
 
@@ -1588,7 +1588,7 @@ class KPMainWindow(QtGui.QMainWindow):
 
     @QtCore.pyqtSlot()
     def saveAnimPresets(self):
-        
+
         settings = KP.app.settings
         import mapfile
 
@@ -1655,13 +1655,13 @@ class KPMainWindow(QtGui.QMainWindow):
         """Handle zooming in"""
         self.ZoomLevel += 1
         self.ZoomTo()
-    
+
     @QtCore.pyqtSlot()
     def ZoomOut(self):
         """Handle zooming out"""
         self.ZoomLevel -= 1
         self.ZoomTo()
-    
+
     def ZoomTo(self):
         """Zoom to a specific level"""
         tr = QtGui.QTransform()
@@ -1673,18 +1673,18 @@ class KPMainWindow(QtGui.QMainWindow):
 
 
         self.editor.setTransform(tr)
-        
+
         self.wb.setEnabled(self.ZoomLevel != 8)
         self.wc.setEnabled(self.ZoomLevel != 0)
         self.wd.setEnabled(self.ZoomLevel != 5)
-        
+
         self.scene.update()
 
     @QtCore.pyqtSlot()
     def showGrid(self):
         """Handle toggling of the grid being showed"""
         # settings.setValue('GridEnabled', checked)
-        
+
         if self.scene.grid == True:
             self.scene.grid = False
             self.wa.setChecked(False)

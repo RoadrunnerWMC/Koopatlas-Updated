@@ -56,7 +56,7 @@ class KPTileObject(object):
             beforeRepeat = inRepeat.pop(0)
 
         if (self.wrap == 1) or (self.wrap == 3) or (self.wrap == 4):
-            afterRepeat = inRepeat.pop()    
+            afterRepeat = inRepeat.pop()
 
         bC, iC, aC = len(beforeRepeat), len(inRepeat), len(afterRepeat)
 
@@ -87,7 +87,7 @@ class KPTileObject(object):
             beforeRepeat = inRepeat.pop(0)
 
         if (self.wrap == 1) or (self.wrap == 2) or (self.wrap == 7):
-            afterRepeat = inRepeat.pop()    
+            afterRepeat = inRepeat.pop()
 
         bC, iC, aC = len(beforeRepeat), len(inRepeat), len(afterRepeat)
 
@@ -205,7 +205,7 @@ class KPGroupModel(QtCore.QAbstractListModel):
 
 
     def data(self, index, role=Qt.DisplayRole):
-        # Should return the contents of a row when asked for the index 
+        # Should return the contents of a row when asked for the index
         #
         # Can be optimized by only dealing with the roles we need prior
         # to lookup: Role order is 13, 6, 7, 9, 10, 1, 0, 8
@@ -321,7 +321,7 @@ class KPGroupItem(object):
                     return group.getItem(index, depth)
 
 
-    def calculateIndices(self, index):      
+    def calculateIndices(self, index):
         self.startIndex = index
         self.endIndex = self.objectCount() + index
 
@@ -431,7 +431,7 @@ class KPTileset(object):
         # Some fairly ugly code, in an attempt to make it run faster
         dest_setPixel = dest.setPixel
         _xrange = xrange
-        
+
         tex = bytearray(tex)
 
         i = 0
@@ -470,12 +470,12 @@ class KPTileset(object):
 
         meta = []
         for i in xrange(len(metadata)/5):
-            meta.append(struct.unpack_from('>H3B', metadata, i * 5))                                    
+            meta.append(struct.unpack_from('>H3B', metadata, i * 5))
 
         tilelist = []
         rowlist = []
 
-        for entry in meta:  
+        for entry in meta:
             offset = entry[0]
             row = 0
 
@@ -559,7 +559,7 @@ class KPTileset(object):
 
 
     def getObjectIcon(self, index):
-        '''Takes an object index or a KPTileObject and returns a QPixmap for the 
+        '''Takes an object index or a KPTileObject and returns a QPixmap for the
         object, or False if failed.'''
 
         if hasattr(index, 'icon'):
@@ -574,7 +574,7 @@ class KPTileset(object):
 
 
     def getObjectRender(self, index, size):
-        '''Takes an object index or a KPTileObject and returns a render map for the 
+        '''Takes an object index or a KPTileObject and returns a render map for the
         object, or False if failed.'''
 
         if hasattr(index, 'render'):

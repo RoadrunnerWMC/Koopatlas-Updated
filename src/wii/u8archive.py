@@ -8,7 +8,7 @@ class WiiArchiveU8:
     class ReadInfo:
         # startPos, stringTable, currentNode
         pass
-    
+
     class WriteInfo:
         # startPos, stringTableBuilder, currentRecursionLevel,
         # currentNode, nextDataOffset
@@ -46,13 +46,13 @@ class WiiArchiveU8:
 
             stringTableLength = fstSize - (rootNodeLastChild * 12)
             info.stringTable = handle.read(stringTableLength)
-            
+
             # now read the root node
             handle.seek(savePos)
 
             info.currentNode = 1
             self._readDir(handle, self.root, rootNodeLastChild, info)
-    
+
     def _readDir(self, handle, directory, lastChild, info):
         # read every node in this directory
         while info.currentNode < lastChild:
@@ -184,12 +184,12 @@ class WiiArchiveU8:
         if node.isDirectory():
             for obj in node.children:
                 self._writeNodeData(handle, obj)
-            
+
         elif node.isFile():
             size = len(node.data)
             handle.write(node.data)
             handle.write("\0" * (alignUp(size, 0x20) - size))
-    
+
 
     def resolvePath(self, *args):
         return self.root.resolvePath(*args)

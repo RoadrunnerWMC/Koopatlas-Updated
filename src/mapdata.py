@@ -16,7 +16,7 @@ class KPLayer(object):
     def __init__(self):
         self.name = ''
         self._visible = True
-    
+
     @property
     def visible(self):
         return self._visible
@@ -28,7 +28,7 @@ class KPLayer(object):
         self._visible = value
 
         self._visibilityChanged(value)
-    
+
     def _visibilityChanged(self, value):
         pass
 
@@ -55,7 +55,7 @@ class KPObject(object):
     def _load(self, mapObj, src):
         self.kindObj = KP.tileset(self.tileset).objects[self.kind]
         self.updateCache()
-    
+
     def __init__(self):
         self.position = (0,0)
         self.size = (1,1)
@@ -64,7 +64,7 @@ class KPObject(object):
         self.cache = []
         self.tileset = None
         self.qtItem = None
-    
+
     def updateCache(self):
         self.cache = self.kindObj.render(self.size)
 
@@ -87,13 +87,13 @@ class KPTileLayer(KPLayer):
         self.updateCache()
 
         self.icon = KP.icon('LayerTile')
-    
+
     def _visibilityChanged(self, value):
         for obj in self.objects:
             item = obj.qtItem
             if item:
                 item.setVisible(value)
-    
+
     def updateCache(self):
         if len(self.objects) == 0:
             if len(self.cache) != 0:
@@ -191,7 +191,7 @@ class KPPathTileLayer(KPLayer):
             item = obj.qtItem
             if item:
                 item.setVisible(value)
-    
+
         for obj in self.doodads:
             item = obj.qtItem
             if item:
@@ -263,7 +263,7 @@ class KPPathTileLayer(KPLayer):
                     destRow[x] = tile
                     x += 1
                 y += 1
-    
+
     def setTileset(self, tileset):
         self.tileset = tileset
 
@@ -283,7 +283,7 @@ class KPDoodad(object):
 
     def _dump(self, mapObj, dest):
         dest['sourceRef'] = mapObj.refDoodad(self.source)
-    
+
     def _load(self, mapObj, src):
         self.source = mapObj.derefDoodad(src['sourceRef'])
 
@@ -395,7 +395,7 @@ class KPDoodad(object):
             # Wii goes at 60 frames per second
             Timeline.delayTimer.setInterval(Delay/60.0*1000)
             Timeline.offsetTimer.setInterval(DelayOffset/60.0*1000)
-            Timeline.setDuration(Frames/60.0*1000) 
+            Timeline.setDuration(Frames/60.0*1000)
 
             timelineList.append(Timeline)
             myTimelines.append(Timeline)
@@ -415,7 +415,7 @@ class KPDoodadLayer(KPLayer):
         self.objects = []
 
         self.icon = KP.icon('LayerObjects')
-    
+
     def _visibilityChanged(self, value):
         for obj in self.objects:
             item = obj.qtItem
@@ -424,14 +424,14 @@ class KPDoodadLayer(KPLayer):
 
 
 @mapfile.dumpable('node')
-class KPNode(object):  
+class KPNode(object):
     __dump_attribs__ = (
             'position', 'actions', 'level', 'hasSecret', 'mapChange',
             'transition', 'mapID', 'foreignID', 'worldDefID')
 
     def _dump(self, mapObj, dest):
         dest['exitIDs'] = map(mapObj.refPath, self.exits)
-    
+
     def _load(self, mapObj, src):
         self.exitIDs = src['exitIDs']
         # The exits array will be created by KPPathLayer._load after the
@@ -448,7 +448,7 @@ class KPNode(object):
         self.mapID = None
         self.foreignID = None
         self.worldDefID = None
-    
+
     def isStop(self):
         return True if (self.level or self.mapChange or len(self.exits) != 2) else False
 
@@ -461,7 +461,7 @@ class KPPath(object):
         dest['startNodeLink'] = mapObj.refNode(self._startNodeRef())
         dest['endNodeLink'] = mapObj.refNode(self._endNodeRef())
         # dest['linkedLayer'] = mapObj.refLayer(self.linkedLayer)
-    
+
     def _load(self, mapObj, src):
         self._startNodeRef = weakref.ref(mapObj.derefNode(src['startNodeLink']))
         self._endNodeRef = weakref.ref(mapObj.derefNode(src['endNodeLink']))
@@ -528,14 +528,14 @@ class KPPathLayer(KPLayer):
         self.paths = []
 
         self.icon = KP.icon('LayerPath')
-    
+
     def _visibilityChanged(self, value):
         for objList in (self.nodes, self.paths):
             for obj in objList:
                 item = obj.qtItem
                 if item:
                     item.setVisible(value)
-    
+
     def setActivated(self, value):
         # return
         KPLayer.setActivated(self, value, self.nodes)
@@ -664,7 +664,7 @@ class KPMap(object):
         def flags(self, index):
             if not index.isValid():
                 return Qt.ItemIsEnabled
-            
+
             return Qt.ItemIsEditable | Qt.ItemIsUserCheckable \
                     | QtCore.QAbstractListModel.flags(self, index)
 
@@ -706,7 +706,7 @@ class KPMap(object):
 
     def appendLayer(self, layer):
         return self.insertLayer(len(self.layers), layer)
-    
+
     def insertLayer(self, index, layer):
         self.layerModel.beginInsertRows(QtCore.QModelIndex(), index, index)
         self.layers.insert(index, layer)
@@ -745,7 +745,7 @@ class KPMap(object):
         self.layerModel.beginRemoveRows(QtCore.QModelIndex(), index, index)
         del self.layers[index]
         self.layerModel.endRemoveRows()
-    
+
 
     # DOODADS
     class DoodadModel(QtCore.QAbstractListModel):
@@ -784,14 +784,14 @@ class KPMap(object):
 
     def addDoodad(self, title, image):
         doodad = (title, image)
-        
+
         index = len(self.doodadDefinitions)
         self.doodadModel.beginInsertRows(QtCore.QModelIndex(), index, index)
         self.doodadDefinitions.append(doodad)
         self.doodadModel.endInsertRows()
 
         return doodad
-    
+
     def removeDoodad(self, doodad):
         if doodad not in self.doodadDefinitions:
             raise ValueError

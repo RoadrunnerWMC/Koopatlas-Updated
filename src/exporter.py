@@ -25,13 +25,13 @@ def RGBA8Encode(tex):
         for xtile in xrange(0, padW, 4):
             for ypixel in xrange(ytile, ytile + 4):
                 for xpixel in xrange(xtile, xtile + 4):
-                    
+
                     if xpixel >= w or ypixel >= h:
                         sspack(destBuffer, offset, 0)
                         sspack(destBuffer, offset+32, 0)
                     else:
                         pixel = tex.pixel(xpixel, ypixel)
-                        
+
                         sspack(destBuffer, offset, pixel>>16)
                         sspack(destBuffer, offset+32, pixel&0xFFFF)
                     offset += 2
@@ -90,7 +90,7 @@ class KPMapExporter:
     class LayerExporter:
         def __init__(self, layer):
             self.layer = layer
-    
+
     class TileLayerExporter(LayerExporter):
         def buildSectors(self, sectors, indices):
             # we'll use the cache held by the layer: why reinvent the wheel?
@@ -498,7 +498,7 @@ class KPMapExporter:
         texDataStartOffset = texHeaderStartOffset + ((len(textures) + len(tilesets)) * 0x20)
 
         currentTexOffset = texDataStartOffset
-        
+
         imageData = []
 
         struct.pack_into('>ii', data, tsInfoOffsetInHeader, len(tilesets), len(data))
@@ -529,7 +529,7 @@ class KPMapExporter:
 
         # first off, build a map of unlocks
         unlockLists = {}
-        
+
         from unlock import stringifyUnlockData
 
         for path in self.map.pathLayer.paths:
