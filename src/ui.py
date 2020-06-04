@@ -786,7 +786,7 @@ class KPAnmOptions(QtWidgets.QWidget):
                 editor.setValue(thing)
 
             elif isinstance(editor, QtWidgets.QComboBox):
-                thing = index.data(Qt.DisplayRole).toString()
+                thing = index.data(Qt.DisplayRole)
 
                 editor.setCurrentIndex(editor.findText(thing))
 
@@ -1011,7 +1011,7 @@ class KPAnmOptions(QtWidgets.QWidget):
             for column in range(8):
                 item = self.model.item(row, column)
                 if (column == 0) or (column == 1) or (column == 2):
-                    data = str(item.data(Qt.EditRole).toString())
+                    data = str(item.data(Qt.EditRole))
                 else:
                     data = item.data(Qt.EditRole).toFloat()[0]
 
@@ -1051,7 +1051,7 @@ class KPAnmOptions(QtWidgets.QWidget):
 
             for item in range(8):
                 index = model.index(x, item)
-                data = model.data(index, Qt.EditRole).toString()
+                data = model.data(index, Qt.EditRole)
                 if data.toFloat()[1]:
                     data = data.toFloat()[0]
                 else:
