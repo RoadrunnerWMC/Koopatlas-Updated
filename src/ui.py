@@ -1612,11 +1612,11 @@ class KPMainWindow(QtWidgets.QMainWindow):
             presetList = mapfile.load(settings.value('AnimationPresets'))
             presets = mapfile.load(settings.value('AnimationPresetData'))
         else:
-            msg._exec()
+            msg.exec_()
             return
 
         if len(presetList) == 0:
-            msg._exec()
+            msg.exec_()
             return
 
         path = QFileDialog_getSaveFileName(self,
