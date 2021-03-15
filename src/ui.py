@@ -1480,9 +1480,9 @@ class KPMainWindow(QtWidgets.QMainWindow):
     def paste(self):
         self.scene.clearSelection()
         for paper in self.clipboard:
-            layer = paper._layerRef()
 
             if isinstance(paper, KPEditorObject):
+                layer = paper._layerRef()
                 co = copy.deepcopy(paper._objRef())
 
                 co.updateCache()
@@ -1494,6 +1494,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
                 q.setSelected(True)
 
             if isinstance(paper, KPEditorDoodad):
+                layer = paper._layerRef()
                 cd = copy.copy(paper._doodadRef())
 
                 layer.objects.append(cd)
