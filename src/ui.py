@@ -133,12 +133,11 @@ class KPPathNodeList(QtWidgets.QWidget):
         self.selectTileset = tb.addAction(KP.icon('LayerNewTile'), 'Select Tileset', self.setTileset)
 
     def handleRowChanged(self, currentItem, previousItem):
-        try:
-            self.selectedLayerChanged.emit(currentItem.layer)
+        self.selectedLayerChanged.emit(currentItem.layer)
+        if previousItem is not None:
             previousItem.associate.qtItem.setLayerSelected(False)
+        if currentItem is not None:
             currentItem.associate.qtItem.setLayerSelected(True)
-        except:
-            pass
 
         if KP.app.keyboardModifiers() & Qt.ControlModifier:
             layer = currentItem.layer
