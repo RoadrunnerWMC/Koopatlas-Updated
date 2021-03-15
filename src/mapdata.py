@@ -270,7 +270,7 @@ class KPPathTileLayer(KPLayer):
     def setTileset(self, tileset):
         self.tileset = tileset
 
-        tsObjects = KP.tileset(tileset)
+        tsObjects = KP.tileset(tileset).objects
 
         for obj in self.objects:
             obj.tileset = tileset
