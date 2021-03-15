@@ -31,7 +31,7 @@ MAC_BUNDLE_IDENTIFIER = 'com.newerteam.koopatlas'
 SCRIPT_FILE = 'koopatlas.py'
 DATA_FOLDERS = ['Resources', 'Tilesets']
 DATA_FILES = ['readme.md', 'LICENSE']
-EXTRA_IMPORTS = ['src/common.py']
+EXTRA_IMPORT_PATHS = ['src']
 
 EXCLUDE_SELECT = True
 EXCLUDE_THREADING = True
@@ -230,6 +230,9 @@ elif sys.platform == 'darwin':
     if MAC_ICON:
         args.append('--icon=' + os.path.abspath(MAC_ICON))
     args.append('--osx-bundle-identifier=' + MAC_BUNDLE_IDENTIFIER)
+
+if EXTRA_IMPORT_PATHS:
+    args.append('--paths=' + ':'.join(EXTRA_IMPORT_PATHS))
 
 for e in excludes:
     args.append('--exclude-module=' + e)
