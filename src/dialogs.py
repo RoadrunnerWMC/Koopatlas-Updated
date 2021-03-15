@@ -11,7 +11,7 @@ class KPTilesetChooserDialog(QtWidgets.QDialog):
         # can't be assed to create a model
         self.chooser = QtWidgets.QListWidget()
 
-        self.nameList = KP.knownTilesets.keys()
+        self.nameList = list(KP.knownTilesets.keys())
         self.nameList.sort()
 
         # this piece of the API is kinda shitty but whatever
