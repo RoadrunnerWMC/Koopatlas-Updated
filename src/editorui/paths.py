@@ -2,6 +2,12 @@ from common import *
 from .editorcommon import *
 import weakref
 
+PathAnimationList = ["Walk", "WalkSand", "WalkSnow", "WalkWater",
+                     "Jump", "JumpSand", "JumpSnow", "JumpWater",
+                     "Ladder", "LadderLeft", "LadderRight", "Fall",
+                     "Swim", "Run", "Pipe", "Door",
+                     'TJumped', 'Enter Cave Up', 'Reserved 18', 'Invisible']
+
 class KPEditorNode(KPEditorItem):
     SNAP_TO = (12,12)
 
@@ -478,18 +484,12 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
                 Layout = QtWidgets.QGridLayout()
 
                 # Make an exclusive button group for our animations.
-                AnimationList = ["Walk", "WalkSand", "WalkSnow", "WalkWater",
-                                 "Jump", "JumpSand", "JumpSnow", "JumpWater",
-                                 "Ladder", "LadderLeft", "LadderRight", "Fall",
-                                 "Swim", "Run", "Pipe", "Door",
-                                 'TJumped', 'Enter Cave Up', 'Reserved 18', 'Invisible']
-
                 self.ExclusiveButtons = QtWidgets.QButtonGroup()
 
                 i = 0
                 j = 1
                 id = 0
-                for anim in AnimationList:
+                for anim in PathAnimationList:
                     if id < 16:
                         newButton = QtWidgets.QPushButton(QtGui.QIcon("Resources/Anm/" + anim), "")
                     else:
