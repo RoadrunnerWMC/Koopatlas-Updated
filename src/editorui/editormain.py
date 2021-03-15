@@ -602,7 +602,7 @@ class KPEditorWidget(QtWidgets.QGraphicsView):
             selected = self.scene().selectedItems()
 
             for selItem in selected:
-                if isinstance(item, KPEditorNode) and selItem != item:
+                if isinstance(selItem, KPEditorNode) and selItem != item:
                     sourceItem = selItem
                     sourceNode = selItem._nodeRef()
                     break
