@@ -543,9 +543,10 @@ class KPEditorWidget(QtWidgets.QGraphicsView):
                         return
 
                     path = KPPath(sourceNode, destNode)
+                    if not KP.mainWindow.pathNodeList.addLayer(path, dialog):
+                        return
 
                     KP.map.pathLayer.paths.append(path)
-                    KP.mainWindow.pathNodeList.addLayer(path, dialog)
 
                     item = KPEditorPath(path)
                     self.scene().addItem(item)
@@ -559,8 +560,11 @@ class KPEditorWidget(QtWidgets.QGraphicsView):
 
                     node = KPNode()
                     node.position = (x - 12, y - 12)
+
+                    if not KP.mainWindow.pathNodeList.addLayer(node, dialog):
+                        return
+
                     KP.map.pathLayer.nodes.append(node)
-                    KP.mainWindow.pathNodeList.addLayer(node, dialog)
 
                     # Start node => Original path => New node => New path => End node
 
@@ -580,8 +584,9 @@ class KPEditorWidget(QtWidgets.QGraphicsView):
                     self.paintBeginPosition = (x - 12, y - 12)
 
                     newPath = KPPath(node, endNode, origPath)
+                    if not KP.mainWindow.pathNodeList.addLayer(newPath, dialog):
+                        return
                     KP.map.pathLayer.paths.append(newPath)
-                    KP.mainWindow.pathNodeList.addLayer(newPath, dialog)
 
                     pathItem = KPEditorPath(newPath)
                     self.scene().addItem(pathItem)
@@ -591,8 +596,9 @@ class KPEditorWidget(QtWidgets.QGraphicsView):
             # Paint a new node
             node = KPNode()
             node.position = (x - 12, y - 12)
+            if not KP.mainWindow.pathNodeList.addLayer(node, dialog):
+                return
             KP.map.pathLayer.nodes.append(node)
-            KP.mainWindow.pathNodeList.addLayer(node, dialog)
 
             item = KPEditorNode(node)
             self.scene().addItem(item)
@@ -617,8 +623,10 @@ class KPEditorWidget(QtWidgets.QGraphicsView):
                 # There, now you can draw paths easily in a row.
                 path = KPPath(sourceNode, node)
 
+                if not KP.mainWindow.pathNodeList.addLayer(path, dialog):
+                    return
+
                 KP.map.pathLayer.paths.append(path)
-                KP.mainWindow.pathNodeList.addLayer(path, dialog)
 
                 pathItem = KPEditorPath(path)
                 self.scene().addItem(pathItem)

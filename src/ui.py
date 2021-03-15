@@ -194,30 +194,26 @@ class KPPathNodeList(QtWidgets.QWidget):
 
         layer.setTileset(tilesetName)
 
-    def addLayer(self, associate, dialog):
-        layer = KPPathTileLayer(associate)
+    def addLayer(self, associate, dialog, tileset=None):
         name = 'path' if isinstance(associate, KPPath) else 'node'
 
         from dialogs import KPTilesetChooserDialog
 
-        if dialog:
-            tilesetName = None
-            while tilesetName is None:
-                tilesetName = KPTilesetChooserDialog.run('Choose a tileset for the %s layer' % name)
+        if tileset:
+            self.lastTileset = tileset
+        elif dialog or not self.lastTileset:
+            tilesetName = KPTilesetChooserDialog.run('Choose a tileset for the %s layer' % name)
+            if tilesetName is None:
+                return False
 
             self.lastTileset = tilesetName
 
-        else:
-            if self.lastTileset == '':
-                tilesetName = None
-                while tilesetName is None:
-                    tilesetName = KPTilesetChooserDialog.run('Choose a tileset for the %s layer' % name)
-
-                self.lastTileset = tilesetName
-
+        layer = KPPathTileLayer(associate)
         layer.tileset = self.lastTileset
 
         item = self.KPPathNodeItem(self.tree, layer, associate)
+
+        return True
 
     def loadLayer(self, layer):
 
@@ -268,7 +264,7 @@ class KPPathNodeList(QtWidgets.QWidget):
 
         return None
 
-    def removeLayer(self, associate):
+    def findItemFor(self, associate):
         itemList = QtWidgets.QTreeWidgetItemIterator(self.tree, QtWidgets.QTreeWidgetItemIterator.NotEditable)
 
         while itemList.value():
@@ -278,15 +274,24 @@ class KPPathNodeList(QtWidgets.QWidget):
                 continue
 
             if item.associate == associate:
-                parent = item.parent()
-                if parent:
-                    parent.removeChild(item)
-                else:
-                    index = self.tree.indexFromItem(item).row()
-                    self.tree.takeTopLevelItem(self.tree.indexOfTopLevelItem(item))
-                return
+                return item
 
             itemList += 1
+
+    def findLayerFor(self, associate):
+        item = self.findItemFor(associate)
+        if item:
+            return item.layer
+
+    def removeLayer(self, associate):
+        item = self.findItemFor(associate)
+        if item:
+            parent = item.parent()
+            if parent:
+                parent.removeChild(item)
+            else:
+                index = self.tree.indexFromItem(item).row()
+                self.tree.takeTopLevelItem(self.tree.indexOfTopLevelItem(item))
 
     def getLayers(self):
         layerList = []

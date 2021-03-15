@@ -427,6 +427,8 @@ class KPEditorNode(KPEditorItem):
         if len(node.exits) == 2:
             # let's try to join the two!
             pathOne, pathTwo = node.exits
+            pathOneL = KP.mainWindow.pathNodeList.findLayerFor(pathOne)
+            pathTwoL = KP.mainWindow.pathNodeList.findLayerFor(pathTwo)
 
             start1, end1 = pathOne._startNodeRef(), pathOne._endNodeRef()
             start2, end2 = pathTwo._startNodeRef(), pathTwo._endNodeRef()
@@ -452,10 +454,17 @@ class KPEditorNode(KPEditorItem):
 
             if not nope:
                 joinedPath = KPPath(start, end, pathOne)
-                KP.mainWindow.pathNodeList.addLayer(joinedPath, False)
-                layer.paths.append(joinedPath)
-                item = KPEditorPath(joinedPath)
-                self.scene().addItem(item)
+
+                # if both paths have the same tileset, just use that one
+                if pathOneL.tileset == pathTwoL.tileset:
+                    tileset = pathOneL.tileset
+                else:
+                    tileset = None
+
+                if KP.mainWindow.pathNodeList.addLayer(joinedPath, False, tileset=tileset):
+                    layer.paths.append(joinedPath)
+                    item = KPEditorPath(joinedPath)
+                    self.scene().addItem(item)
 
             for path in (pathOne, pathTwo):
                 path.qtItem.remove(True)
