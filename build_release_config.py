@@ -1,3 +1,4 @@
+import os.path
 
 # Everything highly specific to Koopatlas is in this file, to make it
 # simpler to copypaste the build_release script across all of the
