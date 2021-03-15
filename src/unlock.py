@@ -35,7 +35,7 @@ def _parseUnlockBit(text):
         l = int(two)
         if w < 1 or w > 10:
             raise UnlockParseError('world must be between 1 to 10 inclusive; not %s' % w)
-        return ('level', w, l, (secret != None))
+        return ('level', w, l, (secret is not None))
 
     # ... or star coins?
     m = COINS_RE.match(text)
@@ -117,7 +117,7 @@ def _parseUnlockBit(text):
 
 
 def stringifyUnlockData(data):
-    if data == None:
+    if data is None:
         return ''
 
     kind = data[0]

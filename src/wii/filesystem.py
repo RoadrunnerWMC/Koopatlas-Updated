@@ -31,7 +31,7 @@ class WiiFSObject(object):
 
 
     def unlinkFromParent(self):
-        if self.parent == None:
+        if self.parent is None:
             return
 
         if self.parent.isDirectory():

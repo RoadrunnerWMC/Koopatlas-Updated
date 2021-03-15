@@ -48,7 +48,7 @@ class KPPathNodeList(QtWidgets.QWidget):
 
                     if node.level:
                         return KP.icon('BlackLevel')
-                    elif node.mapChange != None:
+                    elif node.mapChange is not None:
                         return KP.icon('Exit')
                     elif len(node.exits) != 2:
                         return KP.icon('Stop')
@@ -64,7 +64,7 @@ class KPPathNodeList(QtWidgets.QWidget):
 
                     if node.level:
                         return "Level: {0}".format(node.level)
-                    elif node.mapChange != None:
+                    elif node.mapChange is not None:
                         return "Exit: World {0}, entrance {1}".format(node.mapID, node.foreignID)
                     elif len(node.exits) == 3:
                         return "Node: 3-way Junction"
@@ -1005,7 +1005,7 @@ class KPAnmOptions(QtWidgets.QWidget):
         from dialogs import getTextDialog
 
         name = getTextDialog('Add to Presets', 'Enter a name for the preset:')
-        if name == None:
+        if name is None:
             print('Returning')
             return
 
@@ -1048,7 +1048,7 @@ class KPAnmOptions(QtWidgets.QWidget):
         settings.setValue('AnimationPresetData', mapfile.dump(presets))
 
     def resolveAnmList(self):
-        if self.doodadList == None:
+        if self.doodadList is None:
             return
 
         anmList = []
@@ -1073,7 +1073,7 @@ class KPAnmOptions(QtWidgets.QWidget):
             anmList.append(rowList)
 
         for doodad in self.doodadList:
-            if doodad() != None:
+            if doodad() is not None:
                 d = doodad()
 
                 d.animations = anmList
@@ -1600,7 +1600,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
                 presetList = mapfile.load(settings.value('AnimationPresets'))
                 presets = mapfile.load(settings.value('AnimationPresetData'))
 
-            if presetList == None:
+            if presetList is None:
                 presetList = []
                 presets = []
 

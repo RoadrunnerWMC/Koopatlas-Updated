@@ -404,7 +404,7 @@ class KPMapExporter:
                             data += zero32 # isNew
                             data += zero32 # Extra pointer
 
-                    elif node.worldDefID != None:
+                    elif node.worldDefID is not None:
                         # i i i b b b b: node type, isNew, Extra pointer, world def ID, padding
                         data += struct.pack('>iiibbbb', 4, 0, 0, node.worldDefID, 0, 0, 0)
 

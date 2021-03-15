@@ -149,11 +149,11 @@ class KPEditorNode(KPEditorItem):
         self.secretProxy = self.HiddenProxy(self.secret, self, -60, 26)
         self.secret.stateChanged.connect(self.secretChange)
 
-        if node.level != None:
+        if node.level is not None:
             self.world.setValue(node.level[0])
             self.stage.setValue(node.level[1])
 
-        if node.hasSecret != None:
+        if node.hasSecret is not None:
             self.secret.setChecked(node.hasSecret)
 
 
@@ -175,13 +175,13 @@ class KPEditorNode(KPEditorItem):
         self.worldDefIDProxy = self.HiddenProxy(self.worldDefID, self, 60, 24)
         self.worldDefID.valueChanged.connect(self.worldDefIDChange)
 
-        if node.foreignID != None:
+        if node.foreignID is not None:
             self.foreignID.setValue(node.foreignID)
 
-        if node.mapChange != None:
+        if node.mapChange is not None:
             self.mapChange.setText(node.mapChange)
 
-        if node.worldDefID != None:
+        if node.worldDefID is not None:
             self.worldDefID.setValue(node.worldDefID)
 
         self.transition.setCurrentIndex(node.transition)
@@ -322,7 +322,7 @@ class KPEditorNode(KPEditorItem):
             painter.drawPixmap(self._boundingRect.topLeft(), QtGui.QPixmap("Resources/BlackLevel.png"))
             selectionRect = self._boundingRect.adjusted(1,5,-1,-5)
 
-        elif node.mapChange != None:
+        elif node.mapChange is not None:
             painter.setBrush(QtGui.QColor(0, 0, 0, 0))
             painter.setPen(QtGui.QColor(0, 0, 0, 0))
             painter.drawPixmap(self._boundingRect.topLeft(), QtGui.QPixmap("Resources/ExitWorld.png"))
@@ -341,7 +341,7 @@ class KPEditorNode(KPEditorItem):
 
             selectionRect = self._boundingRect.adjusted(1,5,-1,-5)
 
-        elif node.worldDefID != None:
+        elif node.worldDefID is not None:
             painter.setBrush(QtGui.QColor(0, 0, 0, 0))
             painter.setPen(QtGui.QColor(0, 0, 0, 0))
             painter.drawPixmap(self._worldChangeRect.topLeft(), QtGui.QPixmap("Resources/WorldChange.png"))
@@ -387,7 +387,7 @@ class KPEditorNode(KPEditorItem):
                 self.stageProxy.hide()
                 self.secretProxy.hide()
 
-            if node.mapChange != None:
+            if node.mapChange is not None:
                 self.foreignID.show()
                 self.transition.show()
                 self.mapChange.show()
@@ -397,7 +397,7 @@ class KPEditorNode(KPEditorItem):
                 self.transition.hide()
                 self.mapChange.hide()
 
-            if node.worldDefID != None:
+            if node.worldDefID is not None:
                 self.worldDefID.show()
             else:
                 self.worldDefID.hide()

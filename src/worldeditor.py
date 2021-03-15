@@ -10,7 +10,7 @@ def colourFromNiceStr(thing):
     try:
         if match:
             r,g,b,a = match.groups()
-            return (int(r,16), int(g,16), int(b,16), int(a) if a != None else 255)
+            return (int(r,16), int(g,16), int(b,16), int(a) if a is not None else 255)
     except:
         pass
     return None

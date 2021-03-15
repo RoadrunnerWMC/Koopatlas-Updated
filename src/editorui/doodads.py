@@ -240,7 +240,7 @@ class KPEditorDoodad(KPEditorItem):
                 from dialogs import getTextDialog
 
                 name = getTextDialog('Choose Preset Name', 'Preset name:')
-                if name == None:
+                if name is None:
                     print('Returning')
                     return
 
