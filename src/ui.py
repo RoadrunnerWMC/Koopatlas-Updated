@@ -1000,7 +1000,7 @@ class KPAnmOptions(QtWidgets.QWidget):
     def addToPreset(self):
         from dialogs import getTextDialog
 
-        name = getTextDialog()
+        name = getTextDialog('Add to Presets', 'Enter a name for the preset:')
         if name == None:
             print('Returning')
             return
