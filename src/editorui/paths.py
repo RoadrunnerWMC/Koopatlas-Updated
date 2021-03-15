@@ -54,12 +54,10 @@ class KPEditorNode(KPEditorItem):
 
 
     class HiddenProxy(QtWidgets.QGraphicsProxyWidget):
-        def __init__(self, button, parent, x, y):
-            QtWidgets.QGraphicsProxyWidget.__init__(self, parent)
-
-            self.setWidget(button)
-            self.setPos(x, y)
-            self.setZValue(parent.zValue()+1000)
+        def __init__(self, widget):
+            QtWidgets.QGraphicsProxyWidget.__init__(self, None)
+            self.setWidget(widget)
+            self.setZValue(999999)
             self.hide()
 
 
@@ -133,20 +131,20 @@ class KPEditorNode(KPEditorItem):
             KPEditorNode.SELECTION_PEN = QtGui.QPen(Qt.blue, 1, Qt.DotLine)
 
         self.button = self.ToggleButton()
-        self.buttonProxy = self.HiddenProxy(self.button, self, 12, -24)
+        self.buttonProxy = self.HiddenProxy(self.button)
         self.button.stateToggled.connect(self.stateChange)
 
 
         self.world = self.LevelSlotSpinner()
-        self.worldProxy = self.HiddenProxy(self.world, self, -42, 24)
+        self.worldProxy = self.HiddenProxy(self.world)
         self.world.valueChanged.connect(self.worldChange)
 
         self.stage = self.LevelSlotSpinner()
-        self.stageProxy = self.HiddenProxy(self.stage, self, 6, 24)
+        self.stageProxy = self.HiddenProxy(self.stage)
         self.stage.valueChanged.connect(self.stageChange)
 
         self.secret = self.SecretBox()
-        self.secretProxy = self.HiddenProxy(self.secret, self, -60, 26)
+        self.secretProxy = self.HiddenProxy(self.secret)
         self.secret.stateChanged.connect(self.secretChange)
 
         if node.level is not None:
@@ -159,20 +157,20 @@ class KPEditorNode(KPEditorItem):
 
         self.foreignID = self.LevelSlotSpinner()
         self.foreignID.setRange(0,255)
-        self.foreignIDProxy = self.HiddenProxy(self.foreignID, self, 60, 24)
+        self.foreignIDProxy = self.HiddenProxy(self.foreignID)
         self.foreignID.valueChanged.connect(self.foreignIDChange)
 
         self.mapChange = self.mapArcEdit()
-        self.mapChangeProxy = self.HiddenProxy(self.mapChange, self, -100, 60)
+        self.mapChangeProxy = self.HiddenProxy(self.mapChange)
         self.mapChange.textEdited.connect(self.mapChangeChange)
 
         self.transition = self.TransitionBox()
-        self.transitionProxy = self.HiddenProxy(self.transition, self, -102, 24)
+        self.transitionProxy = self.HiddenProxy(self.transition)
         self.transition.currentIndexChanged.connect(self.transitionChange)
 
         self.worldDefID = self.LevelSlotSpinner()
         self.worldDefID.setRange(0,255)
-        self.worldDefIDProxy = self.HiddenProxy(self.worldDefID, self, 60, 24)
+        self.worldDefIDProxy = self.HiddenProxy(self.worldDefID)
         self.worldDefID.valueChanged.connect(self.worldDefIDChange)
 
         if node.foreignID is not None:
@@ -188,6 +186,13 @@ class KPEditorNode(KPEditorItem):
 
 
         self._updatePosition()
+
+
+    def showProxyAt(self, proxy, x, y):
+        if proxy.scene() is None:
+            self.scene().addItem(proxy)
+        proxy.setPos(self.scenePos().x() + x, self.scenePos().y() + y)
+        proxy.show()
 
 
     def stateChange(self, state):
@@ -375,12 +380,12 @@ class KPEditorNode(KPEditorItem):
 
             # WHAT THE FUCK SINCE WHEN DO YOU SHOW/HIDE WIDGETS IN A PAINT EVENT
             # oh well, I don't feel like refactoring this
-            self.buttonProxy.show()
+            self.showProxyAt(self.buttonProxy, 12, -24)
 
             if node.level:
-                self.worldProxy.show()
-                self.stageProxy.show()
-                self.secretProxy.show()
+                self.showProxyAt(self.worldProxy, -42, 24)
+                self.showProxyAt(self.stageProxy, 6, 24)
+                self.showProxyAt(self.secretProxy, -60, 26)
 
             else:
                 self.worldProxy.hide()
@@ -388,9 +393,9 @@ class KPEditorNode(KPEditorItem):
                 self.secretProxy.hide()
 
             if node.mapChange is not None:
-                self.foreignID.show()
-                self.transition.show()
-                self.mapChange.show()
+                self.showProxyAt(self.foreignIDProxy, 60, 24)
+                self.showProxyAt(self.transitionProxy, -102, 24)
+                self.showProxyAt(self.mapChangeProxy, -100, 60)
 
             else:
                 self.foreignID.hide()
@@ -601,12 +606,10 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
 
 
     class HiddenProxy(QtWidgets.QGraphicsProxyWidget):
-        def __init__(self, button, parent, x, y):
-            QtWidgets.QGraphicsProxyWidget.__init__(self, parent)
-
-            self.setWidget(button)
-            self.setPos(x, y)
-            self.setZValue(parent.zValue()+1000)
+        def __init__(self, widget):
+            QtWidgets.QGraphicsProxyWidget.__init__(self, None)
+            self.setWidget(widget)
+            self.setZValue(999999)
             self.hide()
 
 
@@ -639,7 +642,7 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
             KPEditorPath.SELECTION_PEN = QtGui.QPen(Qt.blue, 1, Qt.DotLine)
 
         self.options = self.PathOptionsMenuButton(self._pathRef)
-        self.optionsProxy = self.HiddenProxy(self.options, self, -54, +24)
+        self.optionsProxy = self.HiddenProxy(self.options)
 
         self.options.bgroupWidget.ExclusiveButtons.button(path.animation).setChecked(True)
         self.options.bgroupWidget.moveSpeedSpinner.setValue(path.movementSpeed)
@@ -708,6 +711,10 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
             painter.setPen(self.SELECTION_PEN)
             painter.setBrush(QtGui.QColor(0,0,0,0))
             painter.drawPath(self.shape())
+
+            if self.optionsProxy.scene() is None:
+                self.scene().addItem(self.optionsProxy)
+            self.optionsProxy.setPos(self.scenePos().x() - 54, self.scenePos().y() + 24)
             self.optionsProxy.show()
 
         else:
