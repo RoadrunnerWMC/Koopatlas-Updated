@@ -1072,12 +1072,14 @@ class KPAnmOptions(QtWidgets.QWidget):
 
             anmList.append(rowList)
 
+        shouldRestartAnims = False
         for doodad in self.doodadList:
             if doodad() is not None:
                 d = doodad()
 
                 d.animations = anmList
                 d.setupAnimations()
+                shouldRestartAnims = True
 
         model.clear()
         self.model.setHorizontalHeaderLabels(["Looping", "Interpolation", "Frame Len", "Type", "Start Value", "End Value", "Delay", "Delay Offset"])
@@ -1085,6 +1087,8 @@ class KPAnmOptions(QtWidgets.QWidget):
         self.doodadList = None
 
         self.update()
+        if KP.mainWindow.scene.playing and shouldRestartAnims:
+            KP.mainWindow.resetAnim()
 
 
 class KPMainWindow(QtWidgets.QMainWindow):
@@ -1516,6 +1520,8 @@ class KPMainWindow(QtWidgets.QMainWindow):
                 q = KPEditorDoodad(cd, layer)
                 self.scene.addItem(q)
                 q.setSelected(True)
+                if self.scene.playing:
+                    self.resetAnim()
 
 
 # Layers
