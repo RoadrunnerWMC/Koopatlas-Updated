@@ -31,6 +31,7 @@ MAC_BUNDLE_IDENTIFIER = 'com.newerteam.koopatlas'
 SCRIPT_FILE = 'koopatlas.py'
 DATA_FOLDERS = ['Resources', 'Tilesets']
 DATA_FILES = ['readme.md', 'LICENSE']
+EXTRA_IMPORTS = ['src/common.py']
 
 EXCLUDE_SELECT = True
 EXCLUDE_THREADING = True
@@ -162,9 +163,7 @@ for qt in ['PySide2', 'PyQt4', 'PyQt5']:
             excludes.append(qt + '.Qt' + m)
 
 # Includes
-includes = ['pkgutil']
-for m in neededQtModules:
-    includes.append(targetQt + '.Qt' + m)
+includes = ['pkgutil'] + EXTRA_IMPORTS
 
 # Binary excludes
 excludes_binaries = []
