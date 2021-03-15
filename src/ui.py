@@ -1543,7 +1543,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
         if tilesetName is None:
             return
 
-        KPTileLayer.tileset = tilesetName
+        layer.tileset = tilesetName
 
         self.objectSelector.setTileset(KP.tileset(layer.tileset))
 
