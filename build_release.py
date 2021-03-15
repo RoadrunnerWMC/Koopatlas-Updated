@@ -163,7 +163,7 @@ for qt in ['PySide2', 'PyQt4', 'PyQt5']:
             excludes.append(qt + '.Qt' + m)
 
 # Includes
-includes = ['pkgutil'] + EXTRA_IMPORTS
+includes = ['pkgutil']
 
 # Binary excludes
 excludes_binaries = []
@@ -231,8 +231,8 @@ elif sys.platform == 'darwin':
         args.append('--icon=' + os.path.abspath(MAC_ICON))
     args.append('--osx-bundle-identifier=' + MAC_BUNDLE_IDENTIFIER)
 
-if EXTRA_IMPORT_PATHS:
-    args.append('--paths=' + ':'.join(EXTRA_IMPORT_PATHS))
+for p in EXTRA_IMPORT_PATHS:
+    args.append('--paths=' + p)
 
 for e in excludes:
     args.append('--exclude-module=' + e)
