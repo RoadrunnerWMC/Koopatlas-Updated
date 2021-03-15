@@ -163,6 +163,8 @@ for qt in ['PySide2', 'PyQt4', 'PyQt5']:
 
 # Includes
 includes = ['pkgutil']
+for m in neededQtModules:
+    includes.append(targetQt + '.Qt' + m)
 
 # Binary excludes
 excludes_binaries = []
