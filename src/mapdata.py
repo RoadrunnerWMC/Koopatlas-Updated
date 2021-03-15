@@ -68,6 +68,9 @@ class KPObject(object):
     def updateCache(self):
         self.cache = self.kindObj.render(self.size)
 
+    def __deepcopy__(self, memo):
+        return mapfile.load(mapfile.dump(self))
+
 
 @mapfile.dumpable('tile_layer')
 class KPTileLayer(KPLayer):
