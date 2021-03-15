@@ -748,7 +748,9 @@ class KPAnmOptions(QtWidgets.QWidget):
             anmType = ["X Position", "Y Position", "Angle", "X Scale", "Y Scale", "Opacity"]
 
             thing = index.data(Qt.DisplayRole)
-            thong = index.data(Qt.EditRole).toFloat()[0]
+            thong = index.data(Qt.EditRole)
+            if not isinstance(thong, float):
+                thong = thong.toFloat()[0]
 
             if thing in loop:
                 editWidget = QtWidgets.QComboBox(parent)
@@ -782,7 +784,9 @@ class KPAnmOptions(QtWidgets.QWidget):
         def setEditorData(self, editor, index):
 
             if isinstance(editor, QtWidgets.QDoubleSpinBox):
-                thing = index.data(Qt.EditRole).toFloat()[0]
+                thing = index.data(Qt.EditRole)
+                if not isinstance(thing, float):
+                    thing = thing.toFloat()[0]
 
                 editor.setValue(thing)
 
@@ -1011,10 +1015,14 @@ class KPAnmOptions(QtWidgets.QWidget):
             listrow = []
             for column in range(8):
                 item = self.model.item(row, column)
-                if (column == 0) or (column == 1) or (column == 2):
-                    data = str(item.data(Qt.EditRole))
+                data = item.data(Qt.EditRole)
+
+                if isinstance(data, str) or isinstance(data, float):
+                    pass
+                elif data.toFloat()[1]:
+                    data = data.toFloat()[0]
                 else:
-                    data = item.data(Qt.EditRole).toFloat()[0]
+                    data = str(data)
 
                 listrow.append(data)
 
@@ -1053,7 +1061,9 @@ class KPAnmOptions(QtWidgets.QWidget):
             for item in range(8):
                 index = model.index(x, item)
                 data = model.data(index, Qt.EditRole)
-                if data.toFloat()[1]:
+                if isinstance(data, str) or isinstance(data, float):
+                    pass
+                elif data.toFloat()[1]:
                     data = data.toFloat()[0]
                 else:
                     data = str(data)
