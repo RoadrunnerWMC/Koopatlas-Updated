@@ -1,8 +1,15 @@
 import re
+import sys
 
 LEVEL_RE = re.compile(r'^([0-9]{1,2})-([0-9]{1,2})( secret)?$')
 COINS_RE = re.compile(r'^(unspent |total )?star coins (<|>|==|!=) ([0-9]{1,3})$')
 COMBINER_RE = re.compile(r'[ ]*(and|or)[ ]*')
+
+if sys.version_info.major >= 3:
+    intsToBytes = bytes
+else:
+    def intsToBytes(L):
+        return b''.join(chr(x) for x in L)
 
 class UnlockParseError(ValueError):
     # todo: is this the proper way to make an Error?
@@ -129,14 +136,14 @@ def packUnlockSpec(data):
     kind = data[0]
 
     if kind == 'always':
-        return '\x0F'
+        return b'\x0F'
 
     elif kind == 'level':
         k, world, level, secret = data
 
         one = (1 << 6) | (0x10 if secret else 0) | (world - 1)
 
-        return chr(one) + chr(level - 1)
+        return intsToBytes([one, level - 1])
 
     elif kind == 'star_coins':
         k, op, count, mode = data
@@ -146,14 +153,14 @@ def packUnlockSpec(data):
             modeID = 0x80
         else:
             modeID = 0
-        return chr(one) + chr(modeID | (count >> 8)) + chr(count & 0xFF)
+        return intsToBytes([one, modeID | count > 8, count & 0xFF])
 
     elif kind == 'and' or kind == 'or':
         terms = data[1]
         cond = 2 if (kind == 'and') else 3
         one = (cond << 6) | (len(terms) - 1)
 
-        return chr(one) + ''.join(map(packUnlockSpec, terms))
+        return intsToBytes([one]) + b''.join(map(packUnlockSpec, terms))
 
 
 if __name__ == '__main__':

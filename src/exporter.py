@@ -9,6 +9,12 @@ u32 = struct.Struct('>I')
 u16 = struct.Struct('>H')
 zero32 = u32.pack(0)
 
+if sys.version_info.major >= 3:
+    intsToBytes = bytes
+else:
+    def intsToBytes(L):
+        return b''.join(chr(x) for x in L)
+
 def RGBA8Encode(tex):
     tex = tex.toImage()
     w, h = tex.width(), tex.height()
@@ -67,17 +73,17 @@ def RGB5A3Encode(tex):
                         b = pixel & 0xFF
 
                         if a < 245: #RGB4A3
-                            alpha = a/32
-                            red = r/16
-                            green = g/16
-                            blue = b/16
+                            alpha = a//32
+                            red = r//16
+                            green = g//16
+                            blue = b//16
 
                             rgbDAT = (blue) | (green << 4) | (red << 8) | (alpha << 12)
 
                         else: # RGB555
-                            red = r/8
-                            green = g/8
-                            blue = b/8
+                            red = r//8
+                            green = g//8
+                            blue = b//8
 
                             rgbDAT = (blue) | (green << 5) | (red << 10) | (0x8000) # 0rrrrrgggggbbbbb
 
@@ -102,10 +108,10 @@ class KPMapExporter:
             layerX, layerY = layer.cacheBasePos
             layerWidth, layerHeight = layer.cacheSize
 
-            sectorLeft = layerX / 16
-            sectorTop = layerY / 16
-            sectorRight = (layerX + layerWidth - 1) / 16
-            sectorBottom = (layerY + layerHeight - 1) / 16
+            sectorLeft = int(layerX) // 16
+            sectorTop = int(layerY) // 16
+            sectorRight = int(layerX + layerWidth - 1) // 16
+            sectorBottom = int(layerY + layerHeight - 1) // 16
 
             rawSectors = []
             for i in range(sectorBottom - sectorTop + 1):
@@ -118,14 +124,14 @@ class KPMapExporter:
             for srcY in range(layerHeight):
                 srcRow = cache[srcY]
                 worldY = srcY + layerY
-                sectorY = worldY / 16
+                sectorY = worldY // 16
                 destY = worldY % 16
 
                 destRow = rawSectors[sectorY - sectorTop]
 
                 for srcX in range(layerWidth):
                     worldX = srcX + layerX
-                    sectorX = worldX / 16
+                    sectorX = worldX // 16
                     destX = worldX % 16
 
                     tile = srcRow[srcX]
@@ -141,7 +147,7 @@ class KPMapExporter:
                     destSector[destY][destX] = tile
 
             # now add the created sectors to the data
-            count = reduce(lambda x,y: x+len(y), rawSectors, 0)
+            count = sum(len(sector) for sector in rawSectors) if rawSectors else 0
             sectorMap = [0xFFFF for i in range(count)]
             destIdx = 0
 
@@ -224,7 +230,7 @@ class KPMapExporter:
         version = 2
         headerSize = 0x2C
         tsInfoOffsetInHeader = 0x10
-        data = bytearray(struct.pack('>4sIIIIIIIIII', 'KP_m', version, len(self.layers), headerSize + len(sectorData), 0, 0, 0, headerSize, 0, 0, len(self.map.worlds)))
+        data = bytearray(struct.pack('>4sIIIIIIIIII', b'KP_m', version, len(self.layers), headerSize + len(sectorData), 0, 0, 0, headerSize, 0, 0, len(self.map.worlds)))
         requiredFixUps.append((0x18, 'UnlockBytecode'))
         requiredFixUps.append((0x20, self.map.bgName))
         requiredFixUps.append((0x24, '_WorldDefList'))
@@ -258,10 +264,10 @@ class KPMapExporter:
                 # sector info
                 data += struct.pack('>IIII', *eLayer.sectorBounds)
                 data += struct.pack('>IIII', *eLayer.realBounds)
-                data += ''.join(map(u16.pack, eLayer.sectorMap))
+                data += b''.join(map(u16.pack, eLayer.sectorMap))
 
                 pad = (4 - (len(data) & 3)) % 4
-                data += ('\0' * pad)
+                data += (b'\0' * pad)
 
             elif isinstance(eLayer, self.DoodadLayerExporter):
                 data += u32.pack(1)
@@ -300,7 +306,7 @@ class KPMapExporter:
                         loopid = self.ANIM_LOOPS.index(rLoop)
                         curveid = self.ANIM_CURVES.index(rCurve)
                         typeid = self.ANIM_TYPES.index(rType)
-                        data += struct.pack('>iiiiiiiiii', loopid, curveid, rFrames, typeid, rStart, rEnd, rDelay, rDelayOffset, 0, 0)
+                        data += struct.pack('>iiiiiiiiii', int(loopid), int(curveid), int(rFrames), int(typeid), int(rStart), int(rEnd), int(rDelay), int(rDelayOffset), 0, 0)
 
             elif isinstance(eLayer, self.PathLayerExporter):
                 data += u32.pack(2)
@@ -434,7 +440,7 @@ class KPMapExporter:
 
         # align it to 4 bytes before we write the world defs
         padding = ((len(data) + 4) & ~4) - len(data)
-        data += ('\0' * padding)
+        data += (b'\0' * padding)
 
         offsets['_WorldDefList'] = len(data)
         for world in self.map.worlds:
@@ -473,8 +479,7 @@ class KPMapExporter:
         # now that we're almost done... pack the strings
         for string in stringsToAdd:
             offsets[string] = len(data)
-            data += str(string)
-            data += '\0'
+            data += string.encode('ascii') + b'\0'
 
         # textures
         texA = sorted(texInfo, key=lambda x: x[1])
@@ -492,7 +497,7 @@ class KPMapExporter:
         print("Total:", s/1000, "kb")
 
         texPadding = ((len(data) + 0x1F) & ~0x1F) - len(data)
-        data += ('\0' * texPadding)
+        data += (b'\0' * texPadding)
 
         texHeaderStartOffset = len(data)
         texDataStartOffset = texHeaderStartOffset + ((len(textures) + len(tilesets)) * 0x20)
@@ -553,12 +558,12 @@ class KPMapExporter:
         # now produce the thing
         from unlock import parseUnlockText, packUnlockSpec
 
-        for spec, lst in unlockLists.iteritems():
+        for spec, lst in unlockLists.items():
             data += packUnlockSpec(parseUnlockText(spec))
-            data += chr(len(lst))
+            data += intsToBytes([len(lst)])
             for p in lst:
                 data += u16.pack(pathIndices[p])
-        data += chr(0)
+        data += b'\0'
 
         # to finish up, correct every offset
         for offset, target in requiredFixUps:
@@ -589,7 +594,7 @@ class KPMapExporter:
                 (0x500000 | ((height - 1) << 10) | (width - 1)),
                 0x10000000 + imgOffset, # (imgptr >> 5)
                 0, 0, 0,
-                (((width + 3) / 4) * ((height + 3) / 4)) & 0x7FFF,
+                (((width + 3) // 4) * ((height + 3) // 4)) & 0x7FFF,
                 0x0202
                 )
 
@@ -601,7 +606,7 @@ class KPMapExporter:
                 (0x600000 | ((height - 1) << 10) | (width - 1)),
                 0x10000000 + imgOffset, # (imgptr >> 5)
                 0, 0, 0,
-                (((width + 3) / 4) * ((height + 3) / 4)) & 0x7FFF,
+                (((width + 3) // 4) * ((height + 3) // 4)) & 0x7FFF,
                 0x0202
                 )
 
@@ -614,6 +619,6 @@ class KPMapExporter:
             for row in sector:
                 output.append(rowStruct.pack(*row))
 
-        return ''.join(output)
+        return b''.join(output)
 
 
