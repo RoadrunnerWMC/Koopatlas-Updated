@@ -49,12 +49,17 @@ class KP:
         if not os.path.exists(path):
             os.mkdir(path)
 
+        foundAnyTilesets = False
         for file in os.listdir(path):
             name = file[:-4]
 
             if file.endswith('.arc'):
+                foundAnyTilesets = True
                 filepath = os.path.join(path, file)
                 registry[name] = {'path': filepath}
+
+        if not foundAnyTilesets:
+            QtWidgets.QMessageBox.warning(None, 'Warning', "Your Tilesets folder seems to be empty. You won't be able to load any world maps without them! You can get Newer Wii's world map and tileset files at <a href=\"https://github.com/Newer-Team/NewerSMBW/tree/no-translations/NewerResources\">https://github.com/Newer-Team/NewerSMBW/tree/no-translations/NewerResources</a>.")
 
 
     @classmethod
