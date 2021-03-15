@@ -1479,6 +1479,9 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
     def paste(self):
         self.scene.clearSelection()
+        if self.clipboard is None:
+            return
+
         for paper in self.clipboard:
 
             if isinstance(paper, KPEditorObject):
