@@ -340,7 +340,7 @@ class KPMapExporter:
 
                     x, y = node.position
                     current = len(data)
-                    data += struct.pack('>hhiiiiii', x+12, y+12, 0, 0, 0, 0, 0, 0)
+                    data += struct.pack('>hhiiiiii', int(x+12), int(y+12), 0, 0, 0, 0, 0, 0)
 
                     # figure out the exits by direction
                     exits = [None, None, None, None]
