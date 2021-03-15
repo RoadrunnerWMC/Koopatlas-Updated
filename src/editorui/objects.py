@@ -168,7 +168,7 @@ class KPEditorObject(KPEditorItem):
 
     def _itemMoved(self, oldX, oldY, newX, newY):
         obj = self._objRef()
-        obj.position = (newX/24, newY/24)
+        obj.position = (newX//24, newY//24)
         self._layerRef().updateCache()
 
 
