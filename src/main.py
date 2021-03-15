@@ -78,11 +78,11 @@ class KP:
         from tileset import KPTileset
 
         import time
-        b = time.clock()
+        b = time.time()
 
         cls.loadedTilesets[name] = KPTileset.loadFromArc(data)
 
-        e = time.clock()
+        e = time.time()
         print("Loading set: {0} in {1}".format(name, e-b))
 
 
