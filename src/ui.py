@@ -193,6 +193,8 @@ class KPPathNodeList(QtWidgets.QWidget):
             return
 
         layer.setTileset(tilesetName)
+        KP.mainWindow.objectSelector.setTileset(KP.tileset(layer.tileset))
+        KP.mainWindow.scene.update()
 
     def addLayer(self, associate, dialog, tileset=None):
         name = 'path' if isinstance(associate, KPPath) else 'node'
