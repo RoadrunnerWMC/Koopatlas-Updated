@@ -78,7 +78,7 @@ class KPPathNodeList(QtWidgets.QWidget):
                         return "Node: Pass-Through"
 
                 else:
-                    animation = PathAnimationList[self.associate.animation]
+                    animation = PathAnimationNamesList[self.associate.animation]
 
                     return 'Path: {1}'.format(None, animation)
 

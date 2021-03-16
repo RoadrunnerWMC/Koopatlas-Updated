@@ -2,11 +2,18 @@ from common import *
 from .editorcommon import *
 import weakref
 
-PathAnimationList = ["Walk", "WalkSand", "WalkSnow", "WalkWater",
-                     "Jump", "JumpSand", "JumpSnow", "JumpWater",
-                     "Ladder", "LadderLeft", "LadderRight", "Fall",
-                     "Swim", "Run", "Pipe", "Door",
-                     'TJumped', 'Enter Cave Up', 'Reserved 18', 'Invisible']
+PathAnimationList = [
+    'Walk', 'WalkSand', 'WalkSnow', 'WalkWater',
+    'Jump', 'JumpSand', 'JumpSnow', 'LaunchStar',
+    'Ladder', 'LadderLeft', 'LadderRight', 'Fall',
+    'Swim', 'Run', 'Pipe', 'Door',
+    'Land', 'EnterCaveUp', 'LaunchStarW8Alt', 'Invisible']
+PathAnimationNamesList = [
+    'Walk', 'Walk (Sand)', 'Walk (Snow)', 'Walk (Water)',
+    'Jump', 'Jump (Sand)', 'Jump (Snow)', 'Launch Star',
+    'Ladder', 'Ladder (Left)', 'Ladder (Right)', 'Fall',
+    'Swim', 'Run', 'Pipe', 'Door',
+    'Land', 'Enter Cave (Up)', 'Launch Star (W8 Alt)', 'Invisible']
 
 class KPEditorNode(KPEditorItem):
     SNAP_TO = (12,12)
@@ -503,14 +510,11 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
                 i = 0
                 j = 1
                 id = 0
-                for anim in PathAnimationList:
-                    if id < 16:
-                        newButton = QtWidgets.QPushButton(QtGui.QIcon("Resources/Anm/" + anim), "")
-                    else:
-                        newButton = QtWidgets.QPushButton(anim)
+                for anim, name in zip(PathAnimationList, PathAnimationNamesList):
+                    newButton = QtWidgets.QPushButton(QtGui.QIcon("Resources/Anm/" + anim), "")
                     newButton.setCheckable(True)
                     newButton.setIconSize(QtCore.QSize(38, 38))
-                    newButton.setToolTip(anim)
+                    newButton.setToolTip(name)
                     self.ExclusiveButtons.addButton(newButton, id)
 
                     Layout.addWidget(newButton, j, i)
