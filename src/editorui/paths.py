@@ -195,9 +195,21 @@ class KPEditorNode(KPEditorItem):
         self._updatePosition()
 
 
+    def itemChange(self, change, value):
+        if change == QtWidgets.QGraphicsItem.ItemSceneHasChanged:
+            self.scene().addItem(self.buttonProxy)
+            self.scene().addItem(self.worldProxy)
+            self.scene().addItem(self.stageProxy)
+            self.scene().addItem(self.secretProxy)
+            self.scene().addItem(self.foreignIDProxy)
+            self.scene().addItem(self.transitionProxy)
+            self.scene().addItem(self.mapChangeProxy)
+            self.scene().addItem(self.worldDefIDProxy)
+
+        return QtWidgets.QGraphicsLineItem.itemChange(self, change, value)
+
+
     def showProxyAt(self, proxy, x, y):
-        if proxy.scene() is None:
-            self.scene().addItem(proxy)
         proxy.setPos(self.scenePos().x() + x, self.scenePos().y() + y)
         proxy.show()
 
@@ -405,24 +417,24 @@ class KPEditorNode(KPEditorItem):
                 self.showProxyAt(self.mapChangeProxy, -100, 60)
 
             else:
-                self.foreignID.hide()
-                self.transition.hide()
-                self.mapChange.hide()
+                self.foreignIDProxy.hide()
+                self.transitionProxy.hide()
+                self.mapChangeProxy.hide()
 
             if node.worldDefID is not None:
-                self.worldDefID.show()
+                self.showProxyAt(self.worldDefIDProxy, 60, 24)
             else:
-                self.worldDefID.hide()
+                self.worldDefIDProxy.hide()
 
         else:
             self.buttonProxy.hide()
             self.worldProxy.hide()
             self.stageProxy.hide()
             self.secretProxy.hide()
-            self.foreignID.hide()
-            self.transition.hide()
-            self.mapChange.hide()
-            self.worldDefID.hide()
+            self.foreignIDProxy.hide()
+            self.transitionProxy.hide()
+            self.mapChangeProxy.hide()
+            self.worldDefIDProxy.hide()
 
 
     def remove(self, withItem=False):
@@ -487,6 +499,14 @@ class KPEditorNode(KPEditorItem):
 
         if withItem:
             self.scene().removeItem(self)
+            self.scene().removeItem(self.buttonProxy)
+            self.scene().removeItem(self.worldProxy)
+            self.scene().removeItem(self.stageProxy)
+            self.scene().removeItem(self.secretProxy)
+            self.scene().removeItem(self.foreignID)
+            self.scene().removeItem(self.transition)
+            self.scene().removeItem(self.mapChange)
+            self.scene().removeItem(self.worldDefID)
 
 
 class KPEditorPath(QtWidgets.QGraphicsLineItem):
@@ -685,6 +705,13 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
         self.update()
 
 
+    def itemChange(self, change, value):
+        if change == QtWidgets.QGraphicsItem.ItemSceneHasChanged:
+            self.scene().addItem(self.optionsProxy)
+
+        return QtWidgets.QGraphicsLineItem.itemChange(self, change, value)
+
+
     def paint(self, painter, option, widget):
 
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
@@ -704,8 +731,6 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
             painter.setBrush(QtGui.QColor(0,0,0,0))
             painter.drawPath(self.shape())
 
-            if self.optionsProxy.scene() is None:
-                self.scene().addItem(self.optionsProxy)
             self.optionsProxy.setPos(self.scenePos().x() - 54, self.scenePos().y() + 24)
             self.optionsProxy.show()
 
@@ -735,6 +760,7 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
 
         if withItem:
             self.scene().removeItem(self)
+            self.scene().removeItem(self.optionsProxy)
 
 
 
