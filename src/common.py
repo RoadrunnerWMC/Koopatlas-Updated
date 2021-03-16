@@ -6,8 +6,8 @@ try:
     from PyQt5 import QtCore, QtGui, QtWidgets
     QtCore.QString = str
 except ImportError:
-    import sip
-    sip.setapi('QVariant', 2)
+    import PyQt4.sip
+    PyQt4.sip.setapi('QVariant', 2)
     from PyQt4 import QtCore, QtGui
     QtWidgets = QtGui
 Qt = QtCore.Qt
