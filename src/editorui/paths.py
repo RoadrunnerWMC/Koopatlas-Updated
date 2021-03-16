@@ -4,16 +4,16 @@ import weakref
 
 PathAnimationList = [
     'Walk', 'WalkSand', 'WalkSnow', 'WalkWater',
-    'Jump', 'JumpSand', 'JumpSnow', 'LaunchStar',
+    'Jump', 'JumpSand', 'JumpSnow', 'LaunchStarRight',
     'Ladder', 'LadderLeft', 'LadderRight', 'Fall',
     'Swim', 'Run', 'Pipe', 'Door',
-    'Land', 'EnterCaveUp', 'LaunchStarW8Alt', 'Invisible']
+    'Land', 'EnterCaveUp', 'LaunchStarLeft', 'Invisible']
 PathAnimationNamesList = [
     'Walk', 'Walk (Sand)', 'Walk (Snow)', 'Walk (Water)',
-    'Jump', 'Jump (Sand)', 'Jump (Snow)', 'Launch Star',
+    'Jump', 'Jump (Sand)', 'Jump (Snow)', 'Launch Star (Right)',
     'Ladder', 'Ladder (Left)', 'Ladder (Right)', 'Fall',
     'Swim', 'Run', 'Pipe', 'Door',
-    'Land', 'Enter Cave (Up)', 'Launch Star (W8 Alt)', 'Invisible']
+    'Land', 'Enter Cave (Up)', 'Launch Star (Left)', 'Invisible']
 
 class KPEditorNode(KPEditorItem):
     SNAP_TO = (12,12)
