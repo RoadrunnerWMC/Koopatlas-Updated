@@ -754,8 +754,6 @@ class KPAnmOptions(QtWidgets.QWidget):
 
             thing = index.data(Qt.DisplayRole)
             thong = index.data(Qt.EditRole)
-            if not isinstance(thong, float):
-                thong = thong.toFloat()[0]
 
             if thing in loop:
                 editWidget = QtWidgets.QComboBox(parent)
@@ -790,8 +788,6 @@ class KPAnmOptions(QtWidgets.QWidget):
 
             if isinstance(editor, QtWidgets.QDoubleSpinBox):
                 thing = index.data(Qt.EditRole)
-                if not isinstance(thing, float):
-                    thing = thing.toFloat()[0]
 
                 editor.setValue(thing)
 
@@ -1022,11 +1018,7 @@ class KPAnmOptions(QtWidgets.QWidget):
                 item = self.model.item(row, column)
                 data = item.data(Qt.EditRole)
 
-                if isinstance(data, str) or isinstance(data, float):
-                    pass
-                elif data.toFloat()[1]:
-                    data = data.toFloat()[0]
-                else:
+                if hasattr(QtCore, 'QString') and isinstance(data, QtCore.QString):
                     data = str(data)
 
                 listrow.append(data)
@@ -1066,13 +1058,6 @@ class KPAnmOptions(QtWidgets.QWidget):
             for item in range(8):
                 index = model.index(x, item)
                 data = model.data(index, Qt.EditRole)
-                if isinstance(data, str) or isinstance(data, float):
-                    pass
-                elif data.toFloat()[1]:
-                    data = data.toFloat()[0]
-                else:
-                    data = str(data)
-
                 rowList.append(data)
 
             anmList.append(rowList)

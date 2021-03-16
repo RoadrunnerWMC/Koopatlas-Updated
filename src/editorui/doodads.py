@@ -24,7 +24,7 @@ class KPEditorDoodad(KPEditorItem):
                     anmType = ["X Position", "Y Position", "Angle", "X Scale", "Y Scale", "Opacity"]
 
                     thing = index.data(Qt.DisplayRole)
-                    thong = index.data(Qt.EditRole).toFloat()[0]
+                    thong = index.data(Qt.EditRole)
 
                     if thing in loop:
                         editWidget = QtWidgets.QComboBox(parent)
@@ -61,7 +61,7 @@ class KPEditorDoodad(KPEditorItem):
 
 
                     if isinstance(editor, QtWidgets.QDoubleSpinBox):
-                        thing = index.data(Qt.EditRole).toFloat()[0]
+                        thing = index.data(Qt.EditRole)
 
                         editor.setValue(thing)
 
@@ -253,7 +253,7 @@ class KPEditorDoodad(KPEditorItem):
                         if (column == 0) or (column == 1) or (column == 2):
                             data = str(item.data(Qt.EditRole))
                         else:
-                            data = item.data(Qt.EditRole).toFloat()[0]
+                            data = item.data(Qt.EditRole)
 
                         listrow.append(data)
 
@@ -320,10 +320,6 @@ class KPEditorDoodad(KPEditorItem):
                 for item in range(6):
                     index = model.index(x, item)
                     data = model.data(index, Qt.EditRole)
-                    if data.toFloat()[1]:
-                        data = data.toFloat()[0]
-                    else:
-                        data = str(data)
 
                     rowList.append(data)
 
