@@ -292,8 +292,7 @@ class KPMapExporter:
                     w, h = doodad.size
                     data += struct.pack('>fffffii', x, y, w, h, doodad.angle, 0, len(doodad.animations))
 
-                    is_rgba8 = doodad.source[0].startswith('Cloud') or \
-                            doodad.source[0].startswith('Tiling_Cloud')
+                    is_rgba8 = doodad.isRGBA8()
 
                     texInfo.add((doodad.source[0], doodad.source[1].height() * doodad.source[1].width() * (4 if is_rgba8 else 2)))
                     texture = doodad.source[1]

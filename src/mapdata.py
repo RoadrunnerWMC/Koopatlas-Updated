@@ -405,6 +405,11 @@ class KPDoodad(object):
 
         self.timelines = myTimelines
 
+    def isRGBA8(self):
+        # TODO: this is obviously a huge hack! Replace this with a system that actually
+        # lets the user choose the texture format for each doodad.
+        return self.source[0].startswith('Cloud') or self.source[0].startswith('Tiling_Cloud')
+
 
 @mapfile.dumpable('doodad_layer')
 class KPDoodadLayer(KPLayer):
