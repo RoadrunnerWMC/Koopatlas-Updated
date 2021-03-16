@@ -501,7 +501,7 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
 
                 self._pathRef = pathRef
 
-                TopLayout = QtWidgets.QGridLayout()
+                TopLayout = QtWidgets.QHBoxLayout()
                 Layout = QtWidgets.QGridLayout()
 
                 # Make an exclusive button group for our animations.
@@ -538,14 +538,8 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
                 self.moveSpeedSpinner.setSingleStep(0.05)
                 self.moveSpeedSpinner.setValue(1.0)
 
-                TopLayout.addWidget(self.moveSpeedSpinner, 1, 0)
-
-
-                # Layer Combo Box
-                # self.linkedLayer = QtWidgets.QComboBox(self)
-                # self.linkedLayer.setModel(KP.map.layerModel)
-
-                # TopLayout.addWidget(self.linkedLayer, 1, 1, 1, 3)
+                TopLayout.addWidget(QtWidgets.QLabel("Speed:"))
+                TopLayout.addWidget(self.moveSpeedSpinner)
 
 
                 # Connections
@@ -556,11 +550,8 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
                     self.ExclusiveButtons.buttonReleased[int].connect(self.updatePathAnim)
 
                 self.moveSpeedSpinner.valueChanged.connect(self.updateMoveSpeed)
-                # self.linkedLayer.currentIndexChanged.connect(self.updateLinkLayer)
 
                 # Layout
-                TopLayout.addWidget(QtWidgets.QLabel("Speed:"), 0, 0)
-                TopLayout.addWidget(QtWidgets.QLabel("Layer Shown on Unlock:"), 0, 1, 1, 3)
                 Layout.addLayout(TopLayout, 0, 0, 1, 4)
                 self.setLayout(Layout)
 
@@ -577,12 +568,6 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
 
                 path.animation = buttonID
                 path.qtItem.update()
-
-
-            def updateLinkLayer(self, layerIndex):
-                path = self._pathRef()
-
-                path.linkedLayer = KP.map.layers[layerIndex]
 
 
         def __init__(self, pathRef):
