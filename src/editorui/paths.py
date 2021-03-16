@@ -546,7 +546,10 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
 
                 # Connections
 
-                self.ExclusiveButtons.buttonReleased.connect(self.updatePathAnim)
+                if QtCompatVersion > 0x50000:
+                    self.ExclusiveButtons.idReleased.connect(self.updatePathAnim)
+                else:
+                    self.ExclusiveButtons.buttonReleased[int].connect(self.updatePathAnim)
 
                 self.moveSpeedSpinner.valueChanged.connect(self.updateMoveSpeed)
                 # self.linkedLayer.currentIndexChanged.connect(self.updateLinkLayer)
