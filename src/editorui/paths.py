@@ -602,19 +602,9 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
 
             self.menu.setLayout(layout)
 
-            menuPalette = self.menu.palette()
-            menuPalette.setColor(QtGui.QPalette.Window, Qt.black)
-            self.menu.setPalette(menuPalette)
-
             # dropShadow = QtWidgets.QGraphicsDropShadowEffect()
             # self.menu.setGraphicsEffect(dropShadow)
             self.setMenu(self.menu)
-
-            palette = self.palette()
-            palette.setColor(QtGui.QPalette.ButtonText, Qt.black)
-            palette.setColor(QtGui.QPalette.Window, Qt.transparent)
-
-            self.setPalette(palette)
 
 
     class HiddenProxy(QtWidgets.QGraphicsProxyWidget):
