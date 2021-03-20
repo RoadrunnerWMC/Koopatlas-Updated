@@ -15,6 +15,14 @@ PathAnimationNamesList = [
     'Swim', 'Run', 'Pipe', 'Door',
     'Land', 'Enter Cave (Up)', 'Launch Star (Left)', 'Invisible']
 
+PATH_NODE_STATE_MOVEMENT = 0
+PATH_NODE_STATE_LEVEL = 1
+PATH_NODE_STATE_EXIT = 2
+PATH_NODE_STATE_TRANSITION = 3
+
+FIRST_PATH_NODE_STATE = PATH_NODE_STATE_MOVEMENT
+LAST_PATH_NODE_STATE = PATH_NODE_STATE_TRANSITION
+
 class KPEditorNode(KPEditorItem):
     SNAP_TO = (12,12)
 
@@ -31,7 +39,7 @@ class KPEditorNode(KPEditorItem):
 
             self.iconList = [KP.icon('Through'), KP.icon('Level'), KP.icon('Exit'), KP.icon('WorldChange')]
 
-            self.state = 0
+            self.state = FIRST_PATH_NODE_STATE
 
             if not hasattr(KPEditorNode.ToggleButton, 'PALETTE'):
                 KPEditorNode.ToggleButton.PALETTE = QtGui.QPalette(Qt.transparent)
@@ -43,8 +51,8 @@ class KPEditorNode(KPEditorItem):
 
         def toggle(self):
             self.state += 1
-            if self.state == 4:
-                self.state = 0
+            if self.state > LAST_PATH_NODE_STATE:
+                self.state = FIRST_PATH_NODE_STATE
 
             self.stateToggled.emit(self.state)
 
@@ -130,7 +138,7 @@ class KPEditorNode(KPEditorItem):
         self._boundingRect = QtCore.QRectF(-24, -24, 48, 48)
         self._levelRect = self._boundingRect
         self._stopRect = QtCore.QRectF(-12, -12, 24, 24)
-        self._worldChangeRect = QtCore.QRectF(-16, -16, 32, 32)
+        self._worldChangeRect = QtCore.QRectF(-14, -15, 32, 32)  # slightly offset to account for the arrow in the corner of the image
         self._tinyRect = QtCore.QRectF(-6, -6, 12, 12)
         self.isLayerSelected = False
 
@@ -193,6 +201,7 @@ class KPEditorNode(KPEditorItem):
 
 
         self._updatePosition()
+        self._updateBoundingRect(PATH_NODE_STATE_MOVEMENT)
 
 
     def itemChange(self, change, value):
@@ -225,12 +234,12 @@ class KPEditorNode(KPEditorItem):
         node.level = None
         node.worldDefID = None
 
-        if state == 1:
+        if state == PATH_NODE_STATE_LEVEL:
             node.level = [1, 1]
             self.world.setValue(node.level[0])
             self.stage.setValue(node.level[1])
 
-        elif state == 2:
+        elif state == PATH_NODE_STATE_EXIT:
             node.transition = 0
             node.mapChange = 'None.arc'
             node.foreignID = 0
@@ -249,10 +258,11 @@ class KPEditorNode(KPEditorItem):
             self.mapChange.setText('None.arc')
             self.transition.setCurrentIndex(0)
 
-        elif state == 3:
+        elif state == PATH_NODE_STATE_TRANSITION:
             node.worldDefID = 0
 
 
+        self._updateBoundingRect(state)
         self.update()
         KP.mainWindow.pathNodeList.update()
 
@@ -320,6 +330,17 @@ class KPEditorNode(KPEditorItem):
         self.ignoreMovement = False
 
 
+    def _updateBoundingRect(self, state):
+        if state == PATH_NODE_STATE_MOVEMENT:
+            self._boundingRect = QtCore.QRectF(-12, -12, 24, 24)
+        elif state == PATH_NODE_STATE_LEVEL:
+            self._boundingRect = QtCore.QRectF(-20, -16, 40, 32)
+        elif state == PATH_NODE_STATE_EXIT:
+            self._boundingRect = QtCore.QRectF(-20, -16, 40, 32)
+        elif state == PATH_NODE_STATE_TRANSITION:
+            self._boundingRect = QtCore.QRectF(-16, -13, 32, 26)
+
+
     def _itemMoved(self, oldX, oldY, newX, newY):
         node = self._nodeRef()
         node.position = (newX-12, newY-12)
@@ -343,13 +364,15 @@ class KPEditorNode(KPEditorItem):
         if node.level:
             painter.setBrush(QtGui.QColor(0, 0, 0, 0))
             painter.setPen(QtGui.QColor(0, 0, 0, 0))
-            painter.drawPixmap(self._boundingRect.topLeft(), QtGui.QPixmap("Resources/BlackLevel.png"))
+            pix = QtGui.QPixmap("Resources/BlackLevel.png")
+            painter.drawPixmap(-pix.width()//2, -pix.height()//2, pix)
             selectionRect = self._boundingRect.adjusted(1,5,-1,-5)
 
         elif node.mapChange is not None:
             painter.setBrush(QtGui.QColor(0, 0, 0, 0))
             painter.setPen(QtGui.QColor(0, 0, 0, 0))
-            painter.drawPixmap(self._boundingRect.topLeft(), QtGui.QPixmap("Resources/ExitWorld.png"))
+            pix = QtGui.QPixmap("Resources/ExitWorld.png")
+            painter.drawPixmap(-pix.width()//2, -pix.height()//2, pix)
 
             textPath = QtGui.QPainterPath()
             font = QtGui.QFont("Times", 22)
