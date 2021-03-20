@@ -110,6 +110,7 @@ class KPPathNodeList(QtWidgets.QWidget):
         self.tree.setDragDropMode(self.tree.InternalMove)
         self.tree.setHeaderHidden(True)
         self.tree.currentItemChanged.connect(self.handleRowChanged)
+        self.tree.itemClicked.connect(self.handleRowClicked)
         self.tree.itemDoubleClicked.connect(self.jumpToPathNode)
         self.layout.addWidget(self.tree)
 
@@ -153,6 +154,10 @@ class KPPathNodeList(QtWidgets.QWidget):
                 item = obj.qtItem
                 if item:
                     item.setSelected(True)
+
+    def handleRowClicked(self, item):
+        if isinstance(item, self.KPPathNodeItem):
+            self.layerClicked.emit(item.layer)
 
 
     def jumpToPathNode(self, item):
@@ -342,6 +347,7 @@ class KPPathNodeList(QtWidgets.QWidget):
 
 
     selectedLayerChanged = QtCore.pyqtSignal(KPLayer)
+    layerClicked = QtCore.pyqtSignal(KPLayer)
 
 
 class KPLayerList(QtWidgets.QWidget):
@@ -1210,6 +1216,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
         self.pathNodeDock = QtWidgets.QDockWidget('Path/Node Layers')
         self.pathNodeDock.setWidget(self.pathNodeList)
         self.pathNodeList.selectedLayerChanged.connect(self.handleSelectedPathNodeLayerChanged)
+        self.pathNodeList.layerClicked.connect(self.handleSelectedPathNodeLayerChanged)
 
         self.objectSelector = KPObjectSelector()
         self.objectSelector.objChanged.connect(self.handleSelectedObjectChanged)
