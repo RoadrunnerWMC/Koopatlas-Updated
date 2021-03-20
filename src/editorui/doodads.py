@@ -26,8 +26,6 @@ class KPEditorDoodad(KPEditorItem):
         self._updateSize()
         self._updateTransform()
 
-        self.setAcceptHoverEvents(True)
-
         if len(doodad.animations) > 0:
             doodad.setupAnimations()
 
@@ -111,6 +109,14 @@ class KPEditorDoodad(KPEditorItem):
                 self.setCursor(Qt.SizeVerCursor)
             else:
                 self.setCursor(Qt.ArrowCursor)
+
+        KPEditorItem.hoverMoveEvent(self, event)
+
+
+    def hoverLeaveEvent(self, event):
+        self.unsetCursor()
+
+        KPEditorItem.hoverLeaveEvent(self, event)
 
 
     def mousePressEvent(self, event):

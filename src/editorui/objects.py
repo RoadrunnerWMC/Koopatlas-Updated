@@ -13,8 +13,6 @@ class KPEditorObject(KPEditorItem):
         self._updatePosition()
         self._updateSize()
 
-        self.setAcceptHoverEvents(True)
-
         self.resizing = None
 
         if not hasattr(KPEditorObject, 'SELECTION_PEN'):
@@ -51,10 +49,6 @@ class KPEditorObject(KPEditorItem):
 
 
     def hoverMoveEvent(self, event):
-        if self._layerRef() != KP.mapScene.currentLayer:
-            self.setCursor(Qt.ArrowCursor)
-            return
-
         pos = event.pos()
         bit = self.resizerPortionAt(pos.x(), pos.y())
 
@@ -68,6 +62,14 @@ class KPEditorObject(KPEditorItem):
             self.setCursor(Qt.SizeVerCursor)
         else:
             self.setCursor(Qt.ArrowCursor)
+
+        KPEditorItem.hoverMoveEvent(self, event)
+
+
+    def hoverLeaveEvent(self, event):
+        self.unsetCursor()
+
+        KPEditorItem.hoverLeaveEvent(self, event)
 
 
     def mousePressEvent(self, event):

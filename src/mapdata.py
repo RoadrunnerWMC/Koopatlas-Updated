@@ -46,6 +46,7 @@ class KPLayer(object):
             if item:
                 item.setFlag(flag1, value)
                 item.setFlag(flag2, value)
+                item.setAcceptHoverEvents(value)
 
 
 @mapfile.dumpable('object')
