@@ -74,7 +74,8 @@ class KP:
             return False
 
         filepath = cls.knownTilesets[name]['path']
-        data = open(filepath, 'rb').read()
+        with open(filepath, 'rb') as file:
+            data = file.read()
 
         tsInfo = cls.knownTilesets[name]
         newHash = sha(data).hexdigest()

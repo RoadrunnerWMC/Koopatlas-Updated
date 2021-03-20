@@ -174,11 +174,13 @@ def examine(data):
 
 
 with open('old.txt', 'w') as f:
-    for line in examine(open('UNCOMP_OLD.bin', 'rb').read()):
-        f.write(line)
-        f.write('\n')
+    with open('UNCOMP_OLD.bin', 'rb') as f2:
+        for line in examine(f2.read()):
+            f.write(line)
+            f.write('\n')
 with open('new.txt', 'w') as f:
-    for line in examine(open('UNCOMP_NEW.bin', 'rb').read()):
-        f.write(line)
-        f.write('\n')
+    with open('UNCOMP_NEW.bin', 'rb') as f2:
+        for line in examine(f2.read()):
+            f.write(line)
+            f.write('\n')
 

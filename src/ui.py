@@ -1387,7 +1387,8 @@ class KPMainWindow(QtWidgets.QMainWindow):
             return
 
         import mapfile
-        obj = mapfile.load(open(target, 'rb').read())
+        with open(target, 'rb') as file:
+            obj = mapfile.load(file.read())
         obj.filePath = target
         KP.map = obj
         KP.map.filePath = target
@@ -1475,7 +1476,8 @@ class KPMainWindow(QtWidgets.QMainWindow):
                 import mapfile
 
                 print('Found a map')
-                obj = mapfile.load(open(target + "/" + fileName, 'rb').read())
+                with open(target + "/" + fileName, 'rb') as file:
+                    obj = mapfile.load(file.read())
                 # obj.save()
                 obj.export(target + "/" + fileName[:-6] + '.kpbin')
 
@@ -1546,9 +1548,8 @@ class KPMainWindow(QtWidgets.QMainWindow):
             name = os.path.basename(path[:-4])
             shutil.copy(path, 'Tilesets')
 
-            filehandler = open(path)
-            data = filehandler.read()
-            filehandler.close()
+            with open(path) as file:
+                data = file.read()
 
             KP.knownTilesets[name] = {'path': path}
 
@@ -1599,10 +1600,9 @@ class KPMainWindow(QtWidgets.QMainWindow):
         if path:
             import mapfile
 
-            file = open(path, 'rb')
-            data = file.read()
+            with open(path, 'rb') as file:
+                data = file.read()
             loaded = mapfile.load(data)
-            file.close()
 
             settings = KP.app.settings
 
@@ -1650,9 +1650,8 @@ class KPMainWindow(QtWidgets.QMainWindow):
             import mapfile
             output = [presetList, presets]
 
-            file = open(path, 'wb')
-            file.write(mapfile.dump(output))
-            file.close()
+            with open(path, 'wb') as file:
+                file.write(mapfile.dump(output))
 
     def clearAnimPresets(self):
         settings = KP.app.settings

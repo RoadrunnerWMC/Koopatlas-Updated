@@ -606,13 +606,15 @@ class KPMap(object):
 
         import mapfile
         dumped = mapfile.dump(self)
-        open(path, 'wb').write(dumped)
+        with open(path, 'wb') as file:
+            file.write(dumped)
 
     def export(self, path):
         from exporter import KPMapExporter
         exp = KPMapExporter(self)
         data = exp.build()
-        open(path, 'wb').write(data)
+        with open(path, 'wb') as file:
+            file.write(data)
 
     def __init__(self):
         self.version = 2
