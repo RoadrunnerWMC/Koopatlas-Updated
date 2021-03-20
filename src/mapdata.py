@@ -680,9 +680,12 @@ class KPMap(object):
             if index.isValid():
                 layer = self.list[index.row()]
 
+                # enforce uniqueness for layer names
+                usedLayerNames = {L.name for L in self.list}
+
                 if role == Qt.EditRole:
                     value = str(value)
-                    if len(value) > 0:
+                    if len(value) > 0 and value not in usedLayerNames:
                         layer.name = value
                         self.dataChanged.emit(index, index)
                         return True
