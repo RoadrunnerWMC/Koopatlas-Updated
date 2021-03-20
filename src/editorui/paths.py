@@ -530,7 +530,6 @@ class KPEditorNode(KPEditorItem):
                 exit.qtItem.remove(True)
 
         if withItem:
-            self.scene().removeItem(self)
             self.scene().removeItem(self.buttonProxy)
             self.scene().removeItem(self.worldProxy)
             self.scene().removeItem(self.stageProxy)
@@ -539,6 +538,7 @@ class KPEditorNode(KPEditorItem):
             self.scene().removeItem(self.transition)
             self.scene().removeItem(self.mapChange)
             self.scene().removeItem(self.worldDefID)
+            self.scene().removeItem(self)
 
 
 class KPEditorPath(QtWidgets.QGraphicsLineItem):
@@ -781,8 +781,8 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
                 pass
 
         if withItem:
-            self.scene().removeItem(self)
             self.scene().removeItem(self.optionsProxy)
+            self.scene().removeItem(self)
 
 
 
