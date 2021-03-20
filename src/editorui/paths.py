@@ -224,7 +224,7 @@ class KPEditorNode(KPEditorItem):
             self.scene().addItem(self.mapChangeProxy)
             self.scene().addItem(self.worldDefIDProxy)
 
-        return QtWidgets.QGraphicsLineItem.itemChange(self, change, value)
+        return QtWidgets.QGraphicsItem.itemChange(self, change, value)
 
 
     def showProxyAt(self, proxy, x, y):
