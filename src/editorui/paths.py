@@ -214,7 +214,7 @@ class KPEditorNode(KPEditorItem):
 
 
     def itemChange(self, change, value):
-        if change == QtWidgets.QGraphicsItem.ItemSceneHasChanged:
+        if change == QtWidgets.QGraphicsItem.ItemSceneHasChanged and self.scene() is not None:
             self.scene().addItem(self.buttonProxy)
             self.scene().addItem(self.worldProxy)
             self.scene().addItem(self.stageProxy)
@@ -534,10 +534,10 @@ class KPEditorNode(KPEditorItem):
             self.scene().removeItem(self.worldProxy)
             self.scene().removeItem(self.stageProxy)
             self.scene().removeItem(self.secretProxy)
-            self.scene().removeItem(self.foreignID)
-            self.scene().removeItem(self.transition)
-            self.scene().removeItem(self.mapChange)
-            self.scene().removeItem(self.worldDefID)
+            self.scene().removeItem(self.foreignIDProxy)
+            self.scene().removeItem(self.transitionProxy)
+            self.scene().removeItem(self.mapChangeProxy)
+            self.scene().removeItem(self.worldDefIDProxy)
             self.scene().removeItem(self)
 
 
@@ -728,7 +728,7 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
 
 
     def itemChange(self, change, value):
-        if change == QtWidgets.QGraphicsItem.ItemSceneHasChanged:
+        if change == QtWidgets.QGraphicsItem.ItemSceneHasChanged and self.scene() is not None:
             self.scene().addItem(self.optionsProxy)
 
         return QtWidgets.QGraphicsLineItem.itemChange(self, change, value)
