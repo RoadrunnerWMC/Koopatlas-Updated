@@ -1250,6 +1250,23 @@ class KPMainWindow(QtWidgets.QMainWindow):
         self.anmPopulate()
         self.updateTitlebar()
 
+        # scroll to the first path or node
+        scrollTo = (0, 0)
+        for layer in self.pathNodeList.getLayers():
+            assoc = layer.associate
+            if isinstance(assoc, KPPath):
+                start, end = assoc._startNodeRef(), assoc._endNodeRef()
+                if start is not None:
+                    scrollTo = start.position
+                    break
+                elif end is not None:
+                    scrollTo = end.position
+                    break
+            elif isinstance(assoc, KPNode):
+                scrollTo = assoc.position
+                break
+        self.editor.centerOn(scrollTo[0], scrollTo[1])
+
     def updateTitlebar(self):
         path = KP.map.filePath
         if path is None:
