@@ -446,7 +446,7 @@ class KPEditorWidget(QtWidgets.QGraphicsView):
         '''Called when a paint attempt is initiated'''
 
         layer = self.scene().currentLayer
-        if not layer.visible: return
+        if not layer or not layer.visible: return
 
         if isinstance(layer, KPTileLayer):
             paint = self.objectToPaint
