@@ -968,7 +968,7 @@ class KPAnmOptions(QtWidgets.QWidget):
         if self.model.rowCount() == 0:
             return
 
-        rowNum, ok = QtWidgets.QInputDialog.getInteger(self,
+        rowNum, ok = QtWidgets.QInputDialog.getInt(self,
                 "Select A Row", "Delete This Row:", 0, 0, self.model.rowCount(), 1)
         if ok:
             self.model.removeRows(rowNum, 1)
