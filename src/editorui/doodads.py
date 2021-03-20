@@ -44,7 +44,7 @@ class KPEditorDoodad(KPEditorItem):
 
                         return editWidget
 
-                    elif isinstance(thong, float):
+                    elif isinstance(thong, float) or isinstance(thong, int):
                         editWidget = QtWidgets.QDoubleSpinBox(parent)
                         editWidget.setSingleStep(0.05)
                         editWidget.setDecimals(2)

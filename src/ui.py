@@ -773,7 +773,7 @@ class KPAnmOptions(QtWidgets.QWidget):
 
                 return editWidget
 
-            elif isinstance(thong, float):
+            elif isinstance(thong, float) or isinstance(thong, int):
                 editWidget = QtWidgets.QDoubleSpinBox(parent)
                 editWidget.setSingleStep(0.05)
                 editWidget.setRange(-10000.0, 10000.0)
