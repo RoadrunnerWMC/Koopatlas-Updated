@@ -31,7 +31,7 @@ class KPEditorNode(KPEditorItem):
         stateToggled = QtCore.pyqtSignal(int)
 
 
-        def __init__(self):
+        def __init__(self, initialState):
             QtWidgets.QPushButton.__init__(self)
 
             self.setIconSize(QtCore.QSize(24, 24))
@@ -39,7 +39,7 @@ class KPEditorNode(KPEditorItem):
 
             self.iconList = [KP.icon('Through'), KP.icon('Level'), KP.icon('Exit'), KP.icon('WorldChange')]
 
-            self.state = FIRST_PATH_NODE_STATE
+            self.state = initialState
 
             if not hasattr(KPEditorNode.ToggleButton, 'PALETTE'):
                 KPEditorNode.ToggleButton.PALETTE = QtGui.QPalette(Qt.transparent)
@@ -145,7 +145,16 @@ class KPEditorNode(KPEditorItem):
         if not hasattr(KPEditorNode, 'SELECTION_PEN'):
             KPEditorNode.SELECTION_PEN = QtGui.QPen(Qt.blue, 1, Qt.DotLine)
 
-        self.button = self.ToggleButton()
+        if node.level:
+            initialState = PATH_NODE_STATE_LEVEL
+        elif node.mapChange is not None:
+            initialState = PATH_NODE_STATE_EXIT
+        elif node.worldDefID is not None:
+            initialState = PATH_NODE_STATE_TRANSITION
+        else:
+            initialState = PATH_NODE_STATE_MOVEMENT
+
+        self.button = self.ToggleButton(initialState)
         self.buttonProxy = self.HiddenProxy(self.button)
         self.button.stateToggled.connect(self.stateChange)
 
@@ -201,7 +210,7 @@ class KPEditorNode(KPEditorItem):
 
 
         self._updatePosition()
-        self._updateBoundingRect(PATH_NODE_STATE_MOVEMENT)
+        self._updateBoundingRect(initialState)
 
 
     def itemChange(self, change, value):
