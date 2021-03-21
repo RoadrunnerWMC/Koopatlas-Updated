@@ -5,7 +5,10 @@ class KP:
     def run():
         KP.app = QtWidgets.QApplication(sys.argv)
 
-        KP.app.settings = QtCore.QSettings('Koopatlas', 'Newer Team')
+        if os.path.isfile('portable.txt'):
+            KP.app.settings = QtCore.QSettings('settings_Koopatlas.ini', QtCore.QSettings.IniFormat)
+        else:
+            KP.app.settings = QtCore.QSettings('Koopatlas', 'Newer Team')
 
         from mapdata import KPMap
         KP.map = KPMap()
