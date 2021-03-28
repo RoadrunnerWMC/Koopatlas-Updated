@@ -594,6 +594,8 @@ class KPMap(object):
         else:
             self.version = 1
 
+        self.deleteNullDoodads()
+
     def _dump(self, mapObj, dest):
         dest['version'] = self.version
 
@@ -641,6 +643,33 @@ class KPMap(object):
         key = self.nextWorldKey
         self.nextWorldKey += 1
         return key
+
+    def deleteNullDoodads(self):
+        """Some maps have doodad definitions with null pixmaps. These
+        cause errors when exporting, so we detect and delete them upon
+        map load"""
+
+        # Remove doodads referencing definitions with null pixmaps
+        for L in self.layers:
+            if isinstance(L, KPDoodadLayer):
+                i = 0
+                while i < len(L.objects):
+                    doodad = L.objects[i]
+                    if doodad.source[1].isNull():
+                        print('WARNING: Deleting doodad referencing null definition: ' + doodad.source[0])
+                        L.objects.pop(i)
+                    else:
+                        i += 1
+
+        # And the bad doodad definitions themselves
+        i = 0
+        while i < len(self.doodadDefinitions):
+            doodadDef = self.doodadDefinitions[i]
+            if doodadDef[1].isNull():
+                print('WARNING: Deleting null doodad definition: ' + doodadDef[0])
+                self.doodadDefinitions.pop(i)
+            else:
+                i += 1
 
     # LAYERS
     class LayerModel(QtCore.QAbstractListModel):
