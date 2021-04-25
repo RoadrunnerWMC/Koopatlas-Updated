@@ -14,6 +14,12 @@ PathAnimationNamesList = [
     'Ladder', 'Ladder (Left)', 'Ladder (Right)', 'Fall',
     'Swim', 'Run', 'Pipe', 'Door',
     'Land', 'Enter Cave (Up)', 'Launch Star (Left)', 'Invisible']
+PathAnimationNotesList = [
+    None, None, None, None,
+    None, None, None, None,
+    None, None, None, None,
+    None, None, None, None,
+    None, None, 'Added in Newer 1.01', None]
 
 PATH_NODE_STATE_MOVEMENT = 0
 PATH_NODE_STATE_LEVEL = 1
@@ -562,11 +568,14 @@ class KPEditorPath(QtWidgets.QGraphicsLineItem):
                 i = 0
                 j = 1
                 id = 0
-                for anim, name in zip(PathAnimationList, PathAnimationNamesList):
+                for anim, name, note in zip(PathAnimationList, PathAnimationNamesList, PathAnimationNotesList):
                     newButton = QtWidgets.QPushButton(QtGui.QIcon("Resources/Anm/" + anim), "")
                     newButton.setCheckable(True)
                     newButton.setIconSize(QtCore.QSize(38, 38))
-                    newButton.setToolTip(name)
+                    tooltip = name
+                    if note:
+                        tooltip += '\n\nNote: ' + note
+                    newButton.setToolTip(tooltip)
                     self.ExclusiveButtons.addButton(newButton, id)
 
                     Layout.addWidget(newButton, j, i)
