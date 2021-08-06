@@ -224,6 +224,20 @@ class KPPathTileLayer(KPLayer):
                 self.cacheSize = (0,0)
             return
 
+        # oh gosh, how did someone get a KPDoodad into self.objects (2021-08-05)
+        remove = []
+        for obj in self.objects:
+            if not isinstance(obj, KPObject):
+                remove.append(obj)
+        for obj in remove:
+            self.objects.remove(obj)
+        remove = []
+        for dood in self.doodads:
+            if not isinstance(obj, KPDoodad):
+                remove.append(dood)
+        for dood in remove:
+            self.doodads.remove(dood)
+
         x1, x2 = MAP_SIZE_IN_TILES[0] - 1, 0
         y1, y2 = MAP_SIZE_IN_TILES[1] - 1, 0
 
