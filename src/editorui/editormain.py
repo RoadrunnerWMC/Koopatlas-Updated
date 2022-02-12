@@ -21,7 +21,7 @@ class KPMapScene(QtWidgets.QGraphicsScene):
         self.ticker.setCurveShape(4)
         self.ticker.setFrameRange(0,100000)
         self.ticker.valueChanged.connect(self.viewportUpdateProxy)
-        self.ticker.setUpdateInterval(round(1000/60))
+        self.ticker.setUpdateInterval(round(1000/60.0))
 
         self.grid = False
 
@@ -200,8 +200,7 @@ class KPMapScene(QtWidgets.QGraphicsScene):
 
                     if self.playing == False:
                         painter.setWorldTransform(item.sceneTransform(), True)
-                        p = item._boundingRect
-                        painter.drawPixmap(p.x(), p.y(), p.width(), p.height(), item.pixmap)
+                        painter.drawPixmap(item._boundingRect, item.pixmap, QtCore.QRectF(item.pixmap.rect()))
 
                     else:
                         self.animateDoodad(painter, item)
@@ -310,8 +309,7 @@ class KPMapScene(QtWidgets.QGraphicsScene):
 
                         if self.playing == False:
                             painter.setWorldTransform(item.sceneTransform(), True)
-                            p = item._boundingRect
-                            painter.drawPixmap(p.x(), p.y(), p.width(), p.height(), item.pixmap)
+                            painter.drawPixmap(item._boundingRect, item.pixmap, QtCore.QRectF(item.pixmap.rect()))
 
                         else:
                             self.animateDoodad(painter, item)
@@ -324,7 +322,7 @@ class KPMapScene(QtWidgets.QGraphicsScene):
         animations = doodad.animations
 
         transform = item.sceneTransform()
-        posRect = item._boundingRect.adjusted(0,0,0,0)
+        posRect = QtCore.QRectF(item._boundingRect)
 
         # Anm indexes are Looping, Interpolation, Frame Len, Type, Start Value, End Value
         #
@@ -362,7 +360,7 @@ class KPMapScene(QtWidgets.QGraphicsScene):
                     painter.setOpacity(modifier/100.0)
 
         painter.setWorldTransform(transform, True)
-        painter.drawPixmap(posRect.x(), posRect.y(), posRect.width(), posRect.height(), item.pixmap)
+        painter.drawPixmap(posRect, item.pixmap, QtCore.QRectF(item.pixmap.rect()))
 
 
     def setCurrentLayer(self, layer):

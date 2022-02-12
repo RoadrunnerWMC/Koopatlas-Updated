@@ -397,7 +397,7 @@ class KPDoodad(object):
             elif Curve == "Cosinoidial":
                 Timeline.setCurveShape(5)
 
-            Timeline.setFrameRange(StartVal, EndVal)
+            Timeline.setFrameRange(round(StartVal), round(EndVal))
 
             if Loop == "Contiguous":
                 Timeline.setLoopCount(1)
@@ -411,9 +411,9 @@ class KPDoodad(object):
 
             # Setup the Delay Timer and Duration
             # Wii goes at 60 frames per second
-            Timeline.delayTimer.setInterval(Delay/60.0*1000)
-            Timeline.offsetTimer.setInterval(DelayOffset/60.0*1000)
-            Timeline.setDuration(Frames/60.0*1000)
+            Timeline.delayTimer.setInterval(round(Delay/60.0*1000))
+            Timeline.offsetTimer.setInterval(round(DelayOffset/60.0*1000))
+            Timeline.setDuration(round(Frames/60.0*1000))
 
             timelineList.append(Timeline)
             myTimelines.append(Timeline)
