@@ -21,7 +21,7 @@ class KPMapScene(QtWidgets.QGraphicsScene):
         self.ticker.setCurveShape(4)
         self.ticker.setFrameRange(0,100000)
         self.ticker.valueChanged.connect(self.viewportUpdateProxy)
-        self.ticker.setUpdateInterval(16.6666666666667)
+        self.ticker.setUpdateInterval(round(1000/60))
 
         self.grid = False
 
