@@ -18,8 +18,9 @@ DATA_FOLDERS = ['Resources', 'Tilesets']
 DATA_FILES = ['readme.md', 'LICENSE']
 EXTRA_IMPORT_PATHS = ['src']
 
-EXCLUDE_SELECT = True
-EXCLUDE_THREADING = True
+USE_PYQT = True
+USE_NSMBLIB = False
+
 EXCLUDE_HASHLIB = False
 
 # macOS only
