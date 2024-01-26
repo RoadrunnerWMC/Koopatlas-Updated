@@ -133,6 +133,24 @@ def stringifyUnlockData(data):
 
 
 def packUnlockSpec(data):
+    out = _packUnlockSpec(data)
+
+    if out.startswith(b'\0'):
+        # There's an oversight in the unlock-commands file format: if a
+        # top-level unlock-spec (condition) begins with a null byte, the
+        # game code will see it as a null terminator and stop parsing
+        # the command list too early.
+
+        # We can work around this by wrapping the problematic spec in a
+        # single-term "and" expression.
+
+        return b'\x80' + out
+
+    else:
+        return out
+
+
+def _packUnlockSpec(data):
     kind = data[0]
 
     if kind == 'always':
@@ -160,7 +178,7 @@ def packUnlockSpec(data):
         cond = 2 if (kind == 'and') else 3
         one = (cond << 6) | (len(terms) - 1)
 
-        return intsToBytes([one]) + b''.join(map(packUnlockSpec, terms))
+        return intsToBytes([one]) + b''.join(map(_packUnlockSpec, terms))
 
 
 if __name__ == '__main__':
