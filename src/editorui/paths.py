@@ -124,7 +124,7 @@ class KPEditorNode(KPEditorItem):
         def __init__(self):
             QtWidgets.QLineEdit.__init__(self)
 
-            self.setText('None.arc')
+            self.setText('/Maps/*.kpbin')
 
             palette = self.palette()
             palette.setColor(QtGui.QPalette.ButtonText, Qt.black)
@@ -256,7 +256,7 @@ class KPEditorNode(KPEditorItem):
 
         elif state == PATH_NODE_STATE_EXIT:
             node.transition = 0
-            node.mapChange = 'None.arc'
+            node.mapChange = '/Maps/*.kpbin'
             node.foreignID = 0
 
             usedIDs = []
@@ -270,7 +270,7 @@ class KPEditorNode(KPEditorItem):
             node.mapID = i
 
             self.foreignID.setValue(1)
-            self.mapChange.setText('None.arc')
+            self.mapChange.setText('/Maps/*.kpbin')
             self.transition.setCurrentIndex(0)
 
         elif state == PATH_NODE_STATE_TRANSITION:
