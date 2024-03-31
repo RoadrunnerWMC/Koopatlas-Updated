@@ -10,6 +10,8 @@ class KP:
         else:
             KP.app.settings = QtCore.QSettings('Koopatlas', 'Newer Team')
 
+        KP.app.setWindowIcon(QtGui.QIcon('Resources/Koopatlas.png'))
+
         from mapdata import KPMap
         KP.map = KPMap()
 
