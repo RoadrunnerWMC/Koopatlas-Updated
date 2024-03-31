@@ -1092,7 +1092,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
         QtWidgets.QMainWindow.__init__(self)
 
         self.setWindowTitle('Koopatlas')
-        self.setWindowIcon(QtGui.QIcon('Resources/Koopatlas.png'))
         self.setIconSize(QtCore.QSize(16, 16))
 
         self.scene = KPMapScene()

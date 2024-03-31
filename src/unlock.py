@@ -216,7 +216,6 @@ class KPUnlockSpecDialog(QtWidgets.QDialog):
         QtWidgets.QDialog.__init__(self)
 
         self.setWindowTitle('Set Unlock Criteria')
-        self.setWindowIcon(QtGui.QIcon('Resources/Koopatlas.png'))
 
         text = """You may enter various criteria that must be fulfilled for this {0} to be {1}.<br>
             <br>

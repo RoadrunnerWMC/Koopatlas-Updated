@@ -6,7 +6,6 @@ class KPTilesetChooserDialog(QtWidgets.QDialog):
         QtWidgets.QDialog.__init__(self)
 
         self.setWindowTitle('Select Tileset')
-        self.setWindowIcon(QtGui.QIcon('Resources/Koopatlas.png'))
 
         self.label = QtWidgets.QLabel(label)
         self.label.setWordWrap(True)
@@ -79,7 +78,6 @@ class KPAnimationPresetChooser(QtWidgets.QDialog):
         QtWidgets.QDialog.__init__(self)
 
         self.setWindowTitle('Add Preset')
-        self.setWindowIcon(QtGui.QIcon('Resources/Koopatlas.png'))
 
         self.label = QtWidgets.QLabel(label)
         self.label.setWordWrap(True)
