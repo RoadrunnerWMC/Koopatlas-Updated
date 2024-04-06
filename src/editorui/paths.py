@@ -226,8 +226,8 @@ class KPEditorNode(KPEditorItem):
             self.scene().addItem(self.stageProxy)
             self.scene().addItem(self.secretProxy)
             self.scene().addItem(self.foreignIDProxy)
-            self.scene().addItem(self.transitionProxy)
             self.scene().addItem(self.mapChangeProxy)
+            self.scene().addItem(self.transitionProxy)
             self.scene().addItem(self.worldDefIDProxy)
 
         return KPEditorItem.itemChange(self, change, value)
