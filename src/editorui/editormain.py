@@ -94,14 +94,14 @@ class KPMapScene(QtWidgets.QGraphicsScene):
             y1 = rect.top()
             y2 = rect.bottom()
             while x <= endx:
-                drawLine(x, starty, x, endy)
+                drawLine(QtCore.QLineF(x, starty, x, endy))
                 x += 24
 
             y = starty
             x1 = rect.left()
             x2 = rect.right()
             while y <= endy:
-                drawLine(startx, y, endx, y)
+                drawLine(QtCore.QLineF(startx, y, endx, y))
                 y += 24
 
 
@@ -120,14 +120,14 @@ class KPMapScene(QtWidgets.QGraphicsScene):
             y1 = rect.top()
             y2 = rect.bottom()
             while x <= endx:
-                drawLine(x, starty, x, endy)
+                drawLine(QtCore.QLineF(x, starty, x, endy))
                 x += 96
 
             y = starty
             x1 = rect.left()
             x2 = rect.right()
             while y <= endy:
-                drawLine(startx, y, endx, y)
+                drawLine(QtCore.QLineF(startx, y, endx, y))
                 y += 96
 
 
@@ -145,14 +145,14 @@ class KPMapScene(QtWidgets.QGraphicsScene):
         y1 = rect.top()
         y2 = rect.bottom()
         while x <= endx:
-            drawLine(x, starty, x, endy)
+            drawLine(QtCore.QLineF(x, starty, x, endy))
             x += 192
 
         y = starty
         x1 = rect.left()
         x2 = rect.right()
         while y <= endy:
-            drawLine(startx, y, endx, y)
+            drawLine(QtCore.QLineF(startx, y, endx, y))
             y += 192
 
 
@@ -416,8 +416,8 @@ class KPEditorWidget(QtWidgets.QGraphicsView):
             newRect2 = QtCore.QRectF(x-(m2x/2.0), y-(m2y/2.0), m2x, m2y)
             painter.drawRect(newRect2)
 
-            painter.drawLine(x, y-36, x, y+36)
-            painter.drawLine(x-36, y, x+36, y)
+            painter.drawLine(QtCore.QLineF(x, y-36, x, y+36))
+            painter.drawLine(QtCore.QLineF(x-36, y, x+36, y))
 
             newRect3 = QtCore.QRectF(x-24, y-24, 48, 48)
             painter.drawRect(newRect3)
