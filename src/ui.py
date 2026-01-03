@@ -1634,18 +1634,15 @@ class KPMainWindow(QtWidgets.QMainWindow):
         settings = KP.app.settings
         import mapfile
 
-        msg = QtWidgets.QMessageBox()
-        msg.setText("No Animation Presets Found.")
-
         if settings.contains('AnimationPresets'):
             presetList = mapfile.load(settings.value('AnimationPresets'))
             presets = mapfile.load(settings.value('AnimationPresetData'))
         else:
-            msg.exec_()
+            QtWidgets.QMessageBox.warning(None, 'Warning', "No animation presets exist.")
             return
 
         if len(presetList) == 0:
-            msg.exec_()
+            QtWidgets.QMessageBox.warning(None, 'Warning', "No animation presets exist.")
             return
 
         path = QFileDialog_getSaveFileName(self,
