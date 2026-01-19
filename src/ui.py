@@ -1554,9 +1554,6 @@ class KPMainWindow(QtWidgets.QMainWindow):
             name = os.path.basename(path[:-4])
             shutil.copy(path, 'Tilesets')
 
-            with open(path) as file:
-                data = file.read()
-
             KP.knownTilesets[name] = {'path': path}
 
     def changeTileset(self):
