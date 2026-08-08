@@ -1328,6 +1328,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
         self.objectSelectorDock.setVisible(True)
         self.doodadSelectorDock.setVisible(True)
+        self.anmOptsDock.setVisible(True)
 
     def handleSelectedObjectChanged(self, index, obj):
         sel = self.doodadSelector.listView.selectionModel()
