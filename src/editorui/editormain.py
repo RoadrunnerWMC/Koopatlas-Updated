@@ -664,6 +664,7 @@ class KPEditorWidget(QtWidgets.QGraphicsView):
                 layer.updateCache()
 
                 item = KPEditorObject(obj, layer)
+                item.setAcceptHoverEvents(True)
                 self.scene().addItem(item)
 
                 self.painting = obj
@@ -687,6 +688,7 @@ class KPEditorWidget(QtWidgets.QGraphicsView):
                 layer.doodads.append(obj)
 
                 item = KPEditorDoodad(obj, layer)
+                item.setAcceptHoverEvents(True)
                 self.scene().addItem(item)
 
                 self.painting = obj
