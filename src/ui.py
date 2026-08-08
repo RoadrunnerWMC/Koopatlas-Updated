@@ -1105,6 +1105,17 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
         self.refreshMapState()
 
+        settings = KP.app.settings
+
+        if settings.contains('MainWindowGeometry'):
+            self.restoreGeometry(settings.value('MainWindowGeometry'))
+        if settings.contains('MainWindowState'):
+            self.restoreState(settings.value('MainWindowState'), 0)
+
+        self.objectSelectorDock.hide()
+        self.doodadSelectorDock.hide()
+        self.anmOptsDock.hide()
+
     def _createAction(self, internalName, callback, title):
         act = QtWidgets.QAction(title, self)
         act.triggered.connect(callback)
@@ -1209,6 +1220,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
         self.layerList = KPLayerList()
         self.layerListDock = QtWidgets.QDockWidget('Layers')
         self.layerListDock.setWidget(self.layerList)
+        self.layerListDock.setObjectName('Layers')
 
         self.layerList.selectedLayerChanged.connect(self.handleSelectedLayerChanged)
         self.layerList.playPaused.connect(self.playAnim)
@@ -1216,6 +1228,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
         self.pathNodeList = KPPathNodeList()
         self.pathNodeDock = QtWidgets.QDockWidget('Path/Node Layers')
         self.pathNodeDock.setWidget(self.pathNodeList)
+        self.pathNodeDock.setObjectName('PathNodeLayers')
         self.pathNodeList.selectedLayerChanged.connect(self.handleSelectedPathNodeLayerChanged)
         self.pathNodeList.layerClicked.connect(self.handleSelectedPathNodeLayerChanged)
 
@@ -1224,23 +1237,23 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
         self.objectSelectorDock = QtWidgets.QDockWidget('Objects')
         self.objectSelectorDock.setWidget(self.objectSelector)
-        self.objectSelectorDock.hide()
+        self.objectSelectorDock.setObjectName('Objects')
 
         self.doodadSelector = KPDoodadSelector()
         self.doodadSelector.selectedDoodadChanged.connect(self.handleSelectedDoodadChanged)
 
         self.doodadSelectorDock = QtWidgets.QDockWidget('Doodads')
         self.doodadSelectorDock.setWidget(self.doodadSelector)
-        self.doodadSelectorDock.hide()
+        self.doodadSelectorDock.setObjectName('Doodads')
 
         self.anmOpts = KPAnmOptions()
         self.editor.userClick.connect(self.anmPopulate)
 
         self.anmOptsDock = QtWidgets.QDockWidget('Doodad Animations')
         self.anmOptsDock.setWidget(self.anmOpts)
+        self.anmOptsDock.setObjectName('DoodadAnmOpts')
         self.anmOptsDock.setAllowedAreas(Qt.BottomDockWidgetArea | Qt.TopDockWidgetArea)
         self.anmOptsDock.setFeatures(self.anmOptsDock.DockWidgetVerticalTitleBar | self.anmOptsDock.DockWidgetMovable | self.anmOptsDock.DockWidgetFloatable)
-        self.anmOptsDock.hide()
 
         self.addDockWidget(Qt.RightDockWidgetArea, self.layerListDock)
         self.addDockWidget(Qt.RightDockWidgetArea, self.pathNodeDock)
@@ -1286,6 +1299,12 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
     def checkDirty(self):
         return False
+
+    def closeEvent(self, event):
+        settings = KP.app.settings
+
+        settings.setValue('MainWindowState', self.saveState(0))
+        settings.setValue('MainWindowGeometry', self.saveGeometry())
 
 
 #####################
