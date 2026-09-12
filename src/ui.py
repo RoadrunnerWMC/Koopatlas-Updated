@@ -1473,7 +1473,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
             else:
 
-                ScreenshotImage = QtGui.QImage(self.scene.itemsBoundingRect().width()+100, self.scene.itemsBoundingRect().height()+100, QtGui.QImage.Format_ARGB32)
+                ScreenshotImage = QtGui.QImage(int(self.scene.itemsBoundingRect().width()+100), int(self.scene.itemsBoundingRect().height()+100), QtGui.QImage.Format_ARGB32)
                 ScreenshotImage.fill(QtCore.Qt.transparent)
 
                 RenderPainter = QtGui.QPainter(ScreenshotImage)
