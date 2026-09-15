@@ -242,7 +242,7 @@ class KPUnlockSpecDialog(QtWidgets.QDialog):
         self.statusLabel.setWordWrap(True)
 
         self.buttons = QtWidgets.QDialogButtonBox(
-                QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+                QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 
         self.buttons.accepted.connect(self.accept)
         self.buttons.rejected.connect(self.reject)
@@ -268,7 +268,7 @@ class KPUnlockSpecDialog(QtWidgets.QDialog):
             error = str(e)
             self.spec = None
 
-        self.buttons.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(valid)
+        self.buttons.button(QtWidgets.QDialogButtonBox.StandardButton.Ok).setEnabled(valid)
 
         if valid:
             self.statusLabel.setText('Your input is valid.')

@@ -10,24 +10,6 @@ import sys
 if sys.version_info[0] >= 3:
     unicode = str
 
-def QFileDialog_getOpenFileName(*args, **kwargs):
-    retVal = QtWidgets.QFileDialog.getOpenFileName(*args, **kwargs)
-    if QtCompatVersion < 0x50000:
-        return retVal
-    return retVal[0]
-
-def QFileDialog_getOpenFileNames(*args, **kwargs):
-    retVal = QtWidgets.QFileDialog.getOpenFileNames(*args, **kwargs)
-    if QtCompatVersion < 0x50000:
-        return retVal
-    return retVal[0]
-
-def QFileDialog_getSaveFileName(*args, **kwargs):
-    retVal = QtWidgets.QFileDialog.getSaveFileName(*args, **kwargs)
-    if QtCompatVersion < 0x50000:
-        return retVal
-    return retVal[0]
-
 
 class KPPathNodeList(QtWidgets.QWidget):
 
@@ -38,11 +20,14 @@ class KPPathNodeList(QtWidgets.QWidget):
             self.layer = layer
             self.associate = associate
 
-            self.setFlags(Qt.ItemIsSelectable | Qt.ItemIsDragEnabled | Qt.ItemIsEnabled | Qt.ItemIsUserCheckable)
+            self.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable
+                          | QtCore.Qt.ItemFlag.ItemIsDragEnabled
+                          | QtCore.Qt.ItemFlag.ItemIsEnabled
+                          | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
 
-        def data(self, index, role=Qt.DisplayRole):
+        def data(self, index, role=QtCore.Qt.ItemDataRole.DisplayRole):
 
-            if role == Qt.DecorationRole:
+            if role == QtCore.Qt.ItemDataRole.DecorationRole:
                 if isinstance(self.associate, KPNode):
                     node = self.associate
 
@@ -58,7 +43,7 @@ class KPPathNodeList(QtWidgets.QWidget):
                 else:
                     return KP.icon('LayerPath')
 
-            elif role == Qt.DisplayRole:
+            elif role == QtCore.Qt.ItemDataRole.DisplayRole:
                 if isinstance(self.associate, KPNode):
                     node = self.associate
 
@@ -82,14 +67,14 @@ class KPPathNodeList(QtWidgets.QWidget):
 
                     return 'Path: {1}'.format(None, animation)
 
-            elif role == Qt.CheckStateRole:
-                return (Qt.Checked if self.layer.visible else Qt.Unchecked)
+            elif role == QtCore.Qt.ItemDataRole.CheckStateRole:
+                return (QtCore.Qt.CheckState.Checked if self.layer.visible else QtCore.Qt.CheckState.Unchecked)
 
             else:
                 return QtWidgets.QTreeWidgetItem.data(self, index, role)
 
-        def setData(self, column, role = Qt.EditRole, value = None):
-            if role == Qt.CheckStateRole:
+        def setData(self, column, role = QtCore.Qt.ItemDataRole.EditRole, value = None):
+            if role == QtCore.Qt.ItemDataRole.CheckStateRole:
                 self.layer.visible = value
 
         def layer(self):
@@ -107,7 +92,7 @@ class KPPathNodeList(QtWidgets.QWidget):
         self.tree = QtWidgets.QTreeWidget()
         self.tree.setColumnCount(1)
         self.tree.setDragEnabled(True)
-        self.tree.setDragDropMode(self.tree.InternalMove)
+        self.tree.setDragDropMode(QtWidgets.QAbstractItemView.DragDropMode.InternalMove)
         self.tree.setHeaderHidden(True)
         self.tree.currentItemChanged.connect(self.handleRowChanged)
         self.tree.itemClicked.connect(self.handleRowClicked)
@@ -144,7 +129,7 @@ class KPPathNodeList(QtWidgets.QWidget):
         if currentIsNodeItem:
             currentItem.associate.qtItem.setLayerSelected(True)
 
-        if KP.app.keyboardModifiers() & Qt.ControlModifier and currentIsNodeItem:
+        if KP.app.keyboardModifiers() & QtCore.Qt.KeyboardModifier.ControlModifier and currentIsNodeItem:
             layer = currentItem.layer
 
             KP.mainWindow.scene.clearSelection()
@@ -171,7 +156,11 @@ class KPPathNodeList(QtWidgets.QWidget):
         item = QtWidgets.QTreeWidgetItem(self.tree)
         item.setIcon(0, KP.icon('Folder'))
         item.setText(0, 'Untitled Folder')
-        item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsDragEnabled | Qt.ItemIsDropEnabled | Qt.ItemIsEditable | Qt.ItemIsEnabled)
+        item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable
+                      | QtCore.Qt.ItemFlag.ItemIsDragEnabled
+                      | QtCore.Qt.ItemFlag.ItemIsDropEnabled
+                      | QtCore.Qt.ItemFlag.ItemIsEditable
+                      | QtCore.Qt.ItemFlag.ItemIsEnabled)
 
     def removeFolder(self):
         item = self.tree.currentItem()
@@ -254,7 +243,11 @@ class KPPathNodeList(QtWidgets.QWidget):
 
                     item.setIcon(0, KP.icon('Folder'))
                     item.setText(0, subfolder)
-                    item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsDragEnabled | Qt.ItemIsDropEnabled | Qt.ItemIsEditable | Qt.ItemIsEnabled)
+                    item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable
+                                  | QtCore.Qt.ItemFlag.ItemIsDragEnabled
+                                  | QtCore.Qt.ItemFlag.ItemIsDropEnabled
+                                  | QtCore.Qt.ItemFlag.ItemIsEditable
+                                  | QtCore.Qt.ItemFlag.ItemIsEnabled)
                     myFolder = item
 
             # Now that we've got all the folders, put it in!
@@ -265,7 +258,7 @@ class KPPathNodeList(QtWidgets.QWidget):
 
     def findFolder(self, matchString):
 
-        itemList = QtWidgets.QTreeWidgetItemIterator(self.tree, QtWidgets.QTreeWidgetItemIterator.Editable)
+        itemList = QtWidgets.QTreeWidgetItemIterator(self.tree, QtWidgets.QTreeWidgetItemIterator.IteratorFlag.Editable)
 
         while itemList.value():
             item = itemList.value()
@@ -278,7 +271,7 @@ class KPPathNodeList(QtWidgets.QWidget):
         return None
 
     def findItemFor(self, associate):
-        itemList = QtWidgets.QTreeWidgetItemIterator(self.tree, QtWidgets.QTreeWidgetItemIterator.NotEditable)
+        itemList = QtWidgets.QTreeWidgetItemIterator(self.tree, QtWidgets.QTreeWidgetItemIterator.IteratorFlag.NotEditable)
 
         while itemList.value():
             item = itemList.value()
@@ -330,7 +323,7 @@ class KPPathNodeList(QtWidgets.QWidget):
 
     def setLayerFolders(self):
 
-        itemList = QtWidgets.QTreeWidgetItemIterator(self.tree, QtWidgets.QTreeWidgetItemIterator.NotEditable)
+        itemList = QtWidgets.QTreeWidgetItemIterator(self.tree, QtWidgets.QTreeWidgetItemIterator.IteratorFlag.NotEditable)
 
         while itemList.value():
             item = itemList.value()
@@ -415,7 +408,7 @@ class KPLayerList(QtWidgets.QWidget):
         self.selectedLayerChanged.emit(KP.map.layers[current.row()])
         self.setButtonStates()
 
-        if KP.app.keyboardModifiers() & Qt.ControlModifier:
+        if KP.app.keyboardModifiers() & QtCore.Qt.KeyboardModifier.ControlModifier:
             index = self.selectedLayerIndex()
             layer = KP.map.layers[index]
 
@@ -501,11 +494,11 @@ class KPDoodadSelector(QtWidgets.QWidget):
         self.layout.setSpacing(0)
 
         self.listView = QtWidgets.QListView()
-        self.listView.setViewMode(self.listView.IconMode)
+        self.listView.setViewMode(QtWidgets.QListView.ViewMode.IconMode)
         self.listView.setWrapping(True)
-        self.listView.setDragDropMode(self.listView.DragOnly)
-        self.listView.setSelectionMode(self.listView.SingleSelection)
-        self.listView.setResizeMode(self.listView.Adjust)
+        self.listView.setDragDropMode(QtWidgets.QAbstractItemView.DragDropMode.DragOnly)
+        self.listView.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
+        self.listView.setResizeMode(QtWidgets.QListView.ResizeMode.Adjust)
         self.listView.setGridSize(QtCore.QSize(128, 128))
         self.listView.setIconSize(QtCore.QSize(100, 100))
         self.listView.setSpacing(4)
@@ -532,7 +525,7 @@ class KPDoodadSelector(QtWidgets.QWidget):
     def keyPressEvent(self, event):
         self.listView.keyPressEvent(event)
 
-        if event.key() == QtCore.Qt.Key_Delete or event.key() == QtCore.Qt.Key_Backspace:
+        if event.key() == QtCore.Qt.Key.Key_Delete or event.key() == QtCore.Qt.Key.Key_Backspace:
             doodad = self.selectedDoodad()
             if doodad is None:
                 return
@@ -540,16 +533,16 @@ class KPDoodadSelector(QtWidgets.QWidget):
             # TODO: Check if selected
             msgBox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning,
                     "Delete Doodad?", "Are you sure you want to delete this doodad? This action cannot be undone.",
-                    QtWidgets.QMessageBox.NoButton, self)
+                    QtWidgets.QMessageBox.StandardButton.NoButton, self)
             msgBox.addButton("Delete", QtWidgets.QMessageBox.AcceptRole)
             msgBox.addButton("Cancel", QtWidgets.QMessageBox.RejectRole)
-            if msgBox.exec_() == QtWidgets.QMessageBox.AcceptRole:
+            if msgBox.exec() == QtWidgets.QMessageBox.AcceptRole:
                 KP.map.removeDoodad(doodad)
 
     # def addDoodad(self, image, name):
         # TODO: REMOVE
         # """Takes a name and a QPixmap and turns it into an icon, then goes ahead and makes a doodad.
-        # Doodads are QListWidget items with an index number as Qt.UserRole #32."""
+        # Doodads are QListWidget items with an index number as QtCore.Qt.ItemDataRole.UserRole #32."""
 
 
         # doodie = QtWidgets.QListWidgetItem(QtGui.QIcon(image), name)
@@ -565,9 +558,9 @@ class KPDoodadSelector(QtWidgets.QWidget):
     def addDoodadFromFile(self):
         """Asks the user for files to load in as doodads."""
 
-        files = QFileDialog_getOpenFileNames(self,
+        files = QtWidgets.QFileDialog.getOpenFileNames(self,
                 "Choose an image or several image files.", "",
-                "Images (*.png *.jpeg *.jpg *.bmp)")
+                "Images (*.png *.jpeg *.jpg *.bmp)")[0]
 
         if files:
             for image in files:
@@ -621,9 +614,9 @@ class KPObjectSelector(QtWidgets.QWidget):
 
         self.sorterButton.setText('Pick a Layer')
         self.sorterButton.setEnabled(False)
-        self.sorterButton.setPopupMode(self.sorterButton.InstantPopup)
-        self.sorterButton.setToolButtonStyle(Qt.ToolButtonTextOnly)
-        self.sorterButton.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        self.sorterButton.setPopupMode(QtWidgets.QToolButton.ToolButtonPopupMode.InstantPopup)
+        self.sorterButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextOnly)
+        self.sorterButton.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
 
         self.sorterMenu = QtWidgets.QMenu()
         self.sorterButton.setMenu(self.sorterMenu)
@@ -638,10 +631,10 @@ class KPObjectSelector(QtWidgets.QWidget):
         self.layout.addWidget(self.toolbar)
 
         self.listView = QtWidgets.QListView()
-        self.listView.setFlow(QtWidgets.QListView.LeftToRight)
-        self.listView.setLayoutMode(QtWidgets.QListView.SinglePass)
-        self.listView.setMovement(QtWidgets.QListView.Static)
-        self.listView.setResizeMode(QtWidgets.QListView.Adjust)
+        self.listView.setFlow(QtWidgets.QListView.Flow.LeftToRight)
+        self.listView.setLayoutMode(QtWidgets.QListView.LayoutMode.SinglePass)
+        self.listView.setMovement(QtWidgets.QListView.Movement.Static)
+        self.listView.setResizeMode(QtWidgets.QListView.ResizeMode.Adjust)
         self.listView.setWrapping(True)
         self.listView.setEnabled(False)
         self.layout.addWidget(self.listView)
@@ -695,11 +688,7 @@ class KPObjectSelector(QtWidgets.QWidget):
         menuList = model.groupItem().getGroupList()
 
         self.beginUsingMenu()
-        if QtCompatVersion < 0x50000:
-            string = QtCore.QString(QtCore.QChar(0x25BE))
-            string.append(' All Groups')
-        else:
-            string = '\u25BE All Groups'
+        string = '\u25BE All Groups'
 
         self.sorterButton.setText(string)
         self.sorterMenu.clear()
@@ -728,11 +717,7 @@ class KPObjectSelector(QtWidgets.QWidget):
             else:
                 self.listView.setRowHidden(row, False)
 
-        if QtCompatVersion < 0x50000:
-            string = QtCore.QString(QtCore.QChar(0x25BE))
-            string.append(' ' + name)
-        else:
-            string = '\u25BE ' + name
+        string = '\u25BE ' + name
 
         self.sorterButton.setText(string)
 
@@ -756,8 +741,8 @@ class KPAnmOptions(QtWidgets.QWidget):
             interp = ["Linear", "Sinusoidial", "Cosinoidial"]
             anmType = ["X Position", "Y Position", "Angle", "X Scale", "Y Scale", "Opacity"]
 
-            thing = index.data(Qt.DisplayRole)
-            thong = index.data(Qt.EditRole)
+            thing = index.data(QtCore.Qt.ItemDataRole.DisplayRole)
+            thong = index.data(QtCore.Qt.ItemDataRole.EditRole)
 
             if thing in loop:
                 editWidget = QtWidgets.QComboBox(parent)
@@ -791,12 +776,12 @@ class KPAnmOptions(QtWidgets.QWidget):
         def setEditorData(self, editor, index):
 
             if isinstance(editor, QtWidgets.QDoubleSpinBox):
-                thing = index.data(Qt.EditRole)
+                thing = index.data(QtCore.Qt.ItemDataRole.EditRole)
 
                 editor.setValue(thing)
 
             elif isinstance(editor, QtWidgets.QComboBox):
-                thing = index.data(Qt.DisplayRole)
+                thing = index.data(QtCore.Qt.ItemDataRole.DisplayRole)
 
                 editor.setCurrentIndex(editor.findText(thing))
 
@@ -810,12 +795,12 @@ class KPAnmOptions(QtWidgets.QWidget):
                 editor.interpretText()
                 value = editor.value()
 
-                model.setData(index, value, QtCore.Qt.EditRole)
+                model.setData(index, value, QtCore.Qt.ItemDataRole.EditRole)
 
             elif isinstance(editor, QtWidgets.QComboBox):
                 value = editor.currentText()
 
-                model.setData(index, value, QtCore.Qt.EditRole)
+                model.setData(index, value, QtCore.Qt.ItemDataRole.EditRole)
 
             else:
                 print("editor is something else!")
@@ -838,14 +823,14 @@ class KPAnmOptions(QtWidgets.QWidget):
 
 
         #   menuPalette = self.menu.palette()
-        #   menuPalette.setColor(QtGui.QPalette.Window, Qt.black)
+        #   menuPalette.setColor(QtGui.QPalette.ColorRole.Window, QtCore.Qt.GlobalColor.black)
         #   self.menu.setPalette(menuPalette)
 
         #   self.setMenu(self.menu)
 
         #   palette = self.palette()
-        #   palette.setColor(QtGui.QPalette.ButtonText, Qt.black)
-        #   palette.setColor(QtGui.QPalette.Window, Qt.transparent)
+        #   palette.setColor(QtGui.QPalette.ColorRole.ButtonText, QtCore.Qt.GlobalColor.black)
+        #   palette.setColor(QtGui.QPalette.ColorRole.Window, QtCore.Qt.GlobalColor.transparent)
 
         #   self.setPalette(palette)
 
@@ -935,11 +920,11 @@ class KPAnmOptions(QtWidgets.QWidget):
             itemD = QtGui.QStandardItem()
             itemE = QtGui.QStandardItem()
 
-            itemA.setData(row[2], QtCore.Qt.EditRole)
-            itemB.setData(row[4], QtCore.Qt.EditRole)
-            itemC.setData(row[5], QtCore.Qt.EditRole)
-            itemD.setData(row[6], QtCore.Qt.EditRole)
-            itemE.setData(row[7], QtCore.Qt.EditRole)
+            itemA.setData(row[2], QtCore.Qt.ItemDataRole.EditRole)
+            itemB.setData(row[4], QtCore.Qt.ItemDataRole.EditRole)
+            itemC.setData(row[5], QtCore.Qt.ItemDataRole.EditRole)
+            itemD.setData(row[6], QtCore.Qt.ItemDataRole.EditRole)
+            itemE.setData(row[7], QtCore.Qt.ItemDataRole.EditRole)
 
             self.model.appendRow([QtGui.QStandardItem(row[0]), QtGui.QStandardItem(row[1]),
                                   itemA, QtGui.QStandardItem(row[3]), itemB, itemC, itemD, itemE])
@@ -957,11 +942,11 @@ class KPAnmOptions(QtWidgets.QWidget):
         itemD = QtGui.QStandardItem()
         itemE = QtGui.QStandardItem()
 
-        itemA.setData(1, QtCore.Qt.EditRole)
-        itemB.setData(0.0, QtCore.Qt.EditRole)
-        itemC.setData(0.0, QtCore.Qt.EditRole)
-        itemD.setData(0, QtCore.Qt.EditRole)
-        itemE.setData(0, QtCore.Qt.EditRole)
+        itemA.setData(1, QtCore.Qt.ItemDataRole.EditRole)
+        itemB.setData(0.0, QtCore.Qt.ItemDataRole.EditRole)
+        itemC.setData(0.0, QtCore.Qt.ItemDataRole.EditRole)
+        itemD.setData(0, QtCore.Qt.ItemDataRole.EditRole)
+        itemE.setData(0, QtCore.Qt.ItemDataRole.EditRole)
 
         self.model.appendRow([QtGui.QStandardItem("Contiguous"), QtGui.QStandardItem("Linear"),
                               itemA, QtGui.QStandardItem("X Position"),
@@ -991,16 +976,16 @@ class KPAnmOptions(QtWidgets.QWidget):
             a = q(row[0])
             b = q(row[1])
             c = q()
-            c.setData(row[2], Qt.EditRole)
+            c.setData(row[2], QtCore.Qt.ItemDataRole.EditRole)
             d = q(row[3])
             e = q()
-            e.setData(row[4], Qt.EditRole)
+            e.setData(row[4], QtCore.Qt.ItemDataRole.EditRole)
             f = q()
-            f.setData(row[5], Qt.EditRole)
+            f.setData(row[5], QtCore.Qt.ItemDataRole.EditRole)
             g = q()
-            g.setData(row[6], Qt.EditRole)
+            g.setData(row[6], QtCore.Qt.ItemDataRole.EditRole)
             h = q()
-            h.setData(row[6], Qt.EditRole)
+            h.setData(row[6], QtCore.Qt.ItemDataRole.EditRole)
 
             self.model.appendRow([a,b,c,d,e,f,g,h])
 
@@ -1020,10 +1005,7 @@ class KPAnmOptions(QtWidgets.QWidget):
             listrow = []
             for column in range(8):
                 item = self.model.item(row, column)
-                data = item.data(Qt.EditRole)
-
-                if hasattr(QtCore, 'QString') and isinstance(data, QtCore.QString):
-                    data = str(data)
+                data = item.data(QtCore.Qt.ItemDataRole.EditRole)
 
                 listrow.append(data)
 
@@ -1061,7 +1043,7 @@ class KPAnmOptions(QtWidgets.QWidget):
 
             for item in range(8):
                 index = model.index(x, item)
-                data = model.data(index, Qt.EditRole)
+                data = model.data(index, QtCore.Qt.ItemDataRole.EditRole)
                 rowList.append(data)
 
             anmList.append(rowList)
@@ -1136,45 +1118,45 @@ class KPMainWindow(QtWidgets.QMainWindow):
         QKeySequence = QtGui.QKeySequence
 
         f = mb.addMenu('&File')
-        self.fa = f.addAction('New',                        self.newMap, QKeySequence("Ctrl+N"))
-        self.fb = f.addAction('Open...',                    self.openMap, QKeySequence("Ctrl+O"))
+        self.fa = f.addAction('New',                        QKeySequence("Ctrl+N"), self.newMap)
+        self.fb = f.addAction('Open...',                    QKeySequence("Ctrl+O"), self.openMap)
         #self.fc = f.addAction('Open Recent')                #
         f.addSeparator()
-        self.fd = f.addAction('Save',                       self.saveMap, QKeySequence("Ctrl+S"))
-        self.fe = f.addAction('Save As...',                 self.saveMapAs, QKeySequence("Ctrl+Shift+S"))
-        self.ff = f.addAction('Export...',                  self.exportMap, QKeySequence("Ctrl+E"))
-        self.fj = f.addAction('Batch...',                   self.batchSave, QKeySequence("Ctrl+Shift+E"))
+        self.fd = f.addAction('Save',                       QKeySequence("Ctrl+S"), self.saveMap)
+        self.fe = f.addAction('Save As...',                 QKeySequence("Ctrl+Shift+S"), self.saveMapAs)
+        self.ff = f.addAction('Export...',                  QKeySequence("Ctrl+E"), self.exportMap)
+        self.fj = f.addAction('Batch...',                   QKeySequence("Ctrl+Shift+E"), self.batchSave)
         f.addSeparator()
-        self.fg = f.addAction('Take Screenshot...',         self.screenshot, QKeySequence("Ctrl+Alt+S"))
-        self.fh = f.addAction('Export Doodads...',          self.exportDoodads, QKeySequence("Ctrl+Alt+Shift+D"))
+        self.fg = f.addAction('Take Screenshot...',         QKeySequence("Ctrl+Alt+S"), self.screenshot)
+        self.fh = f.addAction('Export Doodads...',          QKeySequence("Ctrl+Alt+Shift+D"), self.exportDoodads)
         f.addSeparator()
         # self.fi = f.addAction('Quit')
 
         e = mb.addMenu('Edit')
-        self.ea = e.addAction('Copy',                       self.copy, QKeySequence.Copy)
+        self.ea = e.addAction('Copy',                       QKeySequence.StandardKey.Copy, self.copy)
         #self.eb = e.addAction('Cut')                        # X
-        self.ec = e.addAction('Paste',                      self.paste, QKeySequence.Paste)
+        self.ec = e.addAction('Paste',                      QKeySequence.StandardKey.Paste, self.paste)
         e.addSeparator()
-        self.ed = e.addAction('Select All',                 self.selectAll, QKeySequence.SelectAll)
-        self.ee = e.addAction('Deselect',                   self.deSelect, QKeySequence("Ctrl+D"))
+        self.ed = e.addAction('Select All',                 QKeySequence.StandardKey.SelectAll, self.selectAll)
+        self.ee = e.addAction('Deselect',                   QKeySequence("Ctrl+D"), self.deSelect)
 
         l = mb.addMenu('Layers')
-        self.la = l.addAction('Add Tileset Layer',          self.layerList.addTileLayer, QKeySequence("Ctrl+T"))
-        self.lb = l.addAction('Add Doodad Layer',           self.layerList.addDoodadLayer, QKeySequence("Ctrl+R"))
-        self.lc = l.addAction('Remove Layer',               self.layerList.removeLayer, QKeySequence("Ctrl+Del"))
+        self.la = l.addAction('Add Tileset Layer',          QKeySequence("Ctrl+T"), self.layerList.addTileLayer)
+        self.lb = l.addAction('Add Doodad Layer',           QKeySequence("Ctrl+R"), self.layerList.addDoodadLayer)
+        self.lc = l.addAction('Remove Layer',               QKeySequence("Ctrl+Del"), self.layerList.removeLayer)
         l.addSeparator()
-        self.ld = l.addAction('Move Layer Up',              self.layerList.moveUp, QKeySequence("Ctrl+Up"))
-        self.le = l.addAction('Move Layer Down',            self.layerList.moveDown, QKeySequence("Ctrl+Down"))
-        self.lf = l.addAction('Move Layer to Top',          self.layerList.moveTop, QKeySequence("Ctrl+Shift+Up"))
-        self.lg = l.addAction('Move Layer to Bottom',       self.layerList.moveBottom, QKeySequence("Ctrl+Shift+Down"))
+        self.ld = l.addAction('Move Layer Up',              QKeySequence("Ctrl+Up"), self.layerList.moveUp)
+        self.le = l.addAction('Move Layer Down',            QKeySequence("Ctrl+Down"), self.layerList.moveDown)
+        self.lf = l.addAction('Move Layer to Top',          QKeySequence("Ctrl+Shift+Up"), self.layerList.moveTop)
+        self.lg = l.addAction('Move Layer to Bottom',       QKeySequence("Ctrl+Shift+Down"), self.layerList.moveBottom)
         l.addSeparator()
-        self.li = l.addAction('Add Doodad...',              self.doodadSelector.addDoodadFromFile, QKeySequence("Ctrl+Shift+R"))
-        self.lh = l.addAction('Add Tileset...',             self.moveTilesetToFolder, QKeySequence("Ctrl+Shift+T"))
-        self.lj = l.addAction('Change Tileset...',          self.changeTileset, QKeySequence("Ctrl+Shift+Alt+T"))
+        self.li = l.addAction('Add Doodad...',              QKeySequence("Ctrl+Shift+R"), self.doodadSelector.addDoodadFromFile)
+        self.lh = l.addAction('Add Tileset...',             QKeySequence("Ctrl+Shift+T"), self.moveTilesetToFolder)
+        self.lj = l.addAction('Change Tileset...',          QKeySequence("Ctrl+Shift+Alt+T"), self.changeTileset)
 
         a = mb.addMenu('Animate')
-        self.aa = a.addAction('Play Animations',            self.playAnim, QKeySequence("Ctrl+P"))
-        self.ac = a.addAction('Reset Animations',           self.resetAnim, QKeySequence("Ctrl+Shift+P"))
+        self.aa = a.addAction('Play Animations',            QKeySequence("Ctrl+P"), self.playAnim)
+        self.ac = a.addAction('Reset Animations',           QKeySequence("Ctrl+Shift+P"), self.resetAnim)
         a.addSeparator()
         self.ad = a.addAction('Load Animation Presets...',  self.loadAnimPresets)
         self.ae = a.addAction('Save Animation Presets...',  self.saveAnimPresets)
@@ -1185,13 +1167,13 @@ class KPMainWindow(QtWidgets.QMainWindow):
         self.ma = m.addAction('World Editor...',            self.showWorldEditor)
 
         w = mb.addMenu('Window')
-        self.wa = w.addAction('Show Grid',                  self.showGrid, QKeySequence("Ctrl+G"))
+        self.wa = w.addAction('Show Grid',                  QKeySequence("Ctrl+G"), self.showGrid)
         self.wa.setCheckable(True)
         w.addSeparator()
-        self.wb = w.addAction('Zoom In',                    self.ZoomIn, QKeySequence.ZoomIn)
-        self.wc = w.addAction('Zoom Out',                   self.ZoomOut, QKeySequence.ZoomOut)
-        self.wd = w.addAction('Actual Size',                self.ZoomActual, QKeySequence("Ctrl+="))
-        self.wh = w.addAction('Show Wii Zoom',              self.showWiiZoom, QKeySequence("Ctrl+F"))
+        self.wb = w.addAction('Zoom In',                    QKeySequence.StandardKey.ZoomIn, self.ZoomIn)
+        self.wc = w.addAction('Zoom Out',                   QKeySequence.StandardKey.ZoomOut, self.ZoomOut)
+        self.wd = w.addAction('Actual Size',                QKeySequence("Ctrl+="), self.ZoomActual)
+        self.wh = w.addAction('Show Wii Zoom',              QKeySequence("Ctrl+F"), self.showWiiZoom)
         self.wh.setCheckable(True)
         w.addSeparator()
 
@@ -1252,14 +1234,16 @@ class KPMainWindow(QtWidgets.QMainWindow):
         self.anmOptsDock = QtWidgets.QDockWidget('Doodad Animations')
         self.anmOptsDock.setWidget(self.anmOpts)
         self.anmOptsDock.setObjectName('DoodadAnmOpts')
-        self.anmOptsDock.setAllowedAreas(Qt.BottomDockWidgetArea | Qt.TopDockWidgetArea)
-        self.anmOptsDock.setFeatures(self.anmOptsDock.DockWidgetVerticalTitleBar | self.anmOptsDock.DockWidgetMovable | self.anmOptsDock.DockWidgetFloatable)
+        self.anmOptsDock.setAllowedAreas(QtCore.Qt.DockWidgetArea.BottomDockWidgetArea | QtCore.Qt.DockWidgetArea.TopDockWidgetArea)
+        self.anmOptsDock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetVerticalTitleBar
+                                     | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable
+                                     | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable)
 
-        self.addDockWidget(Qt.RightDockWidgetArea, self.layerListDock)
-        self.addDockWidget(Qt.RightDockWidgetArea, self.pathNodeDock)
-        self.addDockWidget(Qt.LeftDockWidgetArea, self.objectSelectorDock)
-        self.addDockWidget(Qt.LeftDockWidgetArea, self.doodadSelectorDock)
-        self.addDockWidget(Qt.BottomDockWidgetArea, self.anmOptsDock)
+        self.addDockWidget(QtCore.Qt.DockWidgetArea.RightDockWidgetArea, self.layerListDock)
+        self.addDockWidget(QtCore.Qt.DockWidgetArea.RightDockWidgetArea, self.pathNodeDock)
+        self.addDockWidget(QtCore.Qt.DockWidgetArea.LeftDockWidgetArea, self.objectSelectorDock)
+        self.addDockWidget(QtCore.Qt.DockWidgetArea.LeftDockWidgetArea, self.doodadSelectorDock)
+        self.addDockWidget(QtCore.Qt.DockWidgetArea.BottomDockWidgetArea, self.anmOptsDock)
 
     def refreshMapState(self):
         self.layerList.updateModel()
@@ -1408,8 +1392,8 @@ class KPMainWindow(QtWidgets.QMainWindow):
     def openMap(self):
         if self.checkDirty(): return
 
-        target = unicode(QFileDialog_getOpenFileName(
-            self, 'Open Map', '', 'Koopatlas map (*.kpmap)'))
+        target = unicode(QtWidgets.QFileDialog.getOpenFileName(
+            self, 'Open Map', '', 'Koopatlas map (*.kpmap)')[0])
 
         if len(target) == 0:
             return
@@ -1427,8 +1411,8 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
         if target is None or forceNewName:
             dialogDir = '' if target is None else os.path.dirname(target)
-            target = unicode(QFileDialog_getSaveFileName(
-                    self, 'Save Map', dialogDir, 'Koopatlas map (*.kpmap)'))
+            target = unicode(QtWidgets.QFileDialog.getSaveFileName(
+                    self, 'Save Map', dialogDir, 'Koopatlas map (*.kpmap)')[0])
 
             if len(target) == 0:
                 return
@@ -1445,8 +1429,8 @@ class KPMainWindow(QtWidgets.QMainWindow):
         target = KP.map.filePath
 
         dialogDir = '' if target is None else os.path.dirname(target)
-        target = unicode(QFileDialog_getSaveFileName(
-                self, 'Export Map', dialogDir, 'Koopatlas binary map (*.kpbin)'))
+        target = unicode(QtWidgets.QFileDialog.getSaveFileName(
+                self, 'Export Map', dialogDir, 'Koopatlas binary map (*.kpbin)')[0])
 
         if len(target) == 0:
             return
@@ -1459,13 +1443,13 @@ class KPMainWindow(QtWidgets.QMainWindow):
         item, ok = QtWidgets.QInputDialog.getItem(self, "Screenshot",
                 "Choose a Screenshot Source:", items, 0, False)
         if ok and item:
-            fn = QFileDialog_getSaveFileName(self, 'Choose a new filename', 'untitled.png', 'Portable Network Graphics (*.png)')
+            fn = QtWidgets.QFileDialog.getSaveFileName(self, 'Choose a new filename', 'untitled.png', 'Portable Network Graphics (*.png)')[0]
             if fn == '': return
             fn = unicode(fn)
 
             if item == "Current Window":
-                ScreenshotImage = QtGui.QImage(self.editor.width(), self.editor.height(), QtGui.QImage.Format_ARGB32)
-                ScreenshotImage.fill(QtCore.Qt.transparent)
+                ScreenshotImage = QtGui.QImage(self.editor.width(), self.editor.height(), QtGui.QImage.Format.Format_ARGB32)
+                ScreenshotImage.fill(QtCore.Qt.GlobalColor.transparent)
 
                 RenderPainter = QtGui.QPainter(ScreenshotImage)
                 self.editor.render(RenderPainter, QtCore.QRectF(0,0,self.editor.width(),  self.editor.height()), QtCore.QRect(QtCore.QPoint(0,0), QtCore.QSize(self.editor.width(),  self.editor.height())))
@@ -1473,8 +1457,8 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
             else:
 
-                ScreenshotImage = QtGui.QImage(int(self.scene.itemsBoundingRect().width()+100), int(self.scene.itemsBoundingRect().height()+100), QtGui.QImage.Format_ARGB32)
-                ScreenshotImage.fill(QtCore.Qt.transparent)
+                ScreenshotImage = QtGui.QImage(int(self.scene.itemsBoundingRect().width()+100), int(self.scene.itemsBoundingRect().height()+100), QtGui.QImage.Format.Format_ARGB32)
+                ScreenshotImage.fill(QtCore.Qt.GlobalColor.transparent)
 
                 RenderPainter = QtGui.QPainter(ScreenshotImage)
                 self.scene.render(RenderPainter, QtCore.QRectF(ScreenshotImage.rect()), self.scene.itemsBoundingRect().adjusted(-50.0, -50.0, 50.0, 50.0))
@@ -1565,9 +1549,9 @@ class KPMainWindow(QtWidgets.QMainWindow):
 ########################
     def moveTilesetToFolder(self):
 
-        path = QFileDialog_getOpenFileName(self,
+        path = QtWidgets.QFileDialog.getOpenFileName(self,
                 "Choose a tileset file. It will be copied to the Koopatlas Tilesets folder.", "",
-                "Koopuzzle Tilesets (*.arc)")
+                "Koopuzzle Tilesets (*.arc)")[0]
         if path:
             import shutil
             import os
@@ -1619,9 +1603,9 @@ class KPMainWindow(QtWidgets.QMainWindow):
         self.scene.playPause()
 
     def loadAnimPresets(self):
-        path = QFileDialog_getOpenFileName(self,
+        path = QtWidgets.QFileDialog.getOpenFileName(self,
                 "Choose a Koopatlas Animation Preset File.", "",
-                "Koopatlas Animation Preset (*.kpa)")
+                "Koopatlas Animation Preset (*.kpa)")[0]
         if path:
             import mapfile
 
@@ -1660,16 +1644,16 @@ class KPMainWindow(QtWidgets.QMainWindow):
             presetList = mapfile.load(settings.value('AnimationPresets'))
             presets = mapfile.load(settings.value('AnimationPresetData'))
         else:
-            msg.exec_()
+            msg.exec()
             return
 
         if len(presetList) == 0:
-            msg.exec_()
+            msg.exec()
             return
 
-        path = QFileDialog_getSaveFileName(self,
+        path = QtWidgets.QFileDialog.getSaveFileName(self,
                 "Save Koopatlas Animation Preset externally.", "KP Preset.kpa",
-                "Koopatlas Animation Preset (*.kpa)")
+                "Koopatlas Animation Preset (*.kpa)")[0]
 
         if path:
             import mapfile

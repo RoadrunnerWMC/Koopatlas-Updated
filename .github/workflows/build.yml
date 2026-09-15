@@ -8,24 +8,13 @@ jobs:
     strategy:
       matrix:
         include:
-          - build-name: 'Windows 8.1+ 64-bit'
-            python-version: "3.11"
-            pyqt-version: 5
+          - build-name: 'Windows'
             platform: windows-latest
             arch: 'x64'
-          - build-name: 'Windows 7 or 32-bit'
-            python-version: 3.8
-            pyqt-version: 5
-            platform: windows-latest
-            arch: 'x86'
           - build-name: 'macOS'
-            python-version: "3.11"
-            pyqt-version: 5
             platform: macos-latest
-            arch: 'x64'
+            arch: 'arm64'
           - build-name: 'Ubuntu'
-            python-version: "3.11"
-            pyqt-version: 5
             platform: ubuntu-latest
             arch: 'x64'
 
@@ -35,11 +24,11 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
     - name: Set up Python
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@v7
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: '3.13'
         architecture: ${{ matrix.arch }}
     - name: Install dependencies
       shell: bash
@@ -47,13 +36,9 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install wheel
         python -m pip install PyQt${{ matrix.pyqt-version }} nsmblib PyInstaller
-    - name: Configure PyQt5 build
-      if: ${{ matrix.pyqt-version == 5 }}
-      shell: bash
-      run: echo "PYQT_VERSION=PyQt5" >> $GITHUB_ENV
     - name: Build
       shell: bash
-      run: python -OO build_release.py
+      run: PYQT_VERSION=PyQt6 python -OO build_release.py
     - name: Tar (macOS/Linux)
       if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
       run: |
@@ -62,13 +47,13 @@ jobs:
         cd ..
     - name: Upload artifacts (Windows)
       if: ${{ runner.os == 'Windows' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: build-${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.python-version }}
         path: distrib/*
     - name: Upload artifacts (macOS/Linux)
       if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: build-${{ matrix.platform }}-${{ matrix.arch }}
         path: build-${{ matrix.platform }}.tar.gz

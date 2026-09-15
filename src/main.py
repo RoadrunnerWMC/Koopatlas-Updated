@@ -22,7 +22,7 @@ class KP:
 
         KP.enumerateTilesets()
 
-        KP.app.exec_()
+        KP.app.exec()
 
 
     @classmethod

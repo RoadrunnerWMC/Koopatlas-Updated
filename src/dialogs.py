@@ -26,10 +26,10 @@ class KPTilesetChooserDialog(QtWidgets.QDialog):
         self.chooser.itemActivated.connect(self.handleItemActivated)
 
         self.buttons = QtWidgets.QDialogButtonBox(
-                QtWidgets.QDialogButtonBox.Ok |
-                QtWidgets.QDialogButtonBox.Cancel)
+                QtWidgets.QDialogButtonBox.StandardButton.Ok |
+                QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 
-        self.okButton = self.buttons.button(QtWidgets.QDialogButtonBox.Ok)
+        self.okButton = self.buttons.button(QtWidgets.QDialogButtonBox.StandardButton.Ok)
         self.okButton.setEnabled(False)
 
         self.buttons.accepted.connect(self.accept)
@@ -63,9 +63,9 @@ class KPTilesetChooserDialog(QtWidgets.QDialog):
     @classmethod
     def run(cls, *args):
         dialog = cls(*args)
-        result = dialog.exec_()
+        result = dialog.exec()
 
-        if result == QtWidgets.QDialog.Accepted:
+        if result == QtWidgets.QDialog.DialogCode.Accepted:
             return dialog.getChoice()
         else:
             return None
@@ -115,10 +115,10 @@ class KPAnimationPresetChooser(QtWidgets.QDialog):
         self.chooser.itemActivated.connect(self.handleItemActivated)
 
         self.buttons = QtWidgets.QDialogButtonBox(
-                QtWidgets.QDialogButtonBox.Ok |
-                QtWidgets.QDialogButtonBox.Cancel)
+                QtWidgets.QDialogButtonBox.StandardButton.Ok |
+                QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 
-        self.okButton = self.buttons.button(QtWidgets.QDialogButtonBox.Ok)
+        self.okButton = self.buttons.button(QtWidgets.QDialogButtonBox.StandardButton.Ok)
         self.okButton.setEnabled(False)
 
         self.buttons.accepted.connect(self.accept)
@@ -149,9 +149,9 @@ class KPAnimationPresetChooser(QtWidgets.QDialog):
     @classmethod
     def run(cls, *args):
         dialog = cls(*args)
-        result = dialog.exec_()
+        result = dialog.exec()
 
-        if result == QtWidgets.QDialog.Accepted:
+        if result == QtWidgets.QDialog.DialogCode.Accepted:
             return dialog.getChoice()
         else:
             return None
@@ -162,7 +162,7 @@ class KPAnimationPresetChooser(QtWidgets.QDialog):
 
 def getTextDialog(title, label, existingText=''):
 
-    text, ok = QtWidgets.QInputDialog.getText(KP.mainWindow, title, label, QtWidgets.QLineEdit.Normal, existingText)
+    text, ok = QtWidgets.QInputDialog.getText(KP.mainWindow, title, label, QtWidgets.QLineEdit.EchoMode.Normal, existingText)
 
     print(text)
     if ok and text != '':

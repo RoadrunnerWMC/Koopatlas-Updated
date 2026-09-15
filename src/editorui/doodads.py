@@ -30,7 +30,7 @@ class KPEditorDoodad(KPEditorItem):
             doodad.setupAnimations()
 
         if not hasattr(KPEditorDoodad, 'SELECTION_PEN'):
-            KPEditorDoodad.SELECTION_PEN = QtGui.QPen(Qt.red, 1, Qt.DotLine)
+            KPEditorDoodad.SELECTION_PEN = QtGui.QPen(QtCore.Qt.GlobalColor.red, 1, QtCore.Qt.PenStyle.DotLine)
 
 
     def _updatePixmap(self):
@@ -83,32 +83,32 @@ class KPEditorDoodad(KPEditorItem):
 
     def hoverMoveEvent(self, event):
         if self._layerRef() != KP.mapScene.currentLayer:
-            self.setCursor(Qt.ArrowCursor)
+            self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
             return
 
         pos = event.pos()
         bit = self.resizerPortionAt(pos.x(), pos.y())
 
 
-        if (event.modifiers() == Qt.ShiftModifier):
+        if (event.modifiers() == QtCore.Qt.KeyboardModifier.ShiftModifier):
 
             if bit:
-                self.setCursor(Qt.OpenHandCursor)
+                self.setCursor(QtCore.Qt.CursorShape.OpenHandCursor)
             else:
-                self.setCursor(Qt.ArrowCursor)
+                self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
 
         else:
 
             if bit == 1 or bit == 4:
-                self.setCursor(Qt.SizeFDiagCursor)
+                self.setCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
             elif bit == 2 or bit == 3:
-                self.setCursor(Qt.SizeBDiagCursor)
+                self.setCursor(QtCore.Qt.CursorShape.SizeBDiagCursor)
             elif bit == 7 or bit == 8:
-                self.setCursor(Qt.SizeHorCursor)
+                self.setCursor(QtCore.Qt.CursorShape.SizeHorCursor)
             elif bit == 5 or bit == 6:
-                self.setCursor(Qt.SizeVerCursor)
+                self.setCursor(QtCore.Qt.CursorShape.SizeVerCursor)
             else:
-                self.setCursor(Qt.ArrowCursor)
+                self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
 
         KPEditorItem.hoverMoveEvent(self, event)
 
@@ -120,7 +120,7 @@ class KPEditorDoodad(KPEditorItem):
 
 
     def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
             pos = event.pos()
             bit = self.resizerPortionAt(pos.x(), pos.y())
 
@@ -128,9 +128,9 @@ class KPEditorDoodad(KPEditorItem):
             # if bit:
                 event.accept()
 
-                if (event.modifiers() & Qt.ShiftModifier):
+                if (event.modifiers() & QtCore.Qt.KeyboardModifier.ShiftModifier):
                     self.rotating = self.mapToScene(pos), self._doodadRef().angle
-                    self.setCursor(Qt.ClosedHandCursor)
+                    self.setCursor(QtCore.Qt.CursorShape.ClosedHandCursor)
                     return
 
                 else:
@@ -194,7 +194,7 @@ class KPEditorDoodad(KPEditorItem):
         # Move this to ItemChange() or something at some point.
         finalAngle = angle - origAngle + oldAngle
 
-        if (modifiers & Qt.ControlModifier):
+        if (modifiers & QtCore.Qt.KeyboardModifier.ControlModifier):
             finalAngle = int(finalAngle / 45.0) * 45.0
 
         return True, finalAngle
@@ -236,11 +236,11 @@ class KPEditorDoodad(KPEditorItem):
 
 
     def mouseReleaseEvent(self, event):
-        if self.resizing and event.button() == Qt.LeftButton:
+        if self.resizing and event.button() == QtCore.Qt.MouseButton.LeftButton:
             self.resizing = None
             # self._doodadRef().position = [self.x(), self.y()]
 
-        elif self.rotating and event.button() == Qt.LeftButton:
+        elif self.rotating and event.button() == QtCore.Qt.MouseButton.LeftButton:
             self.rotating = None
 
         else:

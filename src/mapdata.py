@@ -35,8 +35,8 @@ class KPLayer(object):
     def setActivated(self, value, listToUse=None):
         # return
 
-        flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
 
         if listToUse is None:
             listToUse = self.objects
@@ -204,8 +204,8 @@ class KPPathTileLayer(KPLayer):
     def setActivated(self, value, listToUse=None):
         # return
 
-        flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
 
         if listToUse is None:
             listToUse = self.objects + self.doodads
@@ -391,11 +391,15 @@ class KPDoodad(object):
 
             # Interpolate the correct modifier
             if Curve == "Linear":
-                Timeline.setCurveShape(3)
+                Timeline.setEasingCurve(QtCore.QEasingCurve.Type.Linear)
             elif Curve == "Sinusoidial":
-                Timeline.setCurveShape(4)
+                sine_easing = QtCore.QEasingCurve(QtCore.QEasingCurve.Type.Linear)
+                sine_easing.setCustomType(easingCurveSin)
+                Timeline.setEasingCurve(sine_easing)
             elif Curve == "Cosinoidial":
-                Timeline.setCurveShape(5)
+                cosine_easing = QtCore.QEasingCurve(QtCore.QEasingCurve.Type.Linear)
+                cosine_easing.setCustomType(easingCurveCos)
+                Timeline.setEasingCurve(cosine_easing)
 
             Timeline.setFrameRange(round(StartVal), round(EndVal))
 
@@ -563,7 +567,7 @@ class KPPathLayer(KPLayer):
         # return
         KPLayer.setActivated(self, value, self.nodes)
 
-        flag = QtWidgets.QGraphicsItem.ItemIsSelectable
+        flag = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
         for path in self.paths:
             item = path.qtItem
             if item:
@@ -724,23 +728,23 @@ class KPMap(object):
             self.list = layerList
 
 
-        def headerData(self, section, orientation, role = Qt.DisplayRole):
+        def headerData(self, section, orientation, role = QtCore.Qt.ItemDataRole.DisplayRole):
             return 'Layer'
 
         def rowCount(self, parent):
             return len(self.list)
 
-        def data(self, index, role = Qt.DisplayRole):
+        def data(self, index, role = QtCore.Qt.ItemDataRole.DisplayRole):
             try:
                 if index.isValid():
                     layer = self.list[index.row()]
 
-                    if (role == Qt.DisplayRole or role == Qt.EditRole):
+                    if (role == QtCore.Qt.ItemDataRole.DisplayRole or role == QtCore.Qt.ItemDataRole.EditRole):
                         return layer.name
-                    elif role == Qt.DecorationRole:
+                    elif role == QtCore.Qt.ItemDataRole.DecorationRole:
                         return layer.icon
-                    elif role == Qt.CheckStateRole:
-                        return (Qt.Checked if layer.visible else Qt.Unchecked)
+                    elif role == QtCore.Qt.ItemDataRole.CheckStateRole:
+                        return (QtCore.Qt.CheckState.Checked if layer.visible else QtCore.Qt.CheckState.Unchecked)
 
             except IndexError:
                 pass
@@ -749,26 +753,26 @@ class KPMap(object):
 
         def flags(self, index):
             if not index.isValid():
-                return Qt.ItemIsEnabled
+                return QtCore.Qt.ItemFlag.ItemIsEnabled
 
-            return Qt.ItemIsEditable | Qt.ItemIsUserCheckable \
+            return QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsUserCheckable \
                     | QtCore.QAbstractListModel.flags(self, index)
 
-        def setData(self, index, value, role = Qt.EditRole):
+        def setData(self, index, value, role = QtCore.Qt.ItemDataRole.EditRole):
             if index.isValid():
                 layer = self.list[index.row()]
 
                 # enforce uniqueness for layer names
                 usedLayerNames = {L.name for L in self.list}
 
-                if role == Qt.EditRole:
+                if role == QtCore.Qt.ItemDataRole.EditRole:
                     value = str(value)
                     if len(value) > 0 and value not in usedLayerNames:
                         layer.name = value
                         self.dataChanged.emit(index, index)
                         return True
 
-                elif role == Qt.CheckStateRole:
+                elif role == QtCore.Qt.ItemDataRole.CheckStateRole:
                     layer.visible = value
                     self.dataChanged.emit(index, index)
                     return True
@@ -843,22 +847,22 @@ class KPMap(object):
             self.list = doodadList
 
 
-        def headerData(self, section, orientation, role = Qt.DisplayRole):
+        def headerData(self, section, orientation, role = QtCore.Qt.ItemDataRole.DisplayRole):
             return 'Doodad'
 
         def rowCount(self, parent):
             return len(self.list)
 
-        def data(self, index, role = Qt.DisplayRole):
+        def data(self, index, role = QtCore.Qt.ItemDataRole.DisplayRole):
             try:
                 if index.isValid():
                     doodad = self.list[index.row()]
 
-                    if role == Qt.DecorationRole:
+                    if role == QtCore.Qt.ItemDataRole.DecorationRole:
                         return QtGui.QIcon(doodad[1])
-                    elif role == Qt.ToolTipRole:
+                    elif role == QtCore.Qt.ItemDataRole.ToolTipRole:
                         return doodad[0]
-                    elif role == Qt.DisplayRole:
+                    elif role == QtCore.Qt.ItemDataRole.DisplayRole:
                         return doodad[0]
 
             except IndexError:
@@ -868,7 +872,7 @@ class KPMap(object):
 
         def flags(self, index):
             if not index.isValid():
-                return Qt.ItemIsEnabled
+                return QtCore.Qt.ItemFlag.ItemIsEnabled
             return QtCore.QAbstractListModel.flags(self, index)
 
     def addDoodad(self, title, image):

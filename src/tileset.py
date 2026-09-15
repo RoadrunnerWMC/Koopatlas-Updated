@@ -202,12 +202,12 @@ class KPGroupModel(QtCore.QAbstractListModel):
         item, depth = self.container.getItem(index.row())
 
         if isinstance(item, KPGroupItem):
-            return Qt.NoItemFlags
+            return QtCore.Qt.ItemFlag.NoItemFlags
         else:
-            return Qt.ItemIsEnabled | Qt.ItemIsSelectable
+            return QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsSelectable
 
 
-    def data(self, index, role=Qt.DisplayRole):
+    def data(self, index, role=QtCore.Qt.ItemDataRole.DisplayRole):
         # Should return the contents of a row when asked for the index
         #
         # Can be optimized by only dealing with the roles we need prior
@@ -216,11 +216,11 @@ class KPGroupModel(QtCore.QAbstractListModel):
         if ((role > 1) and (role < 6)):
             return None
 
-        elif (role == Qt.ForegroundRole):
-            return QtGui.QBrush(Qt.black)
+        elif (role == QtCore.Qt.ItemDataRole.ForegroundRole):
+            return QtGui.QBrush(QtCore.Qt.GlobalColor.black)
 
-        elif role == Qt.TextAlignmentRole:
-            return Qt.AlignCenter
+        elif role == QtCore.Qt.ItemDataRole.TextAlignmentRole:
+            return QtCore.Qt.AlignmentFlag.AlignCenter
 
 
         if not index.isValid(): return None
@@ -231,19 +231,19 @@ class KPGroupModel(QtCore.QAbstractListModel):
 
         item, depth = self.container.getItem(n)
 
-        if role == Qt.DecorationRole:
+        if role == QtCore.Qt.ItemDataRole.DecorationRole:
             if isinstance(item, KPTileObject):
                 return item.icon
 
-        elif role == Qt.DisplayRole:
+        elif role == QtCore.Qt.ItemDataRole.DisplayRole:
             if isinstance(item, KPGroupItem):
                 return item.name
 
-        elif (role == Qt.SizeHintRole):
+        elif (role == QtCore.Qt.ItemDataRole.SizeHintRole):
             if isinstance(item, KPGroupItem):
                 return QtCore.QSize(self.view.viewport().width(), (28 - (depth * 2)))
 
-        elif role == Qt.BackgroundRole:
+        elif role == QtCore.Qt.ItemDataRole.BackgroundRole:
             if isinstance(item, KPGroupItem):
 
                 colour = 165 + (depth * 15)
@@ -251,11 +251,11 @@ class KPGroupModel(QtCore.QAbstractListModel):
                 if colour > 255:
                     colour = 255
 
-                brush = QtGui.QBrush(QtGui.QColor(colour, colour, colour), Qt.Dense4Pattern)
+                brush = QtGui.QBrush(QtGui.QColor(colour, colour, colour), QtCore.Qt.BrushStyle.Dense4Pattern)
 
                 return brush
 
-        elif (role == Qt.FontRole):
+        elif (role == QtCore.Qt.ItemDataRole.FontRole):
             font = QtGui.QFont()
             font.setPixelSize(20 - (depth * 2))
             font.setBold(True)
@@ -278,7 +278,7 @@ class KPGroupItem(object):
         self.endIndex = 0
 
         self.name = name
-        self.alignment = Qt.AlignCenter
+        self.alignment = QtCore.Qt.AlignmentFlag.AlignCenter
 
 
     def getGroupList(self, returnList=[], depth=0):
@@ -428,8 +428,8 @@ class KPTileset(object):
     def RGB4A3Decode(tex):
 
         out = bytearray(896*448*4)
-        dest = QtGui.QImage(896,448,QtGui.QImage.Format_ARGB32)
-        dest.fill(Qt.transparent)
+        dest = QtGui.QImage(896,448,QtGui.QImage.Format.Format_ARGB32)
+        dest.fill(QtCore.Qt.GlobalColor.transparent)
 
         # Some fairly ugly code, in an attempt to make it run faster
         dest_setPixel = dest.setPixel
@@ -483,7 +483,7 @@ class KPTileset(object):
             row = 0
 
             tex = QtGui.QPixmap(entry[1] * 24, entry[2] * 24)
-            tex.fill(Qt.transparent)
+            tex.fill(QtCore.Qt.GlobalColor.transparent)
             painter = QtGui.QPainter(tex)
 
 

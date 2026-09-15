@@ -16,7 +16,7 @@ class KPEditorObject(KPEditorItem):
         self.resizing = None
 
         if not hasattr(KPEditorObject, 'SELECTION_PEN'):
-            KPEditorObject.SELECTION_PEN = QtGui.QPen(Qt.green, 1, Qt.DotLine)
+            KPEditorObject.SELECTION_PEN = QtGui.QPen(QtCore.Qt.GlobalColor.green, 1, QtCore.Qt.PenStyle.DotLine)
 
         # I don't bother setting the ZValue because it doesn't quite matter:
         # only one layer's objects are ever clickable, and drawBackground takes
@@ -53,15 +53,15 @@ class KPEditorObject(KPEditorItem):
         bit = self.resizerPortionAt(pos.x(), pos.y())
 
         if bit == 1 or bit == 4:
-            self.setCursor(Qt.SizeFDiagCursor)
+            self.setCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
         elif bit == 2 or bit == 3:
-            self.setCursor(Qt.SizeBDiagCursor)
+            self.setCursor(QtCore.Qt.CursorShape.SizeBDiagCursor)
         elif bit == 7 or bit == 8:
-            self.setCursor(Qt.SizeHorCursor)
+            self.setCursor(QtCore.Qt.CursorShape.SizeHorCursor)
         elif bit == 5 or bit == 6:
-            self.setCursor(Qt.SizeVerCursor)
+            self.setCursor(QtCore.Qt.CursorShape.SizeVerCursor)
         else:
-            self.setCursor(Qt.ArrowCursor)
+            self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
 
         KPEditorItem.hoverMoveEvent(self, event)
 
@@ -73,7 +73,7 @@ class KPEditorObject(KPEditorItem):
 
 
     def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
             pos = event.pos()
             bit = self.resizerPortionAt(pos.x(), pos.y())
 
@@ -162,7 +162,7 @@ class KPEditorObject(KPEditorItem):
 
 
     def mouseReleaseEvent(self, event):
-        if self.resizing and event.button() == Qt.LeftButton:
+        if self.resizing and event.button() == QtCore.Qt.MouseButton.LeftButton:
             self.resizing = None
         else:
             KPEditorItem.mouseReleaseEvent(self, event)

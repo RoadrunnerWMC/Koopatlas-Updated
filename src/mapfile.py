@@ -104,7 +104,7 @@ def load(string):
 @dumpClassAs(QtGui.QPixmap, 'pixmap')
 def dumpPixmap(pm):
     buf = QtCore.QBuffer()
-    buf.open(buf.WriteOnly)
+    buf.open(QtCore.QIODeviceBase.OpenModeFlag.WriteOnly)
     pm.save(buf, 'PNG')
     data = bytes(buf.data())
     buf.close()
@@ -116,7 +116,7 @@ def loadPixmap(source):
     pm.loadFromData(base64.b64decode(source['png'].encode('ascii')), 'PNG')
     return pm
 
-@dumpClassAs(QtCore.QString)
+@dumpClassAs(str)
 def dumpQString(string):
     return str(string)
 

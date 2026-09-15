@@ -4,16 +4,16 @@ class KPEditorItem(QtWidgets.QGraphicsItem):
     def __init__(self):
         QtWidgets.QGraphicsItem.__init__(self)
         self.setFlags(
-                self.ItemSendsGeometryChanges |
-                self.ItemIsSelectable |
-                self.ItemIsMovable
+                QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges |
+                QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable |
+                QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
                 )
 
         self.ignoreMovement = False
         self.overrideSnap = False
 
     def itemChange(self, change, value):
-        if change == self.ItemPositionChange and not self.ignoreMovement:
+        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange and not self.ignoreMovement:
             currentX, currentY = self.x(), self.y()
 
             newpos = value
