@@ -1762,13 +1762,13 @@ class KPMainWindow(QtWidgets.QMainWindow):
     def aboutDialog(self):
         caption = "About Koopatlas"
 
-        text = "<big><b>Koopatlas</b></big><br><br>    The Koopatlas Editor is an editor for custom two dimensional world maps, for use with the Newer SMBWii world map engine. It should be included with its companion program, Koopuzzle, which will create tilesets compatible with Koopatlas.<br><br>    Koopatlas was programmed by Treeki and Tempus of the Newer Team.<br><br>    Find the website at html://www.newerteam.com for more information."
+        text = "<big><b>Koopatlas</b></big><br><br>    The Koopatlas Editor is an editor for custom two dimensional world maps, for use with the Newer SMBWii world map engine. It should be included with its companion program, Koopuzzle, which will create tilesets compatible with Koopatlas.<br><br>    Koopatlas was programmed by Treeki and Tempus of the Newer Team.<br><br>    Find the website at https://www.newerteam.com for more information."
 
 
         msg = QtWidgets.QMessageBox.about(KP.mainWindow, caption, text)
 
     def goToHelp(self):
-        QtGui.QDesktopServices().openUrl(QtCore.QUrl('http://www.newerteam.com/koopatlas-help'))
+        QtGui.QDesktopServices().openUrl(QtCore.QUrl('https://www.newerteam.com/koopatlas-help'))
 
 
 
