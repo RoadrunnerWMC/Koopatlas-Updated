@@ -204,6 +204,7 @@ if config.USE_PYQT:
 
 if sys.platform == 'darwin':
     args.append('--osx-bundle-identifier=' + config.MAC_BUNDLE_IDENTIFIER)
+    args.append('--target-arch=universal2')
 
 for p in config.EXTRA_IMPORT_PATHS:
     args.append('--paths=' + p)
